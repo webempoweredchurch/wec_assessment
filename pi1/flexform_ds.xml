@@ -1,0 +1,127 @@
+<T3DataStructure>
+	<sheets>
+		<general>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>General</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+
+					<paging>
+						<TCEforms>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.paging</label>
+							<config>
+								<type>check</type>
+							</config>
+							<onChange>reload</onChange>
+						</TCEforms>
+					</paging>
+					
+					
+					<perPage>
+						<TCEforms>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.perPage</label>
+							<displayCond>FIELD:paging:REQ:true</displayCond>
+							<config>
+								<type>input</type>
+								<size>5</size>
+								<eval>required</eval>
+							</config>
+						</TCEforms>
+					</perPage>
+					
+					<minRange>
+						<TCEforms>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.minRange</label>
+							<config>
+								<type>input</type>
+								<size>5</size>
+								<eval>required</eval>
+							</config>
+							<onChange>reload</onChange>
+						</TCEforms>
+					</minRange>
+					
+					<maxRange>
+						<TCEforms>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.maxRange</label>
+							<config>
+								<type>input</type>
+								<size>5</size>
+								<eval>required</eval>
+							</config>
+							<onChange>reload</onChange>
+						</TCEforms>
+					</maxRange>
+					
+					
+					<!--
+					<pages>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:lang/locallang_general.php:LGL.startingpoint</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<size>3</size>
+								<maxitems>22</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</pages>
+					-->
+					
+				</el>
+			</ROOT>
+		</general>
+		
+		<labels>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Labels</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<scale>
+						<TCEforms>
+							<label>Scale</label>
+							<config>
+								<type>user</type>
+								<userFunc>tx_wecassessment_flexform->getScaleForm</userFunc>
+								<noTableWrapping>true</noTableWrapping>
+							</config>
+						</TCEforms>
+					</scale>
+					
+				</el>
+			</ROOT>
+		</labels>
+		
+		<validation>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Validation</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					
+					<rangeCheck>
+						<TCEforms>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.rangeCheck</label>
+							<config>
+								<type>user</type>
+								<userFunc>tx_wecassessment_flexform->getRangeCheck</userFunc>
+							</config>
+						</TCEforms>
+					</rangeCheck>
+					
+				</el>
+			</ROOT>
+		</validation>
+		
+	</sheets>
+</T3DataStructure>

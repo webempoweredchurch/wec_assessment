@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'wec_assessment'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_wecassessment_category">Assessment Category</label>
+			<label index="tx_wecassessment_category.title">Title</label>
+			<label index="tx_wecassessment_category.description">Description</label>
+			<label index="tx_wecassessment_category.image">Image</label>
+			<label index="tx_wecassessment_question">Assessment Questions</label>
+			<label index="tx_wecassessment_question.text">Text</label>
+			<label index="tx_wecassessment_question.category_id">Category</label>
+			<label index="tx_wecassessment_question.weight">Weight</label>
+			<label index="tx_wecassessment_answer">Assessment Answer</label>
+			<label index="tx_wecassessment_answer.value">Value</label>
+			<label index="tx_wecassessment_answer.question_id">Question</label>
+			<label index="tx_wecassessment_answer.result_id">Result</label>
+			<label index="tx_wecassessment_result">Assessment Result</label>
+			<label index="tx_wecassessment_result.type.feuser.0">Frontend User</label>
+			<label index="tx_wecassessment_result.type.anonymous.1">Anonymous</label>
+			<label index="tx_wecassessment_result.type">Type</label>
+			<label index="tx_wecassessment_result.feuser_id">Frontend User</label>
+			<label index="tx_wecassessment_result.assessment_id">Assessment</label>
+			<label index="tx_wecassessment_response">Assessment Reponses</label>
+			<label index="tx_wecassessment_response.category_id">Category</label>
+			<label index="tx_wecassessment_response.text">Text</label>
+			<label index="tx_wecassessment_response.min_value">Minimum Value</label>
+			<label index="tx_wecassessment_response.max_value">Maximum Value</label>
+			
+			<label index="tt_content.list_type_pi1">WEC Assessment</label>
+			
+			<label index="tt_content.pi_flexform.minRange">Min</label>
+			<label index="tt_content.pi_flexform.maxRange">Max</label>
+			<label index="tt_content.pi_flexform.rangeCheck">Range Check</label>
+			
+			<label index="tt_content.pi_flexform.paging">Split Questions Acoss Multiple Pages?</label>
+			<label index="tt_content.pi_flexform.perPage">Questions Per Page</label>
+			
+		</languageKey>
+	</data>
+</T3locallang>

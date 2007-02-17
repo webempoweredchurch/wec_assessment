@@ -1,0 +1,52 @@
+includeLibs.tx_wecassessment_pi1 = EXT:wec_assessment/pi1/class.tx_wecassessment_pi1.php
+
+plugin.tx_wecassessment_pi1 = USER
+plugin.tx_wecassessment_pi1 {
+	userFunc = tx_wecassessment_pi1->main
+	
+	usePaging = 0
+	questionsPerPage = 2
+	allowAnonymous = 1
+	
+	# templateFile = {$plugin.tx_wecassessment.templateFile}
+	templateFile = EXT:wec_assessment/pi1/assessment.tmpl
+	
+	questions {
+
+		question = COA
+		question {
+			10 = TEXT
+			10.field = text
+			10.wrap = <p>|</p>
+		}
+		
+		scaleItem = TEXT
+		scaleItem {
+			field = label
+			wrap = <input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label><br />
+			insertData = true
+		}
+		
+		stdWrap.wrap = <fieldset class="question">|</fieldset>
+	}
+	
+	responses {
+		response = COA
+		response {
+			10 = TEXT
+			10.field = category
+			10.wrap = <h3>|</h3>
+
+			20 = TEXT
+			20.field = text
+			20.wrap = <p>|</p>
+			20.parseFunc < tt_content.text.20.parseFunc
+		    
+
+			wrap = <div id="response">|</div>
+
+		}
+	}
+	
+	
+}
