@@ -75,7 +75,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		
 		/* If we have a uid, update an db existing record.  If not, create a new db record. */
 		if($this->getUID()) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_answer', 'uid='.$this->getUID, $fields_values);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_answer', 'uid='.$this->getUID(), $fields_values);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_wecassessment_answer', $fields_values);
 			$this->setUID($GLOBALS['TYPO3_DB']->sql_insert_id());
