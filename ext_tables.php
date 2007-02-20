@@ -140,8 +140,8 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 t3lib_extMgm::addPlugin(array('LLL:EXT:wec_assessment/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:wec_assessment/pi1/flexform_ds.xml');
 
-require_once('backend/class.tx_wecassessment_flexform.php');
-require_once('backend/class.tx_wecassessment_labels.php');
+require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_flexform.php');
+require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_labels.php');
 
 // enable label_userFunc only for TYPO3 v 4.1 and higher
 if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
