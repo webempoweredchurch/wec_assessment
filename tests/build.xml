@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="ExampleTest" basedir="." default="report">
+  <target name="prepare">
+    <mkdir dir="report"/>
+  </target>
+
+  <target name="clean"> 
+    <delete dir="report"/>
+  </target>
+  <target name="report" depends="prepare">
+    <phpunit2>
+      <batchtest>
+        <fileset dir=".">
+          <include name="*Test.php"/>
+        </fileset>
+      </batchtest>
+      <formatter type="xml" todir="report" outfile="logfile.xml"/>
+    </phpunit2>
+    <phpunitreport infile="report/logfile.xml"
+                   styledir="/usr/local/php5/lib/php/data/phing/etc"
+                   format="frames"
+                   todir="report"/>
+  </target>
+</project>
