@@ -58,23 +58,24 @@ class tx_wecassessment_flexform {
 	function getFlexFormValue($sheet, $key) {
 		$flexform = $this->PA['row']['pi_flexform'];
 		$ffArray = t3lib_div::xml2array($flexform);
-		
+
 		/* @todo	Hack to account for scale_label not having a vDef */
-		if($key=='scale_label') {
-			$value = $ffArray['data'][$sheet]['lDEF'][$key];
-		} else {
-			$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
+		if(is_array($ffArray)) {
+			if($key=='scale_label') {
+				$value = $ffArray['data'][$sheet]['lDEF'][$key];
+			} else {
+				$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
+			}
+
+			/* If there's a vDEF entry, return its contents. */
+			if(array_key_exists('vDEF', $ffArray['data'][$sheet]['lDEF'][$key])) {
+				$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
+			} else {
+				/* Otherwise, stick with the main entry */
+				/* @todo 	Does this affect multi-language at all? */
+				$value = $ffArray['data'][$sheet]['lDEF'][$key];
+			}
 		}
-		
-		/* If there's a vDEF entry, return its contents. */
-		if(array_key_exists('vDEF', $ffArray['data'][$sheet]['lDEF'][$key])) {
-			$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
-		} else {
-			/* Otherwise, stick with the main entry */
-			/* @todo 	Does this affect multi-language at all? */
-			$value = $ffArray['data'][$sheet]['lDEF'][$key];
-		}
-		
 		return $value;
 	}
 	
