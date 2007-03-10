@@ -28,7 +28,7 @@ require_once('initTYPO3.php');
 /**
  * Test class for tx_xxx
  */
-class exampleTest extends PHPUnit_Framework_Testcase  {
+class questionTest extends PHPUnit_Framework_Testcase  {
 
     /****************************************************************
      * main, setUP, tearDown
@@ -45,8 +45,13 @@ class exampleTest extends PHPUnit_Framework_Testcase  {
      * @access protected
      */
     protected function setUp() {
-		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_result.php');
-		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
+		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
+		
+	    $categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
+		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', '0');
+		
+		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
+		$this->question = new $questionClass(1, 0, 0, "This is my question text.", 0, 10);
     }
 
     /**
@@ -58,10 +63,12 @@ class exampleTest extends PHPUnit_Framework_Testcase  {
     protected function tearDown() {
     }
 	
-	public function testSomething() {
-	    $categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
-		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', '0');
-        $this->assertEquals(0, $category->getPID());
+	public function testText() {
+        $this->assertEquals("This is my question text.", $this->question->getText());
+	}
+	
+	public function testWeight() {
+		$this->assertEquals(10, $this->question->getWeight());
 	}
 
     /**
