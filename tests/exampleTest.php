@@ -22,6 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+require_once 'PHPUnit/Framework.php';
 require_once('include.php');
 require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_result.php');
 require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
@@ -46,6 +47,7 @@ class exampleTest extends PHPUnit_Framework_Testcase  {
      * @access protected
      */
     protected function setUp() {
+
     }
 
     /**
