@@ -2,13 +2,16 @@
 <project name="ExampleTest" basedir="." default="report">
   <target name="prepare">
     <mkdir dir="report"/>
+    <mkdir dir="coverage-report"/>
   </target>
 
   <target name="clean"> 
     <delete dir="report"/>
+    <delete dir="coverage-report"/>
   </target>
+  
   <target name="report" depends="prepare">
-    <phpunit2>
+    <phpunit2 printsummary="true">
       <batchtest>
         <fileset dir=".">
           <include name="*Test.php"/>
@@ -17,8 +20,32 @@
       <formatter type="xml" todir="report" outfile="logfile.xml"/>
     </phpunit2>
     <phpunitreport infile="report/logfile.xml"
-                   styledir="/usr/local/php5/lib/php/data/phing/etc"
                    format="frames"
                    todir="report"/>
   </target>
+  
+  <target name="coverage-report" depends="prepare">
+    <coverage-setup database="./coverage-report/database">
+      <fileset dir=".">
+      	<include name="initTYPO3.php" />
+      </fileset>
+      <fileset dir="../">
+        <include name="**/class.*.php"/>
+        <exclude name="*Test.php"/>
+      </fileset>
+    </coverage-setup>
+
+    <phpunit2 codecoverage="true">
+      <batchtest>
+        <fileset dir=".">
+          <include name="*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit2>
+
+    <coverage-report outfile="coverage-report/coverage.xml">
+      <report todir="coverage-report"/>
+    </coverage-report>
+  </target>
+
 </project>
