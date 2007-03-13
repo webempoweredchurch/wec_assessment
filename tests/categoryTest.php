@@ -65,14 +65,15 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 	public function testNoInitialResponses() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
-		// $GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB');
-		// $GLOBALS['TYPO3_DB']->expects($this->any())
-		// 					->method('exec_SELECTquery')
-		// 					->withAnyParameters()
-		// 					->will($this->returnValue('foo'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_SELECTquery', 'sql_fetch_assoc'));
+		$GLOBALS['TYPO3_DB']->expects($this->any())
+							->method('exec_SELECTquery')
+							->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->any())
+							->method('sql_fetch_assoc')
+							->will($this->returnValue(array()));
 
-		// $this->assertEquals(count($category->getResponses()), 0);
-		$this->markTestIncomplete();
+		$this->assertEquals(count($category->getResponses()), 0);
 	}
 	
 	public function testSetResponsesRightUID() {

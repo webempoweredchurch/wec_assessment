@@ -1,51 +1,65 @@
 <?xml version="1.0"?>
-<project name="WEC Assessment Tests" basedir="." default="report">
-  <target name="prepare">
-    <mkdir dir="report"/>
-    <mkdir dir="coverage-report"/>
-  </target>
+<project name="WEC Assessment Tests" basedir="." default="coverage-report">
 
-  <target name="clean"> 
-    <delete dir="report"/>
-    <delete dir="coverage-report"/>
-  </target>
+	<fileset dir="../" id="allsources">
+		<exclude name="**/.svn"/>
+		<include name="**/*.php"/>
+	</fileset> 
+
+	<fileset dir="." id="alltests">
+	  <include name="*Test.php"/>
+	</fileset>
+
+	<fileset dir="../" id="sourcesonly">
+		<include name="**/class.*.php"/>
+		<exclude name="*Test.php"/>
+	</fileset>
+	
+	<target name="prepare" depends="lint">
+		<mkdir dir="report"/>
+		<mkdir dir="coverage-report"/>
+	 </target>
+
+	<target name="clean"> 
+		<delete dir="report"/>
+		<delete dir="coverage-report"/>
+	</target>
+ 
+	<target name="lint">
+	  <phplint>
+	    <fileset refid="allsources"/>
+	  </phplint>
+	</target>
+
+	<target name="report" depends="prepare">
+		<phpunit2 printsummary="true">
+			<batchtest>
+				<fileset refid="alltests"/>
+			</batchtest>
+			<formatter type="xml" todir="report" outfile="logfile.xml"/>
+		</phpunit2>
+		<phpunitreport infile="report/logfile.xml"
+		               format="frames"
+		               todir="report"/>
+	</target>
   
-  <target name="report" depends="prepare">
-    <phpunit2 printsummary="true">
-      <batchtest>
-        <fileset dir=".">
-          <include name="*Test.php"/>
-        </fileset>
-      </batchtest>
-      <formatter type="xml" todir="report" outfile="logfile.xml"/>
-    </phpunit2>
-    <phpunitreport infile="report/logfile.xml"
-                   format="frames"
-                   todir="report"/>
-  </target>
-  
-  <target name="coverage-report" depends="prepare">
-    <coverage-setup database="./coverage-report/database">
-      <fileset dir=".">
-      	<include name="initTYPO3.php" />
-      </fileset>
-      <fileset dir="../">
-        <include name="**/class.*.php"/>
-        <exclude name="*Test.php"/>
-      </fileset>
-    </coverage-setup>
+	<target name="coverage-report" depends="report">
+		<coverage-setup database="./coverage-report/database">
+			<fileset dir=".">
+				<include name="initTYPO3.php" />
+			</fileset>
+			<fileset refid="sourcesonly" />
+		</coverage-setup>
 
-    <phpunit2 codecoverage="true">
-      <batchtest>
-        <fileset dir=".">
-          <include name="*Test.php"/>
-        </fileset>
-      </batchtest>
-    </phpunit2>
+		<phpunit2 codecoverage="true">
+			<batchtest>
+				<fileset refid="alltests" />
+			</batchtest>
+		</phpunit2>
 
-    <coverage-report outfile="coverage-report/coverage.xml">
-      <report todir="coverage-report"/>
-    </coverage-report>
-  </target>
+		<coverage-report outfile="coverage-report/coverage.xml">
+			<report todir="coverage-report"/>
+		</coverage-report>
+	</target>
 
 </project>
