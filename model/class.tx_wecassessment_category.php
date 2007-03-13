@@ -256,6 +256,29 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		
 	}
 	
+	
+	/**
+	 * Sets the responses to the specified response array.
+	 * @param		array		The array of responses in this category.
+	 * @return		none
+	 */	
+	function setResponses($responses) {
+		foreach($responses as $response) {
+			$this->$response->setCategoryUID($this->getUID())
+		}
+		$this->_responses = $responses;
+	}
+	
+	/**
+	 * Adds a single response to the array of responses in this category.
+	 * @param		object		The new response object.
+	 * @return		none
+	 */
+	function addResponse($response) {
+		$response->setCategoryUID($this->getUID());
+		$this->_responses[] = $response;
+	}
+	
 	/**
 	 * Checks if the current category is a child of the given categoryUID.
 	 * Starts from the current category's parent and recurs up the hierarchy.
