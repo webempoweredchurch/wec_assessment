@@ -264,9 +264,8 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 */	
 	function setResponses($responses) {
 		foreach($responses as $response) {
-			$response->setCategoryUID($this->getUID())
+			$this->addResponse($response);
 		}
-		$this->_responses = $responses;
 	}
 	
 	/**
