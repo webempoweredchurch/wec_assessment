@@ -23,7 +23,6 @@
  ***************************************************************/
 
 $key = 'wec_assessment';   // extension key
-$class = 'exampleTest'; // class name
 
 // Fix part to set after class definition
 if(!defined('PATH_site')) { // If running from command line

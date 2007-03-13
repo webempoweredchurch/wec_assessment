@@ -155,7 +155,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 			if(!$result = tx_wecassessment_sessiondata::retrieveSessionData()) {
 				if ($GLOBALS['TSFE']->fe_user->user['uid']) {
 					$type = USER_ASSESSMENT;
-					$feuser_id = $GLOBALS['TSFE']->fe_user->user['uid'];
+ 					$feuser_id = $GLOBALS['TSFE']->fe_user->user['uid'];
 				} else {
 					$type = ANONYMOUS_ASSESSMENT;
 					$feuser_id = $GLOBALS['TSFE']->fe_user->id;
