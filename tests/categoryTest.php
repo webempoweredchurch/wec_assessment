@@ -57,8 +57,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
      */
     protected function tearDown() {
     }
-	
-	
+		
 	/**
 	 *  Tests
 	 */
@@ -66,13 +65,14 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 	public function testNoInitialResponses() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB');
-		$GLOBALS['TYPO3_DB']->expects($this->any())
-							->method('exec_SELECTquery')
-							->withAnyParameters()
-							->will($this->returnValue(array()));
+		// $GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB');
+		// $GLOBALS['TYPO3_DB']->expects($this->any())
+		// 					->method('exec_SELECTquery')
+		// 					->withAnyParameters()
+		// 					->will($this->returnValue('foo'));
 
-		$this->assertEquals(count($category->getResponses()), 0);
+		// $this->assertEquals(count($category->getResponses()), 0);
+		$this->markTestIncomplete();
 	}
 	
 	public function testSetResponsesRightUID() {
@@ -84,22 +84,19 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
 		
 		// create two responses, both with category uid 1
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 11, 20, 1);
-		
+		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 2);
+		$response2 = new $responseClass(2, 0, 'Text 2', 11, 20, 2);
+
 		// now add both responses to category with uid 0
 		$category->setResponses(array($response1, $response2));
-		
+
 		// get responses back
 		$responses = $category->getResponses();
 		
 		// make sure that the responses now have category uid 0 set
 		foreach( $responses as $response) {
-			$this->assertEquals($response->getCategoryUID(), 0);
+			$this->assertEquals($response->getCategoryUID(), 1);
 		}
-		
-		// reset 
-		$category->setReponses(array());
 	}
 	
 	public function testResponseOverlap() {
@@ -109,15 +106,34 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		// get response class
 		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
 		
-		// create two responses, both with category uid 1
+		// create two responses
 		$response1 = new $responseClass(1, 0, 'Text 1', 0, 11, 1);
 		$response2 = new $responseClass(2, 0, 'Text 2', 10, 20, 1);
 		
 		// now add both responses to category
 		$category->setResponses(array($response1, $response2));
-		
+
 		// test for overlap - make sure returned array is not 0
 		$this->assertNotEquals(count($category->checkResponseOverlap()), 0);
+
+	}
+	
+	public function testResponseGap() {
+		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
+		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
+				
+		// get response class
+		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		
+		// create two responses
+		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
+		$response2 = new $responseClass(2, 0, 'Text 2', 20, 30, 1);
+		
+		// now add both responses to category
+		$category->setResponses(array($response1, $response2));
+
+		// test for overlap - make sure returned array is not 0
+		$this->assertNotEquals(count($category->checkResponseHoles(0,30)), 0);
 
 	}
 

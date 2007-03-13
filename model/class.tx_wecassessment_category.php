@@ -484,11 +484,10 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		$errors = array();
 		$responses = $this->getResponses();
 		
-		
 		for($i=0; $i<count($responses)-2; $i++) {
 			$currentResponse = $responses[$i];
 			$nextResponse = $responses[$i+1];
-			
+
 			if($currentResponse->getMaxValue() > $nextResponse->getMinValue) {
 				$errors[] = "Response ranges overlap";
 			}
