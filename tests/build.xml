@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="ExampleTest" basedir="." default="report">
+<project name="WEC Assessment Tests" basedir="." default="report">
   <target name="prepare">
     <mkdir dir="report"/>
     <mkdir dir="coverage-report"/>

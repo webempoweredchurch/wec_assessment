@@ -251,7 +251,6 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		if(!$this->_responses) {
 			$this->_responses = tx_wecassessment_response::findAllInCategory($this->getPID(), $this->getUID());
 		}
-		
 		return $this->_responses;
 		
 	}
