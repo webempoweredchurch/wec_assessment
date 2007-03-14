@@ -58,6 +58,16 @@ class answerTest extends PHPUnit_Framework_Testcase  {
     protected function tearDown() {
     }
 
+	public function test_toArray() {
+		$answerClass = t3lib_div::makeInstanceClassName('tx_wecassessment_answer');
+		$answer = new $answerClass(1,0,'Answer', 0,0);
+		
+		$expectedArray = array('uid' => 1, 'pid' => 0, 'value' => 'Answer', 'question_id' => 0, 'result_id' => 0);
+		
+		$this->assertEquals($answer->toArray(), $expectedArray);
+		
+	}
+	
 	public function test_getWeightedValue() {
 
 		// create answer and question objects
@@ -65,7 +75,7 @@ class answerTest extends PHPUnit_Framework_Testcase  {
 		$answer = new $answerClass(1,0,'Answer', 0,0);
 		
 		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
-		$question = new $questionClass(1,0,1, 'Question', 0,20);
+		$question = new $questionClass(1, 0, 1, 'Question', 0, 20);
 		
 		$answer->setQuestion($question);
 		

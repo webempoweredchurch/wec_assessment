@@ -62,6 +62,19 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 	 *  Tests
 	 */
 	
+	public function test_toArray() {
+		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
+		$category = new $categoryClass(1,0,'Title', 'Description', 'image.jpg', 0);
+		
+		$expectedArray = array('uid' => 1, 'pid' => 0, 'title' => 'Title', 
+							   'description' => 'Description', 'image' => 'image.jpg',
+							   'parent_id' => 0);
+		
+		$this->assertEquals($category->toArray(), $expectedArray);
+		
+	}
+	
+	
 	public function testNoInitialResponses() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
