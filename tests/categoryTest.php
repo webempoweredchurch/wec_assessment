@@ -114,8 +114,8 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		// now add both responses to category
 		$category->setResponses(array($response1, $response2));
 
-		// test for overlap - make sure returned array is not 0
-		$this->assertNotEquals(count($category->checkResponseOverlap()), 0);
+		// test for overlap - make sure category is not valid
+		$this->assertEquals($category->valid(0,20), false);
 
 	}
 	
@@ -134,7 +134,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$category->setResponses(array($response1, $response2));
 
 		// test for overlap - make sure returned array is not 0
-		$this->assertNotEquals(count($category->checkResponseHoles(0,30)), 0);
+		$this->assertEquals($category->valid(0,30), false);
 
 	}
 

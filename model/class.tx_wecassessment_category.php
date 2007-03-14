@@ -262,6 +262,7 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */	
 	function setResponses($responses) {
+		/* @todo 	Unset responses first */
 		foreach($responses as $response) {
 			$this->addResponse($response);
 		}
@@ -415,7 +416,7 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		return $categoryIsValid;
 
 	}
-	
+		
 	/**
 	 * Adds validation errors the existing error array.
 	 *
@@ -434,68 +435,7 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	function getValidationErrors() {
 		return $this->_validationErrors;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/* @todo	These probably aren't needed any more */
-	
-	/**
-	 * Check for min/max pairings where there are holes between values.
-	 * Assummes that responses are already sorted by minValue and that
-	 * checkRangePairings has not found errors.
-	 */
-	function checkResponseHoles($min, $max) {
-		$errors = array();
-		$responses = $this->getResponses();
 		
-				
-		/* Check min to first response range */
-		$firstResponse = $responses[0];
-		if($min < $firstResponse->getMinValue()) {
-			$errors[] = "Response range gap between ".$min." and ".$firstResponse->getMinValue();
-		}
-		
-		for($i=0; $i<count($responses)-1; $i++) {
-			//tx_wecassessment_response::error($response, "No response exists for ".$lowerBound." to ".$upperBound);
-			
-		}
-		
-		/* Check last response range to max */
-		$lastResponse = $responses[count($responses)-1];
-		if($max > $lastResponse->getMaxValue()) {
-			$errors[] = "Response range gap between ".$lastResponse->getMaxValue()." and ".$max;
-		}
-				
-		return $errors;
-	}
-	
-	function checkResponseOverlap() {
-		$errors = array();
-		$responses = $this->getResponses();
-		
-		for($i=0; $i<count($responses)-2; $i++) {
-			$currentResponse = $responses[$i];
-			$nextResponse = $responses[$i+1];
-
-			if($currentResponse->getMaxValue() > $nextResponse->getMinValue) {
-				$errors[] = "Response ranges overlap";
-			}
-		}
-		
-		return $errors;
-	}
-	
 }
 
 ?>
