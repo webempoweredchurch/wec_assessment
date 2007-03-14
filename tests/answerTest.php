@@ -68,7 +68,6 @@ class answerTest extends PHPUnit_Framework_Testcase  {
 		$answer->setQuestion($question);
 		
 		$this->markTestIncomplete();
-		
 	}
 }
 
