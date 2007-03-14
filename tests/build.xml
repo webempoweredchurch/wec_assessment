@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="WEC Assessment Tests" basedir="." default="coverage-report">
+<project name="WEC Assessment Tests" basedir="/usr/local/unit_test/typo3conf/ext/wec_assessment/tests/" default="coverage-report">
 
 	<fileset dir="../" id="allsources">
 		<exclude name="**/.svn"/>
