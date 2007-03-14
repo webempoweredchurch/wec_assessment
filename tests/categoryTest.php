@@ -137,6 +137,25 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$this->assertEquals($category->valid(0,30), false);
 
 	}
+	
+	public function testValid() {
+		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
+		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
+				
+		// get response class
+		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		
+		// create two responses
+		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
+		$response2 = new $responseClass(2, 0, 'Text 2', 11, 30, 1);
+		
+		// now add both responses to category
+		$category->setResponses(array($response1, $response2));
+
+		// test for validity
+		$this->assertTrue($category->valid(0,30));
+
+	}
 
 }
 

@@ -35,8 +35,8 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	
 	var $_uid;
 	var $_text;
-	var $_minValue;
-	var $_maxValue;
+	var $_min_value;
+	var $_max_value;
 	var $_categoryUID;
 	var $_category;
 	
@@ -163,7 +163,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */
 	function setMinValue($value) { 
-		$this->_minValue = $value; 
+		$this->_min_value = $value; 
 	}
 	
 	/**
@@ -182,7 +182,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */
 	function setMaxValue($value) { 
-		$this->_maxValue = $value; 
+		$this->_max_value = $value; 
 	}
 	
 	/**
