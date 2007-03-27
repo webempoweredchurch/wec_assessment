@@ -412,6 +412,9 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	function validRelativeTo($previousResponse) {
+		/* @todo 	What should gap tolerance be set to and where should it be defined? */
+		$gapTolerance = 1;
+		
 		$valid = true;
 		$currentUID = $this->getUID();
 		$previousUID = $previousResponse->getUID();
