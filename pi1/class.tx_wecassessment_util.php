@@ -18,17 +18,10 @@ class tx_wecassessment_util {
 	 * @param		string		The name of the FlexForm sheet.
 	 * @param		string		The name of the FlexForm field.
 	 * @return		mixed		The value of the field.
-	 * @todo		Merge this with the backend function that has an exception for scale_labels.
 	 */
 	function getFlexFormValue($sheet, $field) {
 		$piFlexForm = $this->cObj->data['pi_flexform'];
-		$element = $piFlexForm['data'][$sheet]['lDEF'][$field];
-		
-		if(array_key_exists('vDEF', $element)) {
-			$value = $element['vDEF'];
-		} else {
-			$value = $element;
-		}
+		$value = $piFlexForm['data'][$sheet]['lDEF'][$field]['vDEF'];
 		
 		return $value;
 	}
