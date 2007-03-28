@@ -88,6 +88,16 @@ class tx_wecassessment_modelbase {
 		return $row;		
 	}
 	
+	function getRecordLabel($table, $uid) {
+		if(TYPO3_MODE == 'BE') {
+			$row = t3lib_befunc::getRecord($table, $uid);
+			return t3lib_befunc::getRecordTitle($table, $row);
+		} else {
+			/* @todo 	What do we do in frontend mode? */
+			die("Not in backend mode.");
+		}
+	}
+	
 	
 
 }
