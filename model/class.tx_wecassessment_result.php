@@ -76,9 +76,8 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$table = 'tx_wecassessment_result';
 		
 		$row = tx_wecassessment_result::processRow($table, $row);
-		$assessmentClass = t3lib_div::makeInstanceClassName($table);
-		return new $assessmentClass($row['uid'], $row['pid'], $row['type'], $row['feuser_id']);			
-		
+		$resultClass = t3lib_div::makeInstanceClassName($table);
+		return new $resultClass($row['uid'], $row['pid'], $row['type'], $row['feuser_id']);			
 	}
 	
 	/**
@@ -192,6 +191,20 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	}
 	
 	/**
+	 * Finds the result with the given unique ID in the database.
+	 *
+	 * @param		integer		Unique ID to find.
+	 * @return		object		The result object.
+	 */
+	function find($uid) {
+		$table = 'tx_wecassessment_result';
+		$row = tx_wecassessment_result::getRow($table, $uid);
+
+		$result = tx_wecassessment_result::newFromArray($row);
+		return $result;		
+	}
+	
+	/**
 	 * Get overall list of categories
 	 * Get answers that live in each category
 	 * Get a weighted value
@@ -301,6 +314,16 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */
 	function setFEUserUID($feUserUID) {
 		$this->_feUserUID = $feUserUID;
+	}
+	
+	function getUsername() {
+		if($this->getType() == 0) {
+			$value = $this->getRecordLabel('fe_users', $this->getFEUserUID());			
+		} else {
+			$value = "Anonymous Visitor: ".$this->getFEUserUID();
+		}
+		
+		return $value;
 	}
 	
 	/**
