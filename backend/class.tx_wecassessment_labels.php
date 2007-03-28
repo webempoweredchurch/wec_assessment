@@ -2,64 +2,56 @@
 
 class tx_wecassessment_labels {
 	
+	/**
+	 * Gets the label for a result record.
+	 *
+	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
+	 * @param		object		Parent object.
+	 * @return		none
+	 */
 	function getResultLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
-		$feuser_id = $params['row']['feuser_id'];
-		$isAnonymous = $params['row']['type'];
 		
-		if ($isAnonymous) {
-			$label = 'Anonymous Visitor: '.$uid;
-		} else {
-			$feuser = t3lib_BEfunc::getRecord('fe_users', $feuser_id);
-			$label = $feuser['name'];
-		}
-		
-		$params['title'] = $label;
+		$result = tx_wecassessment_result::find($uid);
+		$params['title'] = $result->getUsername();
 	}
 	
+	/**
+	 * Gets the label for a response record.
+	 *
+	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
+	 * @param		object		Parent object.
+	 * @return		none
+	 */
 	function getResponseLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
-		$response = t3lib_BEfunc::getRecord('tx_wecassessment_response', $uid);
-				
-		$category_id = $response['category_id'];
-		$min = $response['min_value'];
-		$max = $response['max_value'];
 		
-		$category = t3lib_BEfunc::getRecord('tx_wecassessment_category', $category_id);
-		$category_title = $category['title'];
+		$response = tx_wecassessment_response::find($uid);
+		$category = $response->getCategory();
 		
-		$params['title'] = $category_title.': '.$min.'-'.$max;
+		if(is_object($category)) {
+			$title = $category->getTitle();
+		}
+		
+		$params['title'] = $title.': '.$response->getMinValue().'-'.$response->getMaxValue();
 	}
 	
-	/*
-	 * @todo		Get rid of duplicated code!!!
+	/**
+	 * Gets the label for an answer record.
+	 *
+	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
+	 * @param		object		Parent object.
+	 * @return		none
 	 */
 	function getAnswerLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
-		$answer = t3lib_BEfunc::getRecord('tx_wecassessment_answer', $uid);
-
-		$value = $answer['value'];
-		$result_id = $answer['result_id'];
-		$question_id = $answer['question_id'];
 		
-		$result = t3lib_BEfunc::getRecord('tx_wecassessment_result', $result_id);
-		$feuser_id = $result['feuser_id'];
-		
-		if ($feuser_id == 0) {
-			$result_title = 'Anonymous Visitor: '.$result['uid'];
-		} else {
-			$feuser = t3lib_BEfunc::getRecord('fe_users', $feuser_id);
-			$result_title = $feuser['name'];
-		}
-		
-		$question = t3lib_BEfunc::getRecord('tx_wecassessment_question', $question_id);
-		$question_title = $question['text'];
-		
-		$params['title'] = $question_title;
-		
+		$answer = tx_wecassessment_answer::find($uid);
+		$question = $answer->getQuestion();
+		$result = $answer->getResult();
+				
+		$params['title'] = $result->getUsername().': '.$question->getText();
 	}
-		
-
 		
 }
 
