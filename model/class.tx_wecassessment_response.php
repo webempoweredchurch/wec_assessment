@@ -213,7 +213,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 */
 	function getCategory() {
 		if(!$this->_category and $this->getCategoryUID()) {
-			$this->_category = tx_wecassessment_category::find($this->getCategoryUID);
+			$this->_category = tx_wecassessment_category::find($this->getCategoryUID());
 		}
 		
 		return $this->_category;
@@ -324,7 +324,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		$table = 'tx_wecassessment_response';
 		$row = tx_wecassessment_response::processRow($table, $row);
 		$responseClass = t3lib_div::makeInstanceClassName($table);
-		return new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $categoryUID);
+		return new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
 	}
 		
 	/*************************************************************************
