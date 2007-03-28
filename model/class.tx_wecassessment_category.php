@@ -71,9 +71,15 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 * @return		array		Array representation of category object.
 	 */
 	function toArray() {
-		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "title" => $this->getTitle(), "description" => $this->getDescription(), "image" => $this->getImage(), "parent_id" => $this->getParentUID());
+		return array(
+			"uid" => $this->getUID(), 
+			"pid" => $this->getPID(), 
+			"title" => $this->getTitle(), 
+			"description" => $this->getDescription(), 
+			"image" => $this->getImage(), 
+			"parent_id" => $this->getParentUID()
+		);
 	}
-
 
 	
 	/*************************************************************************

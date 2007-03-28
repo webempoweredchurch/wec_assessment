@@ -62,12 +62,19 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @return		array		Associate array representing current answer.
 	 */
 	function toArray() {
-		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "value" => $this->getValue(), "question_id" => $this->getQuestionUID(), "result_id" => $this->getResultUID());
+		return array(
+			"uid" => $this->getUID(), 
+			"pid" => $this->getPID(), 
+			"value" => $this->getValue(), 
+			"question_id" => $this->getQuestionUID(), 
+			"result_id" => $this->getResultUID());
 	}
+	
 	
 	/** 
 	 * Saves an answer to the database.
 	 * @return		integer		The unique ID of the answer.
+	 * @todo 		Add tstamp, cruser_id, etc.
 	 */
 	function save() {
 		$fields_values = $this->toArray();
@@ -290,7 +297,6 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$row = tx_wecassessment_answer::getRow($table, $uid);
 
 		$answer = tx_wecassessment_answer::newFromArray($row);
-
 		return $answer;		
 	}
 	
