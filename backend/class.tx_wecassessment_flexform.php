@@ -52,30 +52,17 @@ class tx_wecassessment_flexform {
 	/**
 	 * Gets the value of partcular FlexForm key on a particular sheet.
 	 * @param		string		The name of the sheet.
-	 * @param		string		The name of the FlexForm element.
-	 * @return		mixed		The value of the FlexForm element.
+	 * @param		string		The name of the FlexForm field.
+	 * @return		mixed		The value of the FlexForm field.
 	 */
-	function getFlexFormValue($sheet, $key) {
+	function getFlexFormValue($sheet, $field) {
 		$flexform = $this->PA['row']['pi_flexform'];
 		$ffArray = t3lib_div::xml2array($flexform);
 
-		/* @todo	Hack to account for scale_label not having a vDef */
 		if(is_array($ffArray)) {
-			if($key=='scale_label') {
-				$value = $ffArray['data'][$sheet]['lDEF'][$key];
-			} else {
-				$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
-			}
-
-			/* If there's a vDEF entry, return its contents. */
-			if(array_key_exists('vDEF', $ffArray['data'][$sheet]['lDEF'][$key])) {
-				$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
-			} else {
-				/* Otherwise, stick with the main entry */
-				/* @todo 	Does this affect multi-language at all? */
-				$value = $ffArray['data'][$sheet]['lDEF'][$key];
-			}
+			$value = $ffArray['data'][$sheet]['lDEF'][$key]['vDEF'];
 		}
+		 
 		return $value;
 	}
 	
@@ -83,18 +70,18 @@ class tx_wecassessment_flexform {
 	
 	/**
 	 * Gets the HTML for the scale form labels.
+	 *
 	 * @param		array		The array of all FlexForm elements.
 	 * @param		array		fobj
 	 * @return		string		The HTML for the scale form.
-	 * @todo		Old values are kept around.  Ouch!
 	 */
 	function getScaleForm($PA, $fobj) {
 		$this->init($PA, $fobj);
 		
-		/* For each possible value, build the form elements */
+		/* For each possible value, build the form elements. */
 		for($i=$this->minValue; $i<=$this->maxValue; $i++) {
 			$output[] = '<div><label for="tx_wecassessment_label_'.$i.'">'.$i.'</label>
-								<input name="data[tt_content]['.$this->PA['row']['uid'].'][pi_flexform][data][labels][lDEF][scale_label]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$this->scaleLabels[$i].'"/></div>';
+								<input name="data[tt_content]['.$this->PA['row']['uid'].'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$this->scaleLabels[$i].'"/></div>';
 		}			
 		
 		return implode(chr(10), $output);
