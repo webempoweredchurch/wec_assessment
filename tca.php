@@ -112,7 +112,7 @@ $TCA["tx_wecassessment_category"] = Array (
 		
 		"questions" => Array (
 			"exclude" => 1,
-			"label" => "Questions!!!",
+			"label" => "Questions",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_question",
@@ -129,7 +129,7 @@ $TCA["tx_wecassessment_category"] = Array (
 		
 		"responses" => Array (
 			"exclude" => 1,
-			"label" => "Responses!!!",
+			"label" => "Responses",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_response",
