@@ -11,9 +11,12 @@ class tx_wecassessment_labels {
 	 */
 	function getResultLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
-		
-		$result = tx_wecassessment_result::find($uid);
-		$params['title'] = $result->getUsername();
+		if(is_numeric($uid)) {
+			$result = tx_wecassessment_result::find($uid);
+			$params['title'] = $result->getUsername();
+		} else {
+			$params['title'] = '[New Result]';
+		}
 	}
 	
 	/**
@@ -25,15 +28,18 @@ class tx_wecassessment_labels {
 	 */
 	function getResponseLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
+		if(is_numeric($uid)) {
+			$response = tx_wecassessment_response::find($uid);
+			$category = $response->getCategory();
 		
-		$response = tx_wecassessment_response::find($uid);
-		$category = $response->getCategory();
+			if(is_object($category)) {
+				$title = $category->getTitle();
+			}
 		
-		if(is_object($category)) {
-			$title = $category->getTitle();
+			$params['title'] = $title.': '.$response->getMinValue().'-'.$response->getMaxValue();
+		} else {
+			$params['title'] = '[New Response]';
 		}
-		
-		$params['title'] = $title.': '.$response->getMinValue().'-'.$response->getMaxValue();
 	}
 	
 	/**
@@ -45,12 +51,15 @@ class tx_wecassessment_labels {
 	 */
 	function getAnswerLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
-		
-		$answer = tx_wecassessment_answer::find($uid);
-		$question = $answer->getQuestion();
-		$result = $answer->getResult();
-				
-		$params['title'] = $result->getUsername().': '.$question->getText();
+		if(is_numeric($uid)) {
+			$answer = tx_wecassessment_answer::find($uid);
+			$question = $answer->getQuestion();
+			$result = $answer->getResult();		
+			
+			$params['title'] = $result->getUsername().': '.$question->getText();
+		} else {
+			$params['title'] = '[New Answer]';
+		}
 	}
 		
 }
