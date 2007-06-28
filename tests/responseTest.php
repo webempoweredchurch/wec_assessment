@@ -62,7 +62,25 @@ class responseTest extends PHPUnit_Framework_Testcase  {
 	 *  Tests
 	 */
 	
-	public function testValidRelativeToPrevious() {
+	public function test_toArray() {
+		// get response class
+		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		$response = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
+		
+		// create category
+		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
+		$category = new $categoryClass(1, 0, 'Title', 'Description', 'image.jpg', 1);
+		
+		// add category to response
+		$response->setCategory($category);
+		
+		$expectedArray = array('uid' => 1, 'pid' => 0, 'text' => 'Text 1', 'min_value' => 0,
+							   'max_value' => 10, 'category' => $category->getTitle());
+		
+		$this->assertEquals($response->toArray(), $expectedArray);
+	}
+	
+	public function test_validRelativeToPrevious() {
 		// get response class
 		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
 		
@@ -75,7 +93,7 @@ class responseTest extends PHPUnit_Framework_Testcase  {
 		$this->assertTrue($response2->validRelativeTo($response1));
 	}
 	
-	public function testCheckRange() {
+	public function test_checkRange() {
 		// get response class
 		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
 		

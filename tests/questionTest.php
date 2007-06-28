@@ -46,12 +46,6 @@ class questionTest extends PHPUnit_Framework_Testcase  {
      */
     protected function setUp() {
 		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
-		
-	    $categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
-		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', '0');
-		
-		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
-		$this->question = new $questionClass(1, 0, 0, "This is my question text.", 0, 10);
     }
 
     /**
@@ -63,27 +57,28 @@ class questionTest extends PHPUnit_Framework_Testcase  {
     protected function tearDown() {
     }
 	
-	public function testText() {
-        $this->assertEquals("This is my question text.", $this->question->getText());
+	public function test_toArray() {
+		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
+		$question = new $questionClass(1, 0, 0, "Text.", 0, 10);
+		
+		$expectedArray = array('uid' => 1, 'pid' => 0, 'sorting' => 0, 'text' => 'Text.',
+								'category_id' => 0, 'weight' => 10);
+		
+		$this->assertEquals($question->toArray(), $expectedArray);
 	}
 	
-	public function testWeight() {
-		$this->assertEquals(10, $this->question->getWeight());
+	public function test_text() {
+		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
+		$question = new $questionClass(1, 0, 0, "This is my question text.", 0, 10);
+        $this->assertEquals("This is my question text.", $question->getText());
 	}
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main() {
-        global $class;
-        require_once "PHPUnit/TextUI/TestRunner.php";
-        $suite  = new PHPUnit_Framework_TestSuite($class);
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-
+	
+	public function test_weight() {
+		$questionClass = t3lib_div::makeInstanceClassName('tx_wecassessment_question');
+		$question = new $questionClass(1, 0, 0, "This is my question text.", 0, 10);
+		
+		$this->assertEquals(10, $question->getWeight());
+	}
 }
 
 

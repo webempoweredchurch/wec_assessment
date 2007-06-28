@@ -6,8 +6,13 @@
 		<include name="**/*.php"/>
 	</fileset> 
 
+	<fileset dir="." id="unittests">
+		<exclude name="sel*" />
+	  	<include name="*Test.php"/>
+	</fileset>
+	
 	<fileset dir="." id="alltests">
-	  <include name="*Test.php"/>
+	  	<include name="*Test.php"/>
 	</fileset>
 
 	<fileset dir="../" id="sourcesonly">
@@ -15,7 +20,7 @@
 		<exclude name="*Test.php"/>
 	</fileset>
 	
-	<target name="prepare" depends="lint">
+	<target name="prepare">
 		<mkdir dir="report"/>
 		<mkdir dir="coverage-report"/>
 	 </target>
@@ -34,7 +39,7 @@
 	<target name="report" depends="prepare">
 		<phpunit2 printsummary="true">
 			<batchtest>
-				<fileset refid="alltests"/>
+				<fileset refid="unittests"/>
 			</batchtest>
 			<formatter type="xml" todir="report" outfile="logfile.xml"/>
 		</phpunit2>
@@ -53,7 +58,7 @@
 
 		<phpunit2 codecoverage="true">
 			<batchtest>
-				<fileset refid="alltests" />
+				<fileset refid="unittests" />
 			</batchtest>
 		</phpunit2>
 

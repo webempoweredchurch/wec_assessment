@@ -75,7 +75,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 	}
 	
 	
-	public function testNoInitialResponses() {
+	public function test_noInitialResponses() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_SELECTquery', 'sql_fetch_assoc'));
@@ -89,7 +89,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$this->assertEquals(count($category->getResponses()), 0);
 	}
 	
-	public function testSetResponsesRightUID() {
+	public function test_setResponsesRightUID() {
 		
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
@@ -113,7 +113,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		}
 	}
 	
-	public function testResponseOverlap() {
+	public function test_responseOverlap() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
@@ -132,7 +132,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 
 	}
 	
-	public function testResponseGap() {
+	public function test_responseGap() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
@@ -151,7 +151,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 
 	}
 	
-	public function testValid() {
+	public function test_valid() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
