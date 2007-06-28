@@ -24,6 +24,9 @@ CREATE TABLE tx_wecassessment_category (
 	image blob NOT NULL,
 	parent_category int(11) unsigned DEFAULT '0' NOT NULL,
 	
+	questions int(11) DEFAULT '0' NOT NULL,
+	responses int(11) DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
