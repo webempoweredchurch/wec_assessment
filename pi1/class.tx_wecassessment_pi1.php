@@ -34,6 +34,8 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'pi1/class.tx_wecassessment_util.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+
 
 
 /**
@@ -74,8 +76,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		} else {
 			/* If we need to restart, remove the answers and save */
 			if($this->piVars['restart']) {
-				$this->result->resetAnswers();
-				$this->result->save();
+				$this->result->reset();
 			}
 			
 			/**
@@ -203,18 +204,13 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function displayScale($question, $answer=null) {	
 		$content = array();
 		
-		/* Grab FlexForm values related to the scale */
-		$scaleArray = $this->util->getFlexFormValue('labels', 'scale_label');
-		$minValue = intval($this->util->getFlexFormValue('general', 'minRange'));
-		$maxValue = intval($this->util->getFlexFormValue('general', 'maxRange'));
-
-		if(is_array($scaleArray)) {
-			for($i=$minValue; $i<=$maxValue;  $i++) {
-				$label = $scaleArray[$i];
-				$dataArray = array('uid' => $i, 'label' => $label, 'questionUID' => $question->getUID());
+		$answerSet = tx_wecassessment_assessment::getAnswerSet();
+		if(is_array($answerSet)) {
+			foreach($answerSet as $value => $label) {
+				$dataArray = array('uid' => $value, 'label' => $label, 'questionUID' => $question->getUID());
 				
 				/* Set the radio button with the existing answer */
-				if($answer && ($answer->getValue() == $i)) {
+				if($answer && ($answer->getValue() == $value)) {
 					$dataArray["checked"] = 'checked="checked"';
 				}
 				$content[] = $this->util->getOutputFromCObj($dataArray, $this->conf['questions.'], "scaleItem");

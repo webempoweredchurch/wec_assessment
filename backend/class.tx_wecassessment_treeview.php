@@ -396,7 +396,6 @@ class tx_wecassessment_treeview {
 			}
 			if (!$PA['row']['sys_language_uid'] && !$PA['row']['l18n_parent']) {
 				$catvals = explode(',',$PA['row']['category']); // get categories from the current record
-// 				debug($catvals,__FUNCTION__);
 				$notAllowedCats = array();
 				foreach ($catvals as $k) {
 					$c = explode('|',$k);

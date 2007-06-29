@@ -76,14 +76,14 @@ class tx_wecassessment_modelbase {
 	
 	function getRow($table, $uid, $where='') {
 		if($where) {
-			$where = tx_wecassessment_answer::getWhere($table, 'uid='.$uid.' AND '.$where);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid.' AND '.$where);
 		} else {
-			$where = tx_wecassessment_answer::getWhere($table, 'uid='.$uid);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid);
 		}
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-		$row = tx_wecassessment_answer::processRow($table, $row);
+		$row = tx_wecassessment_modelbase::processRow($table, $row);
 		
 		return $row;		
 	}

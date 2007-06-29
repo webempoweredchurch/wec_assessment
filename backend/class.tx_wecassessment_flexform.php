@@ -138,7 +138,6 @@ class tx_wecassessment_flexform {
 		$content[] = '<h3>'.$parentTitle.'</h3>';
 
 		$errors = $category->getValidationErrors();
-		debug($errors, $category->getTitle());
 		
 		$content[] = '<ul>';
 		foreach($errors as $error) {

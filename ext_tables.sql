@@ -119,6 +119,8 @@ CREATE TABLE tx_wecassessment_result (
 	feuser_id int(11) DEFAULT '0' NOT NULL,
 	assessment_id int(11) DEFAULT '0' NOT NULL,
 	
+	answers int(11) DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

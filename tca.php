@@ -109,7 +109,7 @@ $TCA["tx_wecassessment_category"] = Array (
 				),
 			)
 		),
-		
+
 		"questions" => Array (
 			"exclude" => 1,
 			"label" => "Questions",
@@ -278,19 +278,16 @@ $TCA["tx_wecassessment_answer"] = Array (
 				"default" => "0"
 			)
 		),
-		"value" => Array (		
+		"result_id" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer.value",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer.result_id",		
 			"config" => Array (
-				"type" => "input",
-				"size" => "4",
-				"max" => "4",
-				"eval" => "int",
-				"range" => Array (
-					"upper" => "1000",
-					"lower" => "0"
-				),
-				"default" => 0
+				"type" => "select",	
+				"foreign_table" => "tx_wecassessment_result",	
+				"foreign_table_where" => "AND tx_wecassessment_result.pid=###CURRENT_PID### ORDER BY tx_wecassessment_result.uid",	
+				"size" => 1,	
+				"minitems" => 0,
+				"maxitems" => 1,
 			)
 		),
 		"question_id" => Array (		
@@ -305,21 +302,17 @@ $TCA["tx_wecassessment_answer"] = Array (
 				"maxitems" => 1,
 			)
 		),
-		"result_id" => Array (		
+		"value" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer.result_id",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer.value",		
 			"config" => Array (
-				"type" => "select",	
-				"foreign_table" => "tx_wecassessment_result",	
-				"foreign_table_where" => "AND tx_wecassessment_result.pid=###CURRENT_PID### ORDER BY tx_wecassessment_result.uid",	
-				"size" => 1,	
-				"minitems" => 0,
-				"maxitems" => 1,
-			)
+				"type" => "radio",
+				"itemsProcFunc" => "tx_wecassessment_labels->getAnswerOptions"
+			),
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, value, question_id, result_id")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, result_id, question_id, value")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -380,9 +373,9 @@ $TCA["tx_wecassessment_result"] = Array (
 			),
 		),
 		*/
-		"details" => Array (
+		"answers" => Array (
 			"exclude" => 1,
-			"label" => "Details!!!",
+			"label" => "Answers",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_answer",
@@ -394,14 +387,14 @@ $TCA["tx_wecassessment_result"] = Array (
 					"newRecordLinkAddTitle" => true,
 					"newRecordLinkPosition" => "bottom",
 				),
-				"foreignUnique" => "question_id",
-				"foreignLabel" => "title",
+				"foreign_unique" => "question_id",
+				"foreign_label" => "title",
 			),
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, feuser_id, --div--;Details, details"),
-		"1" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, --div--;Details, details"),
+		"0" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, feuser_id, --div--;Answers, answers"),
+		"1" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, --div--;Answers, answers"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")

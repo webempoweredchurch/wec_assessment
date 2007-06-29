@@ -63,6 +63,11 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$this->_answers = $answers;
 	}
 	
+	function reset() {
+		$this->_uid = 0;
+		$this->resetAnswers();
+	}
+	
 	/**
 	 * Converts the result object to an associative array.
 	 *
@@ -105,10 +110,10 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		
 		/* If we have a non-zero UID, update an existing record, otherwise create a new record */
 		if($this->getUID()) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_result', 'uid='.$this->_uid, $fields_values);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_result', 'uid='.$this->getUID(), $fields_values);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_wecassessment_result', $fields_values);
-			$this->setUID($GLOBALS['TYPO3_DB']->sql_insert_id());
+			$this->setUID($GLOBALS['TYPO3_DB']->sql_insert_id());			
 		}
 		
 		$answers = $this->getAnswers();
@@ -167,7 +172,6 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 				}
 			}
 		} else {
-			debug("we're not in the frontend!!!");
 			$result = null;
 		}
 		
@@ -255,7 +259,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */
 	function setUID($uid) {
-		$this->uid = $uid;
+		$this->_uid = $uid;
 	}
 
 	/**
@@ -373,6 +377,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function resetAnswers() {
 		unset($this->_answers);
 		$this->_answers = array();
+		
 	}
 	
 	/**

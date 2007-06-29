@@ -1,5 +1,7 @@
 <?php
 
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+
 class tx_wecassessment_labels {
 	
 	/**
@@ -60,6 +62,16 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[New Answer]';
 		}
+	}
+	
+	function getAnswerOptions($config) {
+		$answerSet = tx_wecassessment_assessment::getAnswerSet();
+		
+		foreach($answerSet as $value => $label) {
+			$config['items'][] = Array($label, $value);
+		}
+		
+		return $config;
 	}
 		
 }
