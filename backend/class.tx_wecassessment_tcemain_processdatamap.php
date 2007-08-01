@@ -30,13 +30,13 @@
 
 class tx_wecassessment_tcemain_processdatamap {
 	
-	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$this) {		
+	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {		
 		if($table == 'tt_content') {
 			//debug($incomingFieldArray, "incomfing field array");
 		}
 	}
 	
-	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$this) {
+	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
 		if($table = 'tt_content') {
 			//debug($fieldArray, "fieldArray");
 			//debug($this, "this");
