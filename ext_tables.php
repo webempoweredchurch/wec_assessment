@@ -148,6 +148,7 @@ if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
 	$TCA['tx_wecassessment_response']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResponseLabel";
 	$TCA['tx_wecassessment_result']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResultLabel";
 	$TCA['tx_wecassessment_answer']['ctrl']['label_userFunc']="tx_wecassessment_labels->getAnswerLabel";
+	$TCA['tx_wecassessment_category']['ctrl']['label_userFunc']="tx_wecassessment_labels->getCategorylabel";
 }
 
 
@@ -157,5 +158,7 @@ if (TYPO3_MODE=='BE')	{
 }
 
 
-t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","WEC Assessment");
+t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/ts/", "WEC Assessment");
+t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/css/", "WEC Assessment CSS Styles");
+
 ?>
