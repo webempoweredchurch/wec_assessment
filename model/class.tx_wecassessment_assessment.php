@@ -32,16 +32,50 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 
 class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 	
-	var $_minimumValue = 1;
-	var $_maximumValue = 6;
+	var $_minimumValue = 0;
+	var $_maximumValue = 3;
 	var $_answerSet = array(
-		'1' => 'Never ever ever.',
-		'2' => 'Once in a blue moon.',
-		'3' => 'Every now and again',
-		'4' => 'Sometimes',
-		'5' => 'Every single day',
-		'6' => 'Every waking moment',
+		'0' => 'Never',
+		'1' => 'Rarely',
+		'2' => 'Sometimes.',
+		'3' => 'Always',
 	);
+	var $_usePaging = false;
+	var $_questionsPerPage = 0;
+	
+	var $_result;
+	var $_pid = 0;
+	var $_uid = 0;
+	
+	function tx_wecassessment_assessment($conf='') {
+		if(is_array($conf)) {
+			$this->_usePaging = $conf['usePaging'];
+			$this->_questionsPerPage = $conf['questionsPerPage'];
+			//$this->setMinimumValue($conf['minimumValue']);
+			//$this->setMaximumValue($conf['maximumValue']);
+		}
+		
+		if(is_array($flexform)) {
+			
+		}
+		
+	}
+	
+	function getUID() {
+		return $this->_uid;
+	}
+	
+	function setUID($value) {
+		$this->_uid = $value;
+	}
+	
+	function getPID() {
+		return $this->_pid;
+	}
+
+	function setPID($value) {
+		$this->_pid = $value;
+	}
 
 	function getAnswerSet() {
 		return $this->_answerSet;
@@ -51,8 +85,41 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 		return $this->_minimumValue;
 	}
 	
+	function setMinimumValue($value) {
+		$this->_minimumValue = $value;
+	}
+	
 	function getMaximumValue() {
-		return $this->maximumValue;
+		return $this->_maximumValue;
+	}
+	
+	function setMaximumValue($value) {
+		$this->_maximumValue = $value;
+	}
+	
+	function usePaging() {
+		return $this->_usePaging;
+	}
+	
+	function setPaging($value) {
+		$this->_usePaging = $value;
+	}
+	
+	function getQuestionsPerPage() {
+		return $this->_questionsPerPage;
+	}
+	
+	function setQuestionsPerPage($value) {
+		$this->_questionsPerPage = $value;
+	}	
+	
+	function getResult() {
+		if(!$this->_result) {			
+			/* Get the result, either from the DB or the session */
+			$this->_result = tx_wecassessment_result::findCurrent($this->_pid);
+		}
+		
+		return $this->_result;
 	}
 	
 }

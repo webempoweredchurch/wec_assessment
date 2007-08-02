@@ -64,19 +64,19 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();		
 		
-		$this->init();
-					
-		/* Get the result, either from the DB or the session */
-		$this->result = tx_wecassessment_result::findCurrent($this->pid);
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		$this->assessment = new $assessmentClass($conf);
 		
+		$this->init();
+		$result = &$this->assessment->getResult();
 		if($this->piVars['answers']) {
 			/* Add the newly posted answers to the result and save */
-			$this->result->addAnswersFromPost($this->piVars['answers']);
-			$this->result->save();
+			$result->addAnswersFromPost($this->piVars['answers']);
+			$result->save();
 		} else {
 			/* If we need to restart, remove the answers and save */
 			if($this->piVars['restart']) {
-				$this->result->reset();
+				$result->reset();
 			}
 			
 			/**
@@ -87,7 +87,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		}	
 
 		/* If the result is complete, show responses.  Otherwise, show questions. */
-		if($this->result->isComplete()) {
+		if($result->isComplete()) {
 			$view = "displayResponses";
 		} else {
 			$view = "displayQuestions";
@@ -95,7 +95,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		$this->initTemplate($view);
 		$content = $this->$view();
-		return $content;
+		return $this->pi_wrapInBaseClass($content);
 	}
 	
 	/**
@@ -106,12 +106,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function init() {
 		/* Set variables from TS and flexform */
 		/* @todo	Merge with flexforms */
-		$this->pid = $GLOBALS["TSFE"]->id;				
-		$this->questionsPerPage = intval($this->conf['questionsPerPage']);
-		$this->usePaging = intval($this->conf['usePaging']);
+		$this->assessment->setPID($GLOBALS['TSFE']->id);
+		//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
+		//$this->assessment->setPaging(intval($this->conf['usePaging']));
 		
 		/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
-		if($this->usePaging) {
+		if($this->assessment->usePaging()) {
 			$this->pageNumber = ($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1;
 		} else {
 			$this->pageNumber = 1;
@@ -141,19 +141,22 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 */	
 	function displayQuestions() {
 		$content = array();
+		$result = &$this->assessment->getResult();
 		
 		/* Get the questions for the current page */
-		if($this->usePaging) {
-			$questions = $this->result->getQuestionsInPage($this->pageNumber, $this->questionsPerPage);
+		if($this->assessment->usePaging()) {
+			debug("use paging");
+			$questions = $result->getQuestionsInPage($this->pageNumber, $this->assessment->getQuestionsPerPage());
 		} else {
-			$questions = $this->result->getQuestions();
+			debug("no paging");
+			$questions = $result->getQuestions();
 		}
 		
 		/**
 		 * If we already have some answers and we're on the first page, then
 		 * the user has started the assessment before.
 		 */
-		if($this->result->hasAnswers() and $this->firstLoad) {
+		if($result->hasAnswers() and $this->firstLoad) {
 			$content[] = $this->displayWelcomeBack();
 		}
 		
@@ -183,7 +186,8 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * @return		string		The HTML markup for the current question.
 	 */
 	function displayQuestion($question) {
-		$currentAnswer = $this->result->lookupAnswer($question);
+		$result = &$this->assessment->getResult();
+		$currentAnswer = $result->lookupAnswer($question);
 		
 		$markers['question'] = $this->util->getOutputFromCObj($question->toArray(), $this->conf['questions.'], 'question');
 		$markers['scaleItem'] = $this->displayScale($question, $currentAnswer);
@@ -204,7 +208,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function displayScale($question, $answer=null) {	
 		$content = array();
 		
-		$answerSet = tx_wecassessment_assessment::getAnswerSet();
+		$answerSet = $this->assessment->getAnswerSet();
 		if(is_array($answerSet)) {
 			foreach($answerSet as $value => $label) {
 				$dataArray = array('uid' => $value, 'label' => $label, 'questionUID' => $question->getUID());
@@ -227,10 +231,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 */
 	function displayResponses() {
 		$content = array();
+		$result = &$this->assessment->getResult();
 		
-		$categories = $this->result->getCategories();
+		$categories = $result->getCategories();
 		foreach($categories as $category) {
-			$answers = $this->result->getAnswersForCategory($category);		
+			$answers = $result->getAnswersForCategory($category);		
 			$response = tx_wecassessment_response::calculate($category, $answers);
 
 			$content[] = $this->displayResponse($response);
@@ -265,12 +270,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$content = array();
 		
 		$content[] = '<style type="text/css">
-			#wec-assessment-alert {
-				padding: 10px;
-				border: 1px solid;
-				background-color: #ffff99;
-				margin-bottom: 20px;
-			}
+
 		</style>';
 		
 		$content[] = '<div id="wec-assessment-alert">';
@@ -288,15 +288,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	
 	function displayRestart() {
 		$content = array();
-		
-		$content[] = '<style type="text/css">
-			#wec-assessment-alert {
-				padding: 10px;
-				border: 1px solid;
-				background-color: #ffff99;
-				margin-bottom: 20px;
-			}
-		</style>';
 		
 		$content[] = '<div id="wec-assessment-alert">';
 		$content[] = '<p>'.$this->pi_getLL('responseRestartMessage').'</p>';

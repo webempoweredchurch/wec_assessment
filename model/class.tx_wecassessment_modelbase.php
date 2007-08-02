@@ -36,6 +36,20 @@
  */
 class tx_wecassessment_modelbase {
 	
+	/**
+	 * Gets the current table name.  If one is not defined, a guess is made
+	 * based on the class name.
+	 *
+	 * @return		string
+	 */
+	function getTableName() {
+		if(!$this->_tableName) {
+			$this->_tableName = get_class($this);
+		}
+		
+		return $this->_tableName;
+	}
+
 	function getWhere($table, $where) {
 		$enableFields = tx_wecassessment_modelbase::getEnableFields($table);
 
@@ -83,19 +97,28 @@ class tx_wecassessment_modelbase {
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
-		$row = tx_wecassessment_modelbase::processRow($table, $row);
+		$row = &tx_wecassessment_modelbase::processRow($table, $row);
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		return $row;		
 	}
 	
-	function getRecordLabel($table, $uid) {
+	
+	/**
+	 * Gets the label for the current record.  This default method uses TYPO3
+	 * Core functions to get the label and is commonly overridden.
+	 *
+	 * @return		string
+	 */
+	function getLabel() {
 		if(TYPO3_MODE == 'BE') {
-			$row = t3lib_befunc::getRecord($table, $uid);
-			return t3lib_befunc::getRecordTitle($table, $row);
+			$label = t3lib_befunc::getRecordTitle($this->getTableName(), $this->toArray());
 		} else {
 			/* @todo 	What do we do in frontend mode? */
 			die("Not in backend mode.");
 		}
+		
+		return $label;
 	}
 	
 	

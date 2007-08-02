@@ -231,6 +231,20 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		$this->_categoryUID = $category->getUID(); 
 	}
 	
+	/**
+	 * Gets the label for the current record.
+	 *
+	 * @return		string
+	 */
+	function getLabel() {
+		$category = &$this->getCategory();
+		if(is_object($category)) {
+			$title = $category->getTitleWithParents(': ');
+		}
+
+		return $title.': '.$this->getMinValue().'-'.$this->getMaxValue();
+	}
+	
 	/*************************************************************************
 	 *
 	 * Static Functions
@@ -256,6 +270,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$responses[] = tx_wecassessment_response::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		return $responses;
 	}
@@ -271,6 +286,8 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$responses[] = tx_wecassessment_response::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
+		
 		
 		return $responses;
 	} 
@@ -292,6 +309,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		return tx_wecassessment_response::newFromArray($row);
 	}
@@ -421,7 +439,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		
 		$previousMax = $previousResponse->getMaxValue();
 		$currentMin = $this->getMinValue();
-		
+
 		if($previousMax > $currentMin) {
 			$this->addError("Response values overlap.", $previousUID, $currentUID);
 			$valid = false;

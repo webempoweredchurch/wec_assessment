@@ -136,6 +136,24 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	}
 	
 	/**
+	 * Gets the title of the category, along with the titles of any parent
+	 * categories.
+	 *
+	 * @param		string		Separator between category titles.
+	 * @return		string
+	 */
+	function getTitleWithParents($separator) {
+		$parent = &$this->getParentCategory();
+		if($parent) {
+			$title = $parent->getTitleWithParents($separator).$separator.$this->getTitle();
+		} else {
+			$title = $this->getTitle();
+		}
+		
+		return $title;
+	}
+	
+	/**
 	 * Sets the title of the category.
 	 *
 	 * @param		string		The title of the category.
@@ -312,6 +330,15 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		return $inCategory;
 	}
 	
+	/**
+	 * Gets the label for the current record.
+	 *
+	 * @return		string
+	 */
+	function getLabel() {
+		return $this->getTitleWithParents(': ');
+	}
+	
 	
 	
 	/*************************************************************************
@@ -327,9 +354,10 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 */
 	function find($uid) {
 		$table = 'tx_wecassessment_category';
-		$row = tx_wecassessment_category::getRow($table, $uid);
-		
-		$category = tx_wecassessment_category::newFromArray($row);
+		if($uid) {
+			$row = tx_wecassessment_category::getRow($table, $uid);
+			$category = tx_wecassessment_category::newFromArray($row);
+		}
 		
 		return $category;
 	}
@@ -351,6 +379,7 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$categories[] = tx_wecassessment_category::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		return $categories;
 	}

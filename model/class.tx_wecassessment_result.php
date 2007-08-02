@@ -35,7 +35,7 @@ define('USER_ASSESSMENT', 0);
 define('ANONYMOUS_ASSESSMENT', 1);
 
 class tx_wecassessment_result extends tx_wecassessment_modelbase {
-	
+
 	var $_uid;
 	var $_pid;
 	var $_type;
@@ -62,7 +62,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$this->_questions = $questions;
 		$this->_answers = $answers;
 	}
-	
+		
 	function reset() {
 		$this->_uid = 0;
 		$this->resetAnswers();
@@ -188,9 +188,14 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 			$result = tx_wecassessment_result::newFromArray($row);
 			$result->getQuestions();
 			$result->getAnswers(true);
+			/**
+			 * @todo 	Wy does freeing result generate error?
+			 * $GLOBALS['TYPO3_DB']->sql_free_result($result);
+			 */
 		} else {
 			$result = null;
 		}
+		
 		return $result;
 	}
 	
@@ -322,12 +327,13 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	
 	function getUsername() {
 		if($this->getType() == 0) {
-			$value = $this->getRecordLabel('fe_users', $this->getFEUserUID());			
+			$row = $this->getRow('fe_users', $this->getFEUserUID());
+			$username = $row['username'];
 		} else {
-			$value = "Anonymous Visitor: ".$this->getFEUserUID();
+			$username = "Anonymous Visitor: ".$this->getFEUserUID();
 		}
 		
-		return $value;
+		return $username;
 	}
 	
 	/**
@@ -491,6 +497,15 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		}
 		
 		return $categories;
+	}
+	
+	/**
+	 * Gets the label for the current record.
+	 *
+	 * @return		string
+	 */
+	function getLabel() {
+		return $this->getUsername();
 	}
 	
 	

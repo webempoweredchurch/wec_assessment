@@ -30,6 +30,7 @@
 
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
 
 class tx_wecassessment_flexform {
 	
@@ -42,11 +43,15 @@ class tx_wecassessment_flexform {
 	 */
 	function init($PA, $fobj) {
 		$this->PA = $PA;
-		$this->pid = $PA['row']['pid'];
-		$this->uid = $PA['row']['uid'];
-		$this->minValue = $this->getFlexFormValue('general', 'minRange');
-		$this->maxValue = $this->getFlexFormValue('general', 'maxRange');
-		$this->scaleLabels = $this->getFlexFormValue('labels', 'scale_label');
+
+		$this->assessment = t3lib_div::makeInstance('tx_wecassessment_assessment');
+		$this->assessment->setPID($PA['row']['pid']);
+		$this->assessment->setUID($PA['row']['uid']);
+
+		//$this->assessment->setMinimumValue($this->getFlexFormValue('general', 'minRange'));
+		//$this->assessment->setMaximumValue($this->getFlexFormValue('general', 'maxRange'));
+		//$this->assessment->setScaleLabels($this->getFlexFormValue('labels', 'scale_label'));
+		
 	}
 
 	/**
@@ -77,11 +82,12 @@ class tx_wecassessment_flexform {
 	 */
 	function getScaleForm($PA, $fobj) {
 		$this->init($PA, $fobj);
+		$labels = $this->assessment->getAnswerSet();
 		
 		/* For each possible value, build the form elements. */
-		for($i=$this->minValue; $i<=$this->maxValue; $i++) {
+		for($i=$this->assessment->getMinimumValue(); $i<=$this->assessment->getMaximumValue(); $i++) {
 			$output[] = '<div><label for="tx_wecassessment_label_'.$i.'">'.$i.'</label>
-								<input name="data[tt_content]['.$this->PA['row']['uid'].'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$this->scaleLabels[$i].'"/></div>';
+								<input name="data[tt_content]['.$this->assessment->getUID().'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$labels[$i][1].'"/></div>';
 		}			
 		
 		return implode(chr(10), $output);
@@ -102,10 +108,10 @@ class tx_wecassessment_flexform {
 		$table = "tx_wecassessment_response";		
 		$content = array();
 				
-		$topLevelCategories = tx_wecassessment_category::findAllParents($this->pid);
+		$topLevelCategories = tx_wecassessment_category::findAllParents($this->assessment->getPID());
 		foreach($topLevelCategories as $topLevelCategory) {
 			/* Check the validity of every top level category */
-			if(!$topLevelCategory->valid($this->minValue, $this->maxValue)) {
+			if(!$topLevelCategory->valid($this->assessment->getMinimumValue(), $this->assessment->getMaximumValue())) {
 				$content[] = $this->displayCategoryErrors('', $topLevelCategory);
 			}
 			
@@ -116,7 +122,7 @@ class tx_wecassessment_flexform {
 				foreach($children as $child) {
 	
 					/* If the category isnt valid, add the error messages */
-					if(!$child->valid($this->minValue, $this->maxValue)) {
+					if(!$child->valid($this->assessment->getMinimumValue(), $this->assessment->getMaximumValue())) {
 						$content[] = $this->displayCategoryErrors($topLevelCategory->getTitle(), $child);
 					}
 				}
@@ -133,9 +139,13 @@ class tx_wecassessment_flexform {
 	
 	function displayCategoryErrors($parentTitle, $category) {
 		$content = array();
-				
-		$parentTitle .= ' : '.$category->getTitle();
-		$content[] = '<h3>'.$parentTitle.'</h3>';
+		
+		if($parentTitle) {		
+			$title = $parentTitle.' : '.$category->getTitle();
+		} else {
+			$title = $category->getTitle();
+		}
+		$content[] = '<h3>'.$title.'</h3>';
 
 		$errors = $category->getValidationErrors();
 		
@@ -153,20 +163,17 @@ class tx_wecassessment_flexform {
 		$uid1 = $errorArray['uid1'];
 		$uid2 = $errorArray['uid2'];
 		$message = $errorArray['message'];
-		
-		
-		
 		$return = $message.'<br />';
 		
 		if($uid1) {
-			$uid1Title = t3lib_befunc::getRecordTitle('tx_wecassessment_response', $uid1);
-			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $uid1Title, 'tx_wecassessment_response');
+			$response1 = tx_wecassessment_response::find($uid1);
+			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $response1->getLabel(), $response1->getTableName());
 			$return .= $uid1Link.'<br />';
 		}
 		
 		if($uid2) {
-			$uid2Title = t3lib_befunc::getRecordTitle('tx_wecassessment_response', $uid2);
-			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $uid2Title, 'tx_wecassessment_response');
+			$response2 = tx_wecassessment_response::find($uid2);
+			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $response2->getLabel(), $response2->getTableName());
 			$return .= $uid2Link.'<br />';
 		}
 		
@@ -176,7 +183,6 @@ class tx_wecassessment_flexform {
 	function displayResponse($response, $errors) {
 		
 		$content = array();	
-		$title = t3lib_befunc::getRecordTitle('tx_wecassessment_response', $response->getUID());
 		$link = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response');
 		
 		$content[] = '<div class="tx_wecassessment_reponse">';
@@ -200,12 +206,9 @@ class tx_wecassessment_flexform {
 		$content = array();
 		
 		$content[] = $error->getMessage();
-		
-		$title = t3lib_befunc::getRecordTitle('tx_wecassessment_response', $error->getUID());
 		$content[] = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response'); 
 
 		if($error->getUID2()) {
-			$title2 = t3lib_befunc::getRecordTitle('tx_wecassessment_response', $error->getUID());
 			$content[] = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response');
 		}
 		

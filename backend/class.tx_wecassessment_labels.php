@@ -4,6 +4,26 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 
 class tx_wecassessment_labels {
 	
+	
+	/**
+	 * Gets the label for a category record.
+	 *
+	 * @param		array		Params array, passed by reference. $params['title'] is set to the new label.
+	 * @param		object		Parent object.
+	 * @return		none
+	 */
+	function getCategoryLabel(&$params, &$pObj) {
+		$uid = $params['row']['uid'];
+		if(is_numeric($uid)) {
+			$category = &tx_wecassessment_category::find($uid);
+			if(is_object($category)) {
+				$params['title'] = $category->getLabel();
+			}
+		} else {
+			$params['title'] = '[ New Category ]';
+		}
+	}
+	
 	/**
 	 * Gets the label for a result record.
 	 *
@@ -14,10 +34,10 @@ class tx_wecassessment_labels {
 	function getResultLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$result = tx_wecassessment_result::find($uid);
-			$params['title'] = $result->getUsername();
+			$result = &tx_wecassessment_result::find($uid);
+			$params['title'] = $result->getLabel();
 		} else {
-			$params['title'] = '[New Result]';
+			$params['title'] = '[ New Result ]';
 		}
 	}
 	
@@ -31,16 +51,10 @@ class tx_wecassessment_labels {
 	function getResponseLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$response = tx_wecassessment_response::find($uid);
-			$category = $response->getCategory();
-		
-			if(is_object($category)) {
-				$title = $category->getTitle();
-			}
-		
-			$params['title'] = $title.': '.$response->getMinValue().'-'.$response->getMaxValue();
+			$response = &tx_wecassessment_response::find($uid);
+			$params['title'] = $response->getLabel();
 		} else {
-			$params['title'] = '[New Response]';
+			$params['title'] = '[ New Response ]';
 		}
 	}
 	
@@ -54,18 +68,15 @@ class tx_wecassessment_labels {
 	function getAnswerLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$answer = tx_wecassessment_answer::find($uid);
-			$question = $answer->getQuestion();
-			$result = $answer->getResult();		
-			
-			$params['title'] = $result->getUsername().': '.$question->getText();
+			$answer = &tx_wecassessment_answer::find($uid);
+			$params['title'] = $answer->getLabel();
 		} else {
 			$params['title'] = '[New Answer]';
 		}
 	}
 	
 	function getAnswerOptions($config) {
-		$answerSet = tx_wecassessment_assessment::getAnswerSet();
+		$answerSet = &tx_wecassessment_assessment::getAnswerSet();
 		
 		foreach($answerSet as $value => $label) {
 			$config['items'][] = Array($label, $value);

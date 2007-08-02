@@ -31,7 +31,8 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
 
-class tx_wecassessment_answer extends tx_wecassessment_modelbase {	
+class tx_wecassessment_answer extends tx_wecassessment_modelbase {
+
 	var $_uid;
 	var $_pid;
 	var $_value;
@@ -279,6 +280,18 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$this->_resultUID = $result->getUID();
 	}
 	
+	/**
+	 * Gets the label for the current record.
+	 * 
+	 * @return		string
+	 */
+	function getLabel() {
+		$question = $this->getQuestion();
+		$result = $this->getResult();		
+		
+		$params['title'] = $result->getLabel().': '.$question->getLabel();
+	}
+	
 	
 	/*************************************************************************
 	 *
@@ -318,7 +331,8 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$answers[$row['question_id']] = tx_wecassessment_answer::newFromArray($row);
 		}
-
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
+		
 		return $answers;
 	}
 	
@@ -338,6 +352,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$answers[$row['question_id']] = tx_wecassessment_answer::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 
 		return $answers;	
 	}

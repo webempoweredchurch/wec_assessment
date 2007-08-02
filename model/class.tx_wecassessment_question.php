@@ -296,6 +296,7 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		return $questions;
 	}
@@ -320,6 +321,8 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
+		
 		
 		return $questions;
 	}

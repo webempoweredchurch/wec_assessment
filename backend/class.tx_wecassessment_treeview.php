@@ -182,6 +182,8 @@ class tx_wecassessment_treeview {
 						$categories[$catrow['uid']] = '<p style="padding:0px;">- '.$catrow['title'].' <span class="typo3-dimmed"><em>['.$catrow['uid'].']</em></span></p>';
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($catres);
+				
 				if($na) {
 					$this->NA_Items = '<table class="warningbox" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img src="gfx/icon_fatalerror.gif" class="absmiddle" alt="" height="16" width="18">SAVING DISABLED!! <br />'.($row['l18n_parent']&&$row['sys_language_uid']?'The translation original of this':'This').' record has the following categories assigned that are not defined in your BE usergroup: '.implode($NACats,chr(10)).'</td></tr></tbody></table>';
 				}
@@ -394,6 +396,8 @@ class tx_wecassessment_treeview {
 					$itemArr[]=$row['uid'];
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			
 			if (!$PA['row']['sys_language_uid'] && !$PA['row']['l18n_parent']) {
 				$catvals = explode(',',$PA['row']['category']); // get categories from the current record
 				$notAllowedCats = array();
@@ -529,6 +533,7 @@ class tx_wecassessment_treeview {
 							}
 						}
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($catres);
 
 					if($NACats[0]) {
 						$NA_Items =  '<table class="warningbox" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img src="gfx/icon_fatalerror.gif" class="absmiddle" alt="" height="16" width="18">SAVING DISABLED!! <br />'.($row['l18n_parent']&&$row['sys_language_uid']?'The translation original of this':'This').' record has the following categories assigned that are not defined in your BE usergroup: '.implode($NACats,chr(10)).'</td></tr></tbody></table>';
