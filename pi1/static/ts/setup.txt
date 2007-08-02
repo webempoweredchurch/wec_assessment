@@ -43,7 +43,7 @@ plugin.tx_wecassessment_pi1 {
 			20.parseFunc < tt_content.text.20.parseFunc
 		    
 
-			wrap = <div id="response">|</div>
+			wrap = <div class="response">|</div>
 
 		}
 	}

@@ -1,0 +1,15 @@
+plugin.tx_wecassessment_pi1 {
+	_CSS_DEFAULT_STYLE (
+		.tx-wecassessment-pi1 .question, .tx-wecassessment-pi1 .response { 
+			border: none;
+			border-bottom: 1px solid #ddd; 
+		}
+		
+		.tx-wecassessment-pi1 #wec-assessment-alert {
+			padding: 10px;
+			border: 1px solid;
+			background-color: #ffff99;
+			margin-bottom: 20px;
+		}
+	)
+}
