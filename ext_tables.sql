@@ -116,7 +116,7 @@ CREATE TABLE tx_wecassessment_result (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	type int(11) DEFAULT '0' NOT NULL,
-	feuser_id int(11) DEFAULT '0' NOT NULL,
+	feuser_id varchar(11) DEFAULT '0' NOT NULL,
 	assessment_id int(11) DEFAULT '0' NOT NULL,
 	
 	answers int(11) DEFAULT '0' NOT NULL,
