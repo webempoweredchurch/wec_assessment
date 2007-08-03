@@ -71,12 +71,13 @@ class tx_wecassessment_labels {
 			$answer = &tx_wecassessment_answer::find($uid);
 			$params['title'] = $answer->getLabel();
 		} else {
-			$params['title'] = '[New Answer]';
+			$params['title'] = '[ New Answer ]';
 		}
 	}
 	
 	function getAnswerOptions($config) {
-		$answerSet = &tx_wecassessment_assessment::getAnswerSet();
+		$assessment = t3lib_div::makeInstance('tx_wecassessment_assessment');
+		$answerSet = &$assessment->getAnswerSet();
 		
 		foreach($answerSet as $value => $label) {
 			$config['items'][] = Array($label, $value);
