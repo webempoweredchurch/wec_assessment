@@ -289,7 +289,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$question = $this->getQuestion();
 		$result = $this->getResult();		
 		
-		$params['title'] = $result->getLabel().': '.$question->getLabel();
+		return $result->getLabel().': '.$question->getLabel();
 	}
 	
 	
