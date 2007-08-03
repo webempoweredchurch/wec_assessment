@@ -316,7 +316,7 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		
 		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid='.$pid);
 		$where = tx_wecassessment_question::getWhere($table, $where);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, 'sorting', '', $startQuestion.','.$questionsPerPage);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'sorting', $startQuestion.','.$questionsPerPage);
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
