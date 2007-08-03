@@ -145,10 +145,8 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		/* Get the questions for the current page */
 		if($this->assessment->usePaging()) {
-			debug("use paging");
 			$questions = $result->getQuestionsInPage($this->pageNumber, $this->assessment->getQuestionsPerPage());
 		} else {
-			debug("no paging");
 			$questions = $result->getQuestions();
 		}
 		
