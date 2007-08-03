@@ -378,7 +378,6 @@ $TCA["tx_wecassessment_result"] = Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_answer",
 				"foreign_field" => "result_id",
-				"maxitems" => 10,
 				"appearance" => Array (
 					"collapseAll" => false,
 					"expandSingle" => false,
@@ -388,7 +387,7 @@ $TCA["tx_wecassessment_result"] = Array (
 				"foreign_unique" => "question_id",
 				"foreign_label" => "title",
 			),
-		),
+		),		
 	),
 	"types" => Array (
 		"0" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, feuser_id, --div--;Answers, answers"),
