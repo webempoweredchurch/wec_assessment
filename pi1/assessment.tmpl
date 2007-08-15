@@ -11,7 +11,7 @@
 		
 			###PROGRESS_BAR###
 			
-			<form action="###POST_URL###" method="post">
+			<form id="assessment" action="###POST_URL###" method="post">
 				<!-- ###QUESTIONS### begin -->
 					
 					###QUESTION###
@@ -26,7 +26,7 @@
 				<!-- ###QUESTIONS### end -->
 				
 				<input type="hidden" name="tx_wecassessment_pi1[nextPageNumber]" value="###NEXT_PAGE_NUMBER###" />
-				<input type="submit" value="Submit Answers"/>
+				<input id="submit-answers" type="submit" value="Submit Answers""/>
 			</form>
 		<!-- ###DISPLAY_QUESTIONS### end -->
 

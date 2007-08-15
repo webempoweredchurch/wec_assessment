@@ -134,6 +134,10 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$subparts = array();	
 		$questionHTML = array();
 		
+		$GLOBALS['TSFE']->additionalHeaderData['prototype'] = '<script src="typo3/contrib/prototype/prototype.js" type="text/javascript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/assessment.js" type="text/javascript"></script>';
+		
 		$result = &$this->assessment->getResult();
 		$questions = &$this->assessment->getQuestionsInPage();
 		$content = &$this->util->getTemplate();

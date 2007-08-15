@@ -49,7 +49,7 @@ plugin.tx_wecassessment_pi1 {
 			insertData = true
 		}
 		
-		stdWrap.wrap = <fieldset class="question">|</fieldset>
+		stdWrap.wrap = <fieldset class="question" id="tx_wecassessment_pi1][questions][{field:questionUID}]">|</fieldset>
 	}
 	
 	responses {
