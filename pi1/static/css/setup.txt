@@ -11,5 +11,19 @@ plugin.tx_wecassessment_pi1 {
 			background-color: #ffff99;
 			margin-bottom: 20px;
 		}
+		
+		.tx-wecassessment-pi1 #wec-assessment-progress .outline {
+			border: 1px solid black;
+			width: 200px;
+		}
+		
+		.tx-wecassessment-pi1 #wec-assessment-progress .bar {
+			background-color: #888;
+		}
+		
+		.tx-wecassessment-pi1 input {
+			margin-top: 10px;
+		}
+
 	)
 }
