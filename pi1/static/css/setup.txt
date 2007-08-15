@@ -21,7 +21,7 @@ plugin.tx_wecassessment_pi1 {
 			background-color: #888;
 		}
 		
-		.tx-wecassessment-pi1 input {
+		.tx-wecassessment-pi1 input[type=submit] {
 			margin-top: 10px;
 		}
 

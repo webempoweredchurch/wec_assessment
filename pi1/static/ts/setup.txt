@@ -45,7 +45,7 @@ plugin.tx_wecassessment_pi1 {
 		scaleItem = TEXT
 		scaleItem {
 			field = label
-			wrap = <input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label><br/>
+			wrap = <div><input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label></div>
 			insertData = true
 		}
 		
