@@ -473,4 +473,8 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		
 }
 
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_category.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_category.php']);
+}
+
 ?>
