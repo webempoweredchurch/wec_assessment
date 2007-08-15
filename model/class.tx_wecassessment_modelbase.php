@@ -50,8 +50,8 @@ class tx_wecassessment_modelbase {
 		return $this->_tableName;
 	}
 
-	function getWhere($table, $where) {
-		$enableFields = tx_wecassessment_modelbase::getEnableFields($table);
+	function getWhere($table, $where, $showHidden=false) {
+		$enableFields = tx_wecassessment_modelbase::getEnableFields($table, $showHidden);
 
 		if($enableFields and $where) {
 			$returnWhere = $enableFields." AND ".$where;
@@ -78,21 +78,24 @@ class tx_wecassessment_modelbase {
 		return $row;
 	}
 	
-	function getEnableFields($table, $showHidden=0) {
+	function getEnableFields($table, $showHidden=false) {
 		if(TYPO3_MODE == 'FE') {
-			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($table,$show_hidden?$show_hidden:($table=='pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords));
-			
-			/* Trim off the opening "AND " */
-			$enableFields = substr($enableFields, 5, strlen($enableFields));
+			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($table,$showHidden ? $showHidden : ($table=='pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords));
+		} else {
+			$enableFields = $showHidden ? '' : t3lib_BEfunc::BEenableFields($table).t3lib_BEfunc::deleteClause($table);
 		}
+		
+		/* Trim off the opening "AND " */
+		$enableFields = substr($enableFields, 5, strlen($enableFields));
+		
 		return $enableFields;
 	}
 	
-	function getRow($table, $uid, $where='') {
+	function getRow($table, $uid, $where='', $showHidden=false) {
 		if($where) {
-			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid.' AND '.$where);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid.' AND '.$where, $showHidden);
 		} else {
-			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid, $showHidden);
 		}
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		

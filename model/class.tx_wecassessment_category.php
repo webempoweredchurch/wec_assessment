@@ -352,10 +352,10 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 * @param		integer		The unique identifier of the category.
 	 * @return		object		The category object.
 	 */
-	function find($uid) {
+	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_category';
 		if($uid) {
-			$row = tx_wecassessment_category::getRow($table, $uid);
+			$row = tx_wecassessment_category::getRow($table, $uid, '', $showHidden);
 			$category = tx_wecassessment_category::newFromArray($row);
 		}
 		

@@ -305,9 +305,9 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @param		integer		Unique ID to find.
 	 * @return		object		The answer object.
 	 */
-	function find($uid) {
+	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_answer';
-		$row = tx_wecassessment_answer::getRow($table, $uid);
+		$row = tx_wecassessment_answer::getRow($table, $uid, '', $showHidden);
 
 		$answer = tx_wecassessment_answer::newFromArray($row);
 		return $answer;		

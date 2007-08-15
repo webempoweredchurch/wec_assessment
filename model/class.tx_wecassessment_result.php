@@ -66,6 +66,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function reset() {
 		$this->_uid = 0;
 		$this->resetAnswers();
+		$this->save();
 	}
 	
 	/**
@@ -156,7 +157,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		if(TYPO3_MODE=="FE") {
 			
 			/* If we don't have anything in the session, make a new result */
-			if(!$result = tx_wecassessment_sessiondata::retrieveSessionData()) {
+			if((!$result = tx_wecassessment_sessiondata::retrieveSessionData())) {
 				if ($GLOBALS['TSFE']->fe_user->user['uid']) {
 					$type = USER_ASSESSMENT;
  					$feuser_id = $GLOBALS['TSFE']->fe_user->user['uid'];
@@ -170,7 +171,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 					$resultClass = t3lib_div::makeInstanceClassName('tx_wecassessment_result');
 					$result = new $resultClass($uid, $pid, $type, $feuser_id);	
 				}
-			}
+			} 
 		} else {
 			$result = null;
 		}
@@ -205,9 +206,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @param		integer		Unique ID to find.
 	 * @return		object		The result object.
 	 */
-	function find($uid) {
+	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_result';
-		$row = tx_wecassessment_result::getRow($table, $uid);
+		$row = tx_wecassessment_result::getRow($table, $uid, '', $showHidden);
 
 		$result = tx_wecassessment_result::newFromArray($row);
 		return $result;		
@@ -341,11 +342,11 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 *
 	 * @return		array		Array of questions.
 	 */	
-	function getQuestions() {
+	function getQuestions($grouping='', $sorting='sorting', $randomize=0) {
 		if(!$this->_questions) {
-			$this->_questions = tx_wecassessment_question::findAll($this->getPID());
+			$this->_questions = tx_wecassessment_question::findAll($this->getPID(), "", $grouping, $sorting, $randomize);
 		} 
-		
+
 		return $this->_questions;
 	}
 	
@@ -357,8 +358,8 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		array		Array of questions.
 	 * @todo		Can we use the existing question array rather than querying the db again?
 	 */
-	function getQuestionsInPage($pageNumber, $questionsPerPage) {
-		return tx_wecassessment_question::findInPage($this->getPID(), $pageNumber, $questionsPerPage);
+	function getQuestionsInPage($pageNumber, $questionsPerPage, $grouping='', $sorting='sorting', $randomize=0) {
+		return tx_wecassessment_question::findInPage($this->getPID(), $pageNumber, $questionsPerPage, $grouping, $sorting, $randomize);
 	}
 	
 	/**
@@ -383,7 +384,6 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function resetAnswers() {
 		unset($this->_answers);
 		$this->_answers = array();
-		
 	}
 	
 	/**
@@ -415,7 +415,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */
 	function isComplete() {
 		$questions = $this->getQuestions();
-
+		
 		foreach($questions as $question) {
 			if(!$question->hasAnswer($this->_answers)) {
 				return false;

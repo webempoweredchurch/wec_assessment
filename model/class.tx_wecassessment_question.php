@@ -271,9 +271,9 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	 * @param		integer		Unique ID of the question.
 	 * @return		object		The question object.
 	 */
-	function find($uid) {
+	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_question';
-		$row = tx_wecassessment_question::getRow($table, $uid);
+		$row = tx_wecassessment_question::getRow($table, $uid, '', $showHidden);
 		$question = tx_wecassessment_question::newFromArray($row);
 		
 		return $question;	
@@ -285,18 +285,23 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	 * @param		string		SQL WHERE clause for additional filtering.
 	 * @return		array		Array of question objects.
 	 */
-	function findAll($pid, $additionalWhere='') {
+	function findAll($pid, $additionalWhere='', $grouping='', $sorting='sorting', $randomize=0) {
 		$questions = array();
 		$table = 'tx_wecassessment_question';
 		
 		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid='.$pid);
 		$where = tx_wecassessment_question::getWhere($table, $where);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'sorting');
+		
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, $grouping, $sorting);
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
+		
+		if($randomize) {
+			shuffle($questions);
+		}
 		
 		return $questions;
 	}
@@ -308,7 +313,7 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	 * @param		integer		The number of questions to show per page.
 	 * @todo		Maybe this fits outside the model somewhere?
 	 */
-	function findInPage($pid, $pageNumber, $questionsPerPage) {
+	function findInPage($pid, $pageNumber, $questionsPerPage, $grouping='', $sorting='sorting', $randomize=0) {
 		$questions = array();
 		$table = 'tx_wecassessment_question';
 		
@@ -316,13 +321,17 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		
 		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid='.$pid);
 		$where = tx_wecassessment_question::getWhere($table, $where);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'sorting', $startQuestion.','.$questionsPerPage);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, $grouping, $sorting, $startQuestion.','.$questionsPerPage);
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
+		/* @todo 	Not a true randomize.  We're only shuffling questions on the current page. */
+		if($randomize) {
+			shuffle($questions);
+		}
 		
 		return $questions;
 	}

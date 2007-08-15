@@ -37,6 +37,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	var $_text;
 	var $_min_value;
 	var $_max_value;
+	var $_score;
 	var $_categoryUID;
 	var $_category;
 	
@@ -79,7 +80,10 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 			"text" => $this->getText(),
 			"min_value" => $this->getMinValue(),
 			"max_value" => $this->getMaxValue(),
+			"score" => $this->getScore(),
+			"maxScore" => $this->getMaxScore(),
 			"category" => $category ? $category->getTitle() : "",
+			"categoryWithParents" => $category ? $category->getTitleWithParents(": ") : "",
 		);
 	}
 	
@@ -185,6 +189,22 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		$this->_max_value = $value; 
 	}
 	
+	function getScore() {
+		return $this->_score;
+	}
+	
+	function setScore($score) {
+		$this->_score = $score;
+	}
+	
+	function getMaxScore() {
+		return $this->_maxScore;
+	}
+	
+	function setMaxScore($score) {
+		$this->_maxScore = $score;
+	}
+	
 	/**
 	 * Gets the UID of the category this response belongs to.
 	 *
@@ -251,10 +271,10 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 *
 	 ************************************************************************/
 	
-	function find($uid) {
+	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_response';
 		
-		$row = tx_wecassessment_response::getRow($table, $uid);
+		$row = tx_wecassessment_response::getRow($table, $uid, '', $showHidden);
 		$response = tx_wecassessment_response::newFromArray($row);
 
 		return $response;
@@ -314,21 +334,33 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		return tx_wecassessment_response::newFromArray($row);
 	}
 
-	function calculate($category, $answers) {
+	function calculate($category, $answers, $minValue, $maxValue) {
 		foreach($answers as $answer) {
 			$question = $answer->getQuestion();
 			
 			$answerTotal += $answer->getWeightedValue();
 			$weightTotal += $question->getWeight();
+			
+			$lowTotal += $question->getWeight() * $minValue;
+			$highTotal += $question->getWeight() * $maxValue;
 		}
-		
+				
 		/* @todo		How to deal with weights of 0? */
 		if ($weightTotal==0) {
 			$weightTotal = 1;
 		}
 		
-		$value = $answerTotal / $weightTotal;		
-		$response = tx_wecassessment_response::findByValue($value, $category->getUID());
+		$value = $answerTotal / $weightTotal;
+		
+		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a response */
+		if($value == $maxValue) {
+			$response = tx_wecassessment_response::findByValue($value-0.01, $category->getUID());
+		} else {
+			$response = tx_wecassessment_response::findByValue($value, $category->getUID());
+		}				
+		$response->setScore($value);
+		$response->setMaxScore($highTotal / $weightTotal);
+		
 		return $response;
 	}
 	

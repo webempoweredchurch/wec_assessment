@@ -15,7 +15,7 @@ class tx_wecassessment_labels {
 	function getCategoryLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$category = &tx_wecassessment_category::find($uid);
+			$category = &tx_wecassessment_category::find($uid, true);
 			if(is_object($category)) {
 				$params['title'] = $category->getLabel();
 			}
@@ -34,7 +34,7 @@ class tx_wecassessment_labels {
 	function getResultLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$result = &tx_wecassessment_result::find($uid);
+			$result = &tx_wecassessment_result::find($uid, true);
 			$params['title'] = $result->getLabel();
 		} else {
 			$params['title'] = '[ New Result ]';
@@ -51,7 +51,7 @@ class tx_wecassessment_labels {
 	function getResponseLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$response = &tx_wecassessment_response::find($uid);
+			$response = &tx_wecassessment_response::find($uid, true);
 			$params['title'] = $response->getLabel();
 		} else {
 			$params['title'] = '[ New Response ]';
@@ -68,7 +68,7 @@ class tx_wecassessment_labels {
 	function getAnswerLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$answer = &tx_wecassessment_answer::find($uid);
+			$answer = &tx_wecassessment_answer::find($uid, true);
 			$params['title'] = $answer->getLabel();
 		} else {
 			$params['title'] = '[ New Answer ]';
@@ -76,7 +76,8 @@ class tx_wecassessment_labels {
 	}
 	
 	function getAnswerOptions($config) {
-		$assessment = t3lib_div::makeInstance('tx_wecassessment_assessment');
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		$assessment = new $assessmentClass(0, $config['row']['pid']);
 		$answerSet = &$assessment->getAnswerSet();
 		
 		foreach($answerSet as $value => $label) {

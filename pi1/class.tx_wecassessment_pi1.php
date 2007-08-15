@@ -65,10 +65,21 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_initPIflexform();		
 		
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
-		$this->assessment = new $assessmentClass($conf);
-		
-		$this->init();
+		$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
 		$result = &$this->assessment->getResult();
+		
+		/* Set variables from TS and flexform */
+		/* @todo	Merge with flexforms */
+		//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
+		//$this->assessment->setPaging(intval($this->conf['usePaging']));
+		
+		/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
+		if($this->assessment->usePaging()) {
+			$this->assessment->setPageNumber(($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1);
+		} else {
+			$this->assessment->setPageNumber(1);
+		}
+		
 		if($this->piVars['answers']) {
 			/* Add the newly posted answers to the result and save */
 			$result->addAnswersFromPost($this->piVars['answers']);
@@ -98,26 +109,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		return $this->pi_wrapInBaseClass($content);
 	}
 	
-	/**
-	 * Initialization function.
-	 *
-	 * @return		none
-	 */
-	function init() {
-		/* Set variables from TS and flexform */
-		/* @todo	Merge with flexforms */
-		$this->assessment->setPID($GLOBALS['TSFE']->id);
-		//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
-		//$this->assessment->setPaging(intval($this->conf['usePaging']));
-		
-		/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
-		if($this->assessment->usePaging()) {
-			$this->pageNumber = ($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1;
-		} else {
-			$this->pageNumber = 1;
-		}						
-	}
-	
 	
 	/**
 	 * Template initializaation function.
@@ -130,7 +121,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$utilClass = t3lib_div::makeInstanceClassName('tx_wecassessment_util');
 		$this->util = new $utilClass($this);
 		$this->util->loadTemplate($view, $this->conf['templateFile']);
-		
 	}
 	
 	
@@ -140,39 +130,48 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * @return	The HTML markup for the current page of questions.
 	 */	
 	function displayQuestions() {
-		$content = array();
-		$result = &$this->assessment->getResult();
+		$markers = array();
+		$subparts = array();	
+		$questionHTML = array();
 		
-		/* Get the questions for the current page */
-		if($this->assessment->usePaging()) {
-			$questions = $result->getQuestionsInPage($this->pageNumber, $this->assessment->getQuestionsPerPage());
-		} else {
-			$questions = $result->getQuestions();
-		}
+		$result = &$this->assessment->getResult();
+		$questions = &$this->assessment->getQuestionsInPage();
+		$content = &$this->util->getTemplate();
 		
 		/**
 		 * If we already have some answers and we're on the first page, then
 		 * the user has started the assessment before.
 		 */
 		if($result->hasAnswers() and $this->firstLoad) {
-			$content[] = $this->displayWelcomeBack();
+			$markers['welcome_back'] = $this->displayWelcomeBack();
+		} else {
+			$markers['welcome_back'] = '';
 		}
 		
+		if($this->assessment->usePaging()) {
+			$markers['progress_bar'] = $this->displayProgressBar();
+		} else {
+			$markers['progress_bar'] = '';
+		}
+		
+		$markers['post_url'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$markers['next_page_number'] = $this->assessment->getNextPageNumber();
+
 		/* Display editing form for each question */
-		$content[] = '<form action="'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'" method="post">';
 		if(is_array($questions)) {
 			foreach($questions as $question) {
-				$content[] = $this->displayQuestion($question);
+				$questionHTML[] = $this->displayQuestion($question);
 			}
-		}
-		
-		$nextPageNumber = $this->pageNumber + 1;
-		$content[] = '<input type="hidden" name="tx_wecassessment_pi1[nextPageNumber]" value="'.$nextPageNumber.'">';
-		$content[] = '<input type="submit" value="Submit Answers"/>';
-		$content[] = '</form>';
-		
-		return implode(chr(10), $content);
-		
+		}	
+		$subparts['questions'] = implode(chr(10), $questionHTML);
+		$this->util->substituteMarkersAndSubparts($content, $markers, $subparts);
+
+		return $content;
+	}
+	
+	function displayProgressBar() {
+		$progress = $this->util->getOutputFromCObj($this->assessment->toArray(), $this->conf, 'progress');
+		return $progress;
 	}
 	
 
@@ -184,14 +183,18 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * @return		string		The HTML markup for the current question.
 	 */
 	function displayQuestion($question) {
+		$markers = array();
+		$subparts = array();
+		
 		$result = &$this->assessment->getResult();
 		$currentAnswer = $result->lookupAnswer($question);
 		
 		$markers['question'] = $this->util->getOutputFromCObj($question->toArray(), $this->conf['questions.'], 'question');
-		$markers['scaleItem'] = $this->displayScale($question, $currentAnswer);
-								
-		$content = $this->util->substituteMarkers($markers);
-		$content = $this->util->wrap($content, $this->conf['questions.']['stdWrap.']);
+		$subparts['scale'] = $this->displayScale($question, $currentAnswer);
+
+		$content = $this->util->getTemplateSubpart('questions');	
+		$this->util->substituteMarkersAndSubparts($content, $markers, $subparts);
+		$this->util->wrap($content, $this->conf['questions.']['stdWrap.']);
 				
 		return $content;
 	}
@@ -204,22 +207,24 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * @param		object		The existing answer, if it exists.
 	 */	
 	function displayScale($question, $answer=null) {	
-		$content = array();
-		
 		$answerSet = $this->assessment->getAnswerSet();
 		if(is_array($answerSet)) {
 			foreach($answerSet as $value => $label) {
+				$content = $this->util->getTemplateSubpart('scale');
 				$dataArray = array('uid' => $value, 'label' => $label, 'questionUID' => $question->getUID());
 				
 				/* Set the radio button with the existing answer */
 				if($answer && ($answer->getValue() == $value)) {
 					$dataArray["checked"] = 'checked="checked"';
 				}
-				$content[] = $this->util->getOutputFromCObj($dataArray, $this->conf['questions.'], "scaleItem");
+				$markers['scale_item'] = $this->util->getOutputFromCObj($dataArray, $this->conf['questions.'], "scaleItem");
+				$this->util->substituteMarkers($content, $markers);
+				
+				$scaleItems[] = $content;
 			}
 		}
 		
-		return implode(chr(10), $content);
+		return implode(chr(10), $scaleItems);
 	}
 
 	/**
@@ -228,20 +233,25 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * @return	The HTML markup for all responses.
 	 */
 	function displayResponses() {
-		$content = array();
-		$result = &$this->assessment->getResult();
+		$responseHTML = array();
+		$markers = array();
+		$subparts = array();
 		
+		$result = &$this->assessment->getResult();
 		$categories = $result->getCategories();
+		$content = $this->util->getTemplate();
+		
 		foreach($categories as $category) {
 			$answers = $result->getAnswersForCategory($category);		
-			$response = tx_wecassessment_response::calculate($category, $answers);
-
-			$content[] = $this->displayResponse($response);
+			$response = tx_wecassessment_response::calculate($category, $answers, $this->assessment->getMinimumValue(), $this->assessment->getMaximumValue());
+			$responseHTML[] = $this->displayResponse($response);
 		}
-		
-		$content[] = $this->displayRestart();
+		$subparts['responses'] = implode(chr(10), $responseHTML);
+		$markers['restart'] = $this->displayRestart();
 
-		return implode(chr(10), $content);
+		$this->util->substituteMarkersAndSubparts($content, $markers, $subparts);
+
+		return $content;
 		
 	}
 
@@ -253,8 +263,9 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function displayResponse($response) {
 		$markers = array();
 		$markers['response'] = $this->util->getOutputFromCObj($response->toArray(), $this->conf['responses.'], 'response');
-		$content = $this->util->substituteMarkers($markers);
 		
+		$content = $this->util->getTemplateSubpart('responses');
+		$this->util->substituteMarkers($content, $markers);
 		return $content;
 	}
 	

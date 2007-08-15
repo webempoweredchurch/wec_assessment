@@ -42,12 +42,10 @@ class tx_wecassessment_util {
 		
 	}
 	
-	function wrap($content, $wrap) {
+	function wrap(&$content, $wrap) {
 		$local_cObj = t3lib_div::makeInstance('tslib_cObj');
 		$local_cObj->start(array());
 		$content = $local_cObj->stdWrap($content, $wrap);
-		
-		return $content;
 	}
 	
 	
@@ -60,20 +58,31 @@ class tx_wecassessment_util {
 	function loadTemplate($cmd, $templateFile) {
 		//	Get the file location and name of our template file
 		$template = $this->cObj->fileResource( $templateFile );
-		
 		switch($cmd) {
 			case 'displayQuestions':
-				$subpart = 'questions';
+				$subpart = 'display_questions';
 				break;
 			case 'displayResponses':
-			 	$subpart = 'responses';
+			 	$subpart = 'display_responses';
 				break;
 			default:
 				$subpart = $cmd;
 		}
 		
-		$templateSubpart = $this->cObj->getSubpart($template, "###".strtoupper($subpart)."###");
+		$templateSubpart = $this->getTemplateSubpart($subpart, $template);
 		$this->template = $templateSubpart;
+	}
+	
+	function getTemplate() {
+		return $this->template;
+	}
+	
+	function getTemplateSubpart($subpart, $template='') {
+		if(!$template) {
+			$template = $this->template;
+		}
+		
+		return $this->cObj->getSubpart($template, "###".strtoupper($subpart)."###");
 	}
 	
 	/*
@@ -82,27 +91,43 @@ class tx_wecassessment_util {
 	 * @return		none
 	 * @todo		Does this actually work?
 	 */
-	function substituteMarkers($markers) {
+	function substituteMarkers(&$template, $markers) {
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
-		$content = $cObj->substituteMarkerArray($this->template, $markers, $wrap='###|###',$uppercase=1);		
-		return $content;
+		$template = $cObj->substituteMarkerArray($template, $markers, $wrap='###|###',$uppercase=1);
 	}
 	
-	/* @todo Unused??? */
-	function cObjGet($setup,$addKey='')	{
-		if (is_array($setup))	{			
-			$sKeyArray=t3lib_TStemplate::sortedKeyList($setup);
-			$content ='';
-			foreach($sKeyArray as $theKey)	{
-				$theValue=$setup[$theKey];
-				if (intval($theKey) && !strstr($theKey,'.'))	{
-					$conf=$setup[$theKey.'.'];
-					$content.=$this->cObjGetSingle($theValue,$conf,$addKey.$theKey);	// Get the contentObject
-				}
-			}
-			return $content;
+	function substituteSubparts(&$template, $subparts) {
+		foreach($subparts as $label => $content) {
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			$template = $cObj->substituteSubpart($template, '###'.strtoupper($label).'###', $content);
 		}
 	}
+	
+	
+	function substituteMarkersAndSubparts(&$template, $markers, $subparts) {
+		$this->substituteMarkers($template, $markers);
+		$this->substituteSubparts($template, $subparts);
+	}
+	
+	
+	function getMarkers($template='') {
+		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $this->template, $match);
+		$subparts = array_unique($match[1]);
+		debug($subparts, "subparts");
+		
+		foreach ($subparts as $subpart) {
+		}
+		
+		preg_match_all('!\###([A-Z0-9_-|]*)\###!is', $this->template, $match);
+		$markers = array_unique($match[1]);
+		$markers = array_diff($markers, $subparts);
+		debug($markers, "markers");
+		
+		foreach ($markers as $marker) {
+		}
+			
+	}
+	
 	
 }
 

@@ -8,8 +8,30 @@ plugin.tx_wecassessment_pi1 {
 	questionsPerPage = 2
 	allowAnonymous = 1
 	
+	minimumValue = 0
+	maximumValue = 2
+	answerLabels {
+		0 = Never, ever, ever.
+		1 = Every now and then.
+		2 = Every stinkin day.
+	}
+	
 	# templateFile = {$plugin.tx_wecassessment.templateFile}
 	templateFile = EXT:wec_assessment/pi1/assessment.tmpl
+	
+	progress = COA
+	progress {
+		10 = TEXT
+		10.value = <div class="bar" style="width:{field:percentComplete}%;">&nbsp;</div>
+		10.wrap = <div class="outline">|</div>
+		10.insertData = true
+		
+		20 = TEXT
+		20.value = <p>Page {field:currentPage} of {field:totalPages}</p>
+		20.insertData = true
+		
+		stdWrap.wrap = <div id="wec-assessment-progress"> | </div>
+	}
 	
 	questions {
 
@@ -23,7 +45,7 @@ plugin.tx_wecassessment_pi1 {
 		scaleItem = TEXT
 		scaleItem {
 			field = label
-			wrap = <input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label><br />
+			wrap = <input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label><br/>
 			insertData = true
 		}
 		
@@ -31,16 +53,24 @@ plugin.tx_wecassessment_pi1 {
 	}
 	
 	responses {
+		score = TEXT
+		score.value = <div id="score">{field:score}</div>
+		
 		response = COA
 		response {
 			10 = TEXT
-			10.field = category
+			10.field = categoryWithParents
 			10.wrap = <h3>|</h3>
-
+			
 			20 = TEXT
-			20.field = text
-			20.wrap = <p>|</p>
-			20.parseFunc < tt_content.text.20.parseFunc
+			20.field = score
+			20.wrap = <p>Score:&nbsp;|&nbsp;/&nbsp;{field:maxScore}</p>
+			20.insertData = true
+			
+			30 = TEXT
+			30.field = text
+			30.wrap = <p>|</p>
+			30.parseFunc < tt_content.text.20.parseFunc
 		    
 
 			wrap = <div class="response">|</div>

@@ -43,15 +43,9 @@ class tx_wecassessment_flexform {
 	 */
 	function init($PA, $fobj) {
 		$this->PA = $PA;
-
-		$this->assessment = t3lib_div::makeInstance('tx_wecassessment_assessment');
-		$this->assessment->setPID($PA['row']['pid']);
-		$this->assessment->setUID($PA['row']['uid']);
-
-		//$this->assessment->setMinimumValue($this->getFlexFormValue('general', 'minRange'));
-		//$this->assessment->setMaximumValue($this->getFlexFormValue('general', 'maxRange'));
-		//$this->assessment->setScaleLabels($this->getFlexFormValue('labels', 'scale_label'));
-		
+		$flexform = $this->PA['row']['pi_flexform'];
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		$this->assessment = new $assessmentClass($PA['row']['uid'], $PA['row']['pid'], '', t3lib_div::xml2array($flexform));
 	}
 
 	/**
@@ -87,9 +81,8 @@ class tx_wecassessment_flexform {
 		/* For each possible value, build the form elements. */
 		for($i=$this->assessment->getMinimumValue(); $i<=$this->assessment->getMaximumValue(); $i++) {
 			$output[] = '<div><label for="tx_wecassessment_label_'.$i.'">'.$i.'</label>
-								<input name="data[tt_content]['.$this->assessment->getUID().'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$labels[$i][1].'"/></div>';
+								<input name="data[tt_content]['.$this->assessment->getUID().'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$labels[$i].'"/></div>';
 		}			
-		
 		return implode(chr(10), $output);
 	}
 	
@@ -102,7 +95,7 @@ class tx_wecassessment_flexform {
 	 * @return		string		The HTML for the range checking validation
 	 * @todo		Add validity checking for more than 2 levels deep.
 	 */
-	function getRangeCheck($PA, $fobj) {		
+	function getValidationErrors($PA, $fobj) {		
 		$this->init($PA, $fobj);
 		
 		$table = "tx_wecassessment_response";		

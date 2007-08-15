@@ -7,7 +7,31 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-
+					<sorting>
+						<TCEforms>
+							<label>Sorting</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">Random</numIndex>
+										<numIndex index="1">random</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">Use Backend Sorting</numIndex>
+										<numIndex index="1">backend</numIndex>
+									</numIndex>
+								<!--
+									<numIndex index="2" type="array">
+										<numIndex index="0">Group By Category</numIndex>
+										<numIndex index="1">category</numIndex>
+									</numIndex>
+								-->
+								</items>
+							</config>
+						</TCEforms>
+					</sorting>
+					
 					<paging>
 						<TCEforms>
 							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.paging</label>
@@ -109,15 +133,15 @@
 				<type>array</type>
 				<el>
 					
-					<rangeCheck>
+					<errors>
 						<TCEforms>
-							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.rangeCheck</label>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.errors</label>
 							<config>
 								<type>user</type>
-								<userFunc>tx_wecassessment_flexform->getRangeCheck</userFunc>
+								<userFunc>tx_wecassessment_flexform->getValidationErrors</userFunc>
 							</config>
 						</TCEforms>
-					</rangeCheck>
+					</errors>
 					
 				</el>
 			</ROOT>

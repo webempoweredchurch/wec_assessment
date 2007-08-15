@@ -3,24 +3,47 @@
 		<title>WEC Assessment Template</title>
 	</head>
 	<body>
-		<!-- ###QUESTIONS### begin -->
+		
+		<h1>Subpart for Questions</h1>
+		<!-- ###DISPLAY_QUESTIONS### begin -->
+		
+			###WELCOME_BACK###
+		
+			###PROGRESS_BAR###
+			
+			<form action="###POST_URL###" method="post">
+				<!-- ###QUESTIONS### begin -->
 					
-			###QUESTION###
+					###QUESTION###
 			
-			<!-- ###SCALE### begin -->
+					<!-- ###SCALE### begin -->
 			
-			###SCALEITEM###
+						###SCALE_ITEM###
 			
-			<!-- ###SCALE### end -->
+					<!-- ###SCALE### end -->
 			
 		
-		<!-- ###QUESTIONS### end -->
+				<!-- ###QUESTIONS### end -->
+				
+				<input type="hidden" name="tx_wecassessment_pi1[nextPageNumber]" value="###NEXT_PAGE_NUMBER###" />
+				<input type="submit" value="Submit Answers"/>
+			</form>
+		<!-- ###DISPLAY_QUESTIONS### end -->
+
+
+
+
+		<h1>Subpart for Responses</h1>
+		<!-- ###DISPLAY_RESPONSES### begin -->
+			
+			<!-- ###RESPONSES### begin -->
 		
-		<!-- ###RESPONSES### begin -->
+				###RESPONSE###
 		
-			###RESPONSE###
-		
-		<!-- ###RESPONSES### end -->
-		
+			<!-- ###RESPONSES### end -->
+			
+			###RESTART###
+			
+		<!-- ###DISPLAY_RESPONSES### -->
 	</body>
 </html>
