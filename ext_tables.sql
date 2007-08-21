@@ -149,8 +149,8 @@ CREATE TABLE tx_wecassessment_response (
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	category_id int(11) DEFAULT '0' NOT NULL,
 	text text NOT NULL,
-	min_value int(11) DEFAULT '0' NOT NULL,
-	max_value int(11) DEFAULT '0' NOT NULL,
+	min_value double DEFAULT '0' NOT NULL,
+	max_value double DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
