@@ -441,10 +441,6 @@ class tx_wecassessment_treeview {
 				if ($table == 'tt_news' && $row['category']) { // find recursive categories in the tt_news db-record
 					$rcList = $this->compareCategoryVals ($treeIds,$row['category']);
 				}
-				// in case of localized records this doesn't work
-				if ($storagePid && $row['pid'] != $storagePid && $table == 'tx_wecassessment_category') { // if a storagePid is defined but the current category is not stored in storagePid
-					$errorMsg[] = '<p style="padding:10px;"><img src="gfx/icon_warning.gif" class="absmiddle" alt="" height="16" width="18"><strong style="color:red;"> Warning:</strong><br />tt_news is configured to display categories only from the "General record storage page" (GRSP). The current category is not located in the GRSP and will so not be displayed. To solve this you should either define a GRSP or disable "Use StoragePid" in the extension manager.</p>';
-				}
 			}
 			if (strlen($rcList)) {
 				$recursionMsg = 'RECURSIVE CATEGORIES DETECTED!! <br />This record has the following recursive categories assigned: '.$rcList.'<br />Recursive categories will not be shown in the category tree and will therefore not be selectable. ';
