@@ -324,14 +324,19 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	
 	function findByValue($value, $category_id) {
 		$table = 'tx_wecassessment_response';
-		
 		$where = tx_wecassessment_response::getWhere($table, 'category_id='.$category_id.' AND min_value<='.$value.' AND max_value>'.$value);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
-		return tx_wecassessment_response::newFromArray($row);
+		if(is_array($row)) {
+			$response = &tx_wecassessment_response::newFromArray($row);
+		} else {
+			$response = null;
+		}
+		
+		return $response;
 	}
 
 	function calculate($category, $answers, $minValue, $maxValue) {
@@ -357,9 +362,12 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 			$response = tx_wecassessment_response::findByValue($value-0.01, $category->getUID());
 		} else {
 			$response = tx_wecassessment_response::findByValue($value, $category->getUID());
-		}				
-		$response->setScore($value);
-		$response->setMaxScore($highTotal / $weightTotal);
+		}
+		
+		if(is_object($response)) {				
+			$response->setScore($value);
+			$response->setMaxScore($highTotal / $weightTotal);
+		}
 		
 		return $response;
 	}
