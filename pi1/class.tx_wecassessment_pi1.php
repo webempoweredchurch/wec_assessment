@@ -240,13 +240,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$markers = array();
 		$subparts = array();
 		
-		$result = &$this->assessment->getResult();
 		$content = $this->util->getTemplate();
 		
-		$responses = &$result->getResponses();
+		$responses = &$this->assessment->getResponses();
 		if(is_array($responses)) {
 			foreach($responses as $response) {
-				$this->displayResponse($response);
+				$responseHTML[] = $this->displayResponse($response);
 			}
 		}
 		
@@ -270,6 +269,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		$content = $this->util->getTemplateSubpart('responses');
 		$this->util->substituteMarkers($content, $markers);
+		
 		return $content;
 	}
 	
