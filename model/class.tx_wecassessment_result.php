@@ -220,9 +220,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * Get a weighted value
 	 * Find the correct response
 	 *
-	 * @todo	Must support categories
+	 * @todo	Must support categories.  Throw this away?
 	 */
-	function getResponses() {
+	function getResponses2() {
 		
 		$answers = $this->getAnswers();	
 		foreach($answers as $answer) {
@@ -506,6 +506,18 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */
 	function getLabel() {
 		return $this->getUsername();
+	}
+	
+	function getResponses() {
+		$responses = array();
+		
+		$categories = &$this->getCategories();
+		foreach($categories as $category) {
+			$answers = &$result->getAnswersForCategory($category);		
+			$responses[] = &tx_wecassessment_response::calculate($category, $answers, $this->assessment->getMinimumValue(), $this->assessment->getMaximumValue());
+		}
+		
+		return $responses;
 	}
 	
 	

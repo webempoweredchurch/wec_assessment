@@ -50,10 +50,24 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 	
 	/**
 	 * Default constructor.
+	 * @todo 	Initialize conf and flexform if they're not provided.
 	 */
-	function tx_wecassessment_assessment($uid=0, $pid=0, $conf='', $flexform='') {
-		$this->_uid = $uid;
+	function tx_wecassessment_assessment($uid=0, $pid=0, $conf=null, $flexform=null) {
 		$this->_pid = $pid;
+		
+		if($uid==0) {
+			$this->_uid = $this->lookupUID($this->_pid);
+		} else {
+			$this->_uid = $uid;
+		}
+		
+		if(!isset($conf)) {
+			$conf = $this->getConf($this->_pid);
+		}
+		
+		if(!isset($flexform)) {
+			$flexform = $this->getFlexform($this->_pid);
+		}
 		
 		if(is_array($conf)) {
 			$this->_usePaging = $conf['usePaging'];
@@ -303,6 +317,74 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 			}
 		}
 		return $tempArr[$value];
+	}
+	
+	function initializeFrontend($pid, $feUserObj=''){
+		require_once (PATH_tslib.'/class.tslib_content.php');
+		require_once (PATH_tslib.'class.tslib_fe.php');
+		require_once(PATH_t3lib.'class.t3lib_userauth.php');
+		require_once(PATH_tslib.'class.tslib_feuserauth.php');
+		require_once(PATH_t3lib.'class.t3lib_befunc.php');
+		require_once(PATH_t3lib.'class.t3lib_timetrack.php');
+
+		$GLOBALS['TT'] = new t3lib_timeTrack;
+	
+		// ***********************************
+		// Creating a fake $TSFE object
+		// ***********************************
+		$TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
+		$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], $pid, '0', 1, '', '','','');
+		$GLOBALS['TSFE']->connectToMySQL();
+		if($feUserObj==''){
+			$GLOBALS['TSFE']->initFEuser();
+		}else{
+			$GLOBALS['TSFE']->fe_user = &$feUserObj;
+		}
+
+		$GLOBALS['TSFE']->fetch_the_id();
+		$GLOBALS['TSFE']->getPageAndRootline();
+		$GLOBALS['TSFE']->initTemplate();
+		$GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
+		$GLOBALS['TSFE']->forceTemplateParsing = 1;
+		$GLOBALS['TSFE']->getConfigArray();
+	}
+	
+	function getConf($pid) {
+		$this->initializeFrontend($pid);
+		
+		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
+		require_once(PATH_t3lib.'class.t3lib_page.php');
+		
+		//we need to get the plugin setup to create correct source URLs
+		$template = t3lib_div::makeInstance('t3lib_tsparser_ext'); // Defined global here!
+		$template->tt_track = 0; 
+		// Do not log time-performance information
+		$template->init();
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$rootLine = $sys_page->getRootLine($pid);
+		$template->runThroughTemplates($rootLine); // This generates the constants/config + hierarchy info for the template.
+		$template->generateConfig();//
+		$conf = $template->setup['plugin.']['tx_wecassessment_pi1.'];
+		
+		return $conf;
+	}
+	
+	function getFlexform($pid) {
+		$fields = 'pi_flexform';
+		$tables = 'tt_content';
+		$where = 'tt_content.list_type="wec_assessment_pi1" AND tt_content.deleted=0 AND pid='.$pid;
+		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields,$tables,$where);
+		
+		return t3lib_div::xml2Array($row['pi_flexform']);
+	}
+	
+	function lookupUID($pid) {
+		$fields = 'uid';
+		$tables = 'tt_content';
+		$where = 'tt_content.list_type="wec_assessment_pi1" AND tt_content.deleted=0 AND pid='.$pid;
+		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields,$tables,$where);
+		
+		return $row['uid'];
 	}
 	
 	

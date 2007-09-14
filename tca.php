@@ -250,9 +250,17 @@ $TCA["tx_wecassessment_question"] = Array (
 				"default" => 1
 			)
 		),
+		"average_score" => Array(
+			"exclude" => 1,
+			"label" => "Average Score",
+			"config" => Array(
+				"type" => "user",
+				"userFunc" => 'tx_wecassessment_results->displayAverageForQuestion',
+			),
+		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight, average_score")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -472,8 +480,8 @@ $TCA["tx_wecassessment_response"] = Array (
 				"size" => "4",
 				"max" => "4",
 				"eval" => "double",
-				"default" => 0
-			)
+				"default" => 0,
+			),
 		),
 		"max_value" => Array (		
 			"exclude" => 1,		

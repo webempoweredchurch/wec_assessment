@@ -24,35 +24,12 @@
 /**
  * This function displays a selector with nested categories.
  * The original code is borrowed from the extension "Digital Asset Management" (tx_dam) author: René Fritz <r.fritz@colorcube.de>
- *
- * $Id: class.tx_ttnews_treeview.php,v 1.19 2006/05/19 13:58:05 rupertgermann Exp $
- *
- * @author	Rupert Germann <rupi@gmx.li>
- * @package TYPO3
- * @subpackage tt_news
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   60: class tx_ttnews_tceFunc_selectTreeView extends t3lib_treeview
- *   72:     function wrapTitle($title,$v)
- *
- *
- *   91: class tx_ttnews_treeview
- *  101:     function displayCategoryTree($PA, $fobj)
- *  393:     function getNotAllowedItems($PA,$SPaddWhere)
- *  435:     function findRecursiveCategories ($PA,$row,$table,$storagePid,$treeIds)
- *  480:     function compareCategoryVals ($treeIds,$catString)
- *  509:     function displayTypeFieldCheckCategories(&$PA, $fobj)
- *
- * TOTAL FUNCTIONS: 6
- * (This index is automatically created/updated by the extension "extdeveval")
+ * and Rupert Germann's code for tt_news.
  *
  */
 
 require_once(PATH_t3lib.'class.t3lib_treeview.php');
+
 	/**
 	 * extend class t3lib_treeview to change function wrapTitle().
 	 *
@@ -85,7 +62,7 @@ class tx_wecassessment_tceFunc_selectTreeView extends t3lib_treeview {
 }
 
 	/**
-	 * this class displays a tree selector with nested tt_news categories.
+	 * this class displays a tree selector with nested wec_assessment categories.
 	 *
 	 */
 class tx_wecassessment_treeview {
@@ -120,11 +97,11 @@ class tx_wecassessment_treeview {
 		$removeItems=t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
 
 			// get include/exclude items 
-		$this->excludeList = $GLOBALS['BE_USER']->getTSConfigVal('tt_newsPerms.tx_wecassessment_category.excludeList');
+		$this->excludeList = $GLOBALS['BE_USER']->getTSConfigVal('tx_wecassessmentPerms.tx_wecassessment_category.excludeList');
 // 		if ($this->excludeList) {
 // 			$removeItems .= ','.$this->excludeList;
 // 		}
-		$this->includeList = $GLOBALS['BE_USER']->getTSConfigVal('tt_newsPerms.tx_wecassessment_category.includeList');
+		$this->includeList = $GLOBALS['BE_USER']->getTSConfigVal('tx_wecassessmentPerms.tx_wecassessment_category.includeList');
 
 		foreach($selItems as $tk => $p)	{
 			if (in_array($p[1],$removeItems))	{
@@ -155,21 +132,14 @@ class tx_wecassessment_treeview {
 		if ($maxitems<=1 AND !$config['treeView'])	{
 
 		} else {
-			if ($row['sys_language_uid'] && $row['l18n_parent'] && ($table == 'tt_news' || $table == 'tx_wecassessment_category')) { // the current record is a translation of another record
-				if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']) { // get tt_news extConf array
-					$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']);
-				}
-				if ($confArr['useStoragePid']) {
-					$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($table,$row);
-					$storagePid = $TSconfig['_STORAGE_PID']?$TSconfig['_STORAGE_PID']:0;
-					$SPaddWhere = ' AND tx_wecassessment_category.pid IN (' . $storagePid . ')';
-				}
+			if ($row['sys_language_uid'] && $row['l18n_parent'] && ($table == 'tx_wecassessment_question' || $table == 'tx_wecassessment_response' || $table == 'tx_wecassessment_category')) { // the current record is a translation of another record
 				$errorMsg = array();
 				$notAllowedItems = array();
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.useListOfAllowedItems') && !$GLOBALS['BE_USER']->isAdmin()) {
 					$notAllowedItems = $this->getNotAllowedItems($PA,$SPaddWhere);
 				}
-					// get categories of the translation original
+				// get categories of the translation original
+				/* @todo 	Update this query */
 				$catres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query ('tx_wecassessment_category.uid,tx_wecassessment_category.title,tx_wecassessment_category_mm.sorting AS mmsorting', 'tt_news', 'tx_wecassessment_category_mm', 'tx_wecassessment_category', ' AND tx_wecassessment_category_mm.uid_local='.$row['l18n_parent'].$SPaddWhere,'', 'mmsorting');
 				$categories = array();
 				$NACats = array();
@@ -210,15 +180,6 @@ class tx_wecassessment_treeview {
 				if($config['treeView'] AND $config['foreign_table']) {
 					global $TCA, $LANG;
 
-					if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']) { // get tt_news extConf array
-						$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']);
-					}
-					if ($confArr['useStoragePid']) {
-						$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($table,$row);
-						$storagePid = $TSconfig['_STORAGE_PID']?$TSconfig['_STORAGE_PID']:0;
-						$SPaddWhere = ' AND tx_wecassessment_category.pid IN (' . $storagePid . ')';
-
-					}
 					if ($GLOBALS['BE_USER']->getTSConfigVal('options.useListOfAllowedItems') && !$GLOBALS['BE_USER']->isAdmin()) {
 						$notAllowedItems = $this->getNotAllowedItems($PA,$SPaddWhere);
 					}
@@ -260,7 +221,7 @@ class tx_wecassessment_treeview {
 
 						// get default items
 					$defItems = array();
-					if (is_array($config['items']) && $table == 'tt_content' && $row['CType']=='list' && $row['list_type']==9 && $field == 'pi_flexform')	{
+					if (is_array($config['items']) && $table == 'tt_content' && $row['CType']=='list' && $row['list_type']=='wec_assessment_pi1' && $field == 'pi_flexform')	{
 						reset ($config['items']);
 						while (list($itemName,$itemValue) = each($config['items']))	{
 							if ($itemValue[0]) {
@@ -380,12 +341,12 @@ class tx_wecassessment_treeview {
 	 * @param	array		$PA: the paramter array
 	 * @param	string		$SPaddWhere: this string is added to the query for categories when "useStoragePid" is set.
 	 * @return	array		array with not allowed categories
-	 * @see tx_ttnews_tceFunc_selectTreeView::wrapTitle()
+	 * @see tx_wecassessment_tceFunc_selectTreeView::wrapTitle()
 	 */
 	function getNotAllowedItems($PA,$SPaddWhere) {
 		$fTable = $PA['fieldConf']['config']['foreign_table'];
 			// get list of allowed categories for the current BE user
-		$allowedItemsList=$GLOBALS['BE_USER']->getTSConfigVal('tt_newsPerms.'.$fTable.'.allowedItems');
+		$allowedItemsList=$GLOBALS['BE_USER']->getTSConfigVal('tx_wecassessmentPerms.'.$fTable.'.allowedItems');
 
 		$itemArr = array();
 		if ($allowedItemsList) {
@@ -428,28 +389,31 @@ class tx_wecassessment_treeview {
 	function findRecursiveCategories ($PA,$row,$table,$storagePid,$treeIds) {
 		$errorMsg = array();
 		if (!$this->excludeList && !$this->includeList) {
-			if ($table == 'tt_content' && $row['CType']=='list' && $row['list_type']==9) { // = tt_content element which inserts plugin tt_news
+			if ($table == 'tt_content' && $row['CType']=='list' && $row['list_type']==9) { // = tt_content element which inserts plugin wec_assessment_pi1
 				$cfgArr = t3lib_div::xml2array($row['pi_flexform']);
 				if (is_array($cfgArr) && is_array($cfgArr['data']['sDEF']['lDEF']) && $cfgArr['data']['sDEF']['lDEF']['categorySelection']) {
 					$rcList = $this->compareCategoryVals ($treeIds,$cfgArr['data']['sDEF']['lDEF']['categorySelection']['vDEF']);
 				}
-			} elseif ($table == 'tx_wecassessment_category' || $table == 'tt_news') {
+			} elseif ($table == 'tx_wecassessment_category' || $table == 'tx_wecassessment_question' || $table = 'tx_wecassessment_response') {
 				if ($table == 'tx_wecassessment_category' && $row['pid'] == $storagePid && intval($row['uid']) && !in_array($row['uid'],$treeIds))	{ // if the selected category is not empty and not in the array of tree-uids it seems to be part of a chain of recursive categories
 					$recursionMsg = 'RECURSIVE CATEGORIES DETECTED!! <br />This record is part of a chain of recursive categories. The affected categories will not be displayed in the category tree.  You should remove the parent category of this record to prevent this.';
 
 				}
-				if ($table == 'tt_news' && $row['category']) { // find recursive categories in the tt_news db-record
-					$rcList = $this->compareCategoryVals ($treeIds,$row['category']);
-				}
+				// @todo 	Is this needed?
+				//if ($table == 'tt_news' && $row['category']) { // find recursive categories in the tt_news db-record
+				//	$rcList = $this->compareCategoryVals ($treeIds,$row['category']);
+				//}
 			}
 			if (strlen($rcList)) {
 				$recursionMsg = 'RECURSIVE CATEGORIES DETECTED!! <br />This record has the following recursive categories assigned: '.$rcList.'<br />Recursive categories will not be shown in the category tree and will therefore not be selectable. ';
-
+				
+				/* @todo 	Is this needed?
 				if ($table == 'tt_news') {
 					$recursionMsg .= 'To solve this problem mark these categories in the left select field, click on "edit category" and clear the field "parent category" of the recursive category.';
 				} else {
 					$recursionMsg .= 'To solve this problem you should clear the field "parent category" of the recursive category.';
 				}
+				*/
 			}
 			if ($recursionMsg) $errorMsg[] = '<table class="warningbox" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img src="gfx/icon_fatalerror.gif" class="absmiddle" alt="" height="16" width="18">'.$recursionMsg.'</td></tr></tbody></table>';
 
@@ -502,14 +466,6 @@ class tx_wecassessment_treeview {
 
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.useListOfAllowedItems') && !$GLOBALS['BE_USER']->isAdmin()) {
 			$notAllowedItems = array();
-			if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']) { // get tt_news extConf array
-				$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tt_news']);
-			}
-			if ($confArr['useStoragePid']) {
-				$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($table,$row);
-				$storagePid = $TSconfig['_STORAGE_PID']?$TSconfig['_STORAGE_PID']:0;
-				$SPaddWhere = ' AND tx_wecassessment_category.pid IN (' . $storagePid . ')';
-			}
 			$notAllowedItems = $this->getNotAllowedItems($PA,$SPaddWhere);
 
 			if ($notAllowedItems[0]) {
@@ -519,6 +475,7 @@ class tx_wecassessment_treeview {
 
 
 					// get categories of the record in db
+					/* @todo 	Replace tt_news. */
 					$catres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query ('tx_wecassessment_category.uid,tx_wecassessment_category.title,tx_wecassessment_category_mm.sorting AS mmsorting', 'tt_news', 'tx_wecassessment_category_mm', 'tx_wecassessment_category', ' AND tx_wecassessment_category_mm.uid_local='.$uidField.$SPaddWhere,'', 'mmsorting');
 					$NACats = array();
 					if ($catres) {

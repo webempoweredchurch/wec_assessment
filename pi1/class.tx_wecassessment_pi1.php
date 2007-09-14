@@ -49,7 +49,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecassessment_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_wecassessment_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'wec_assessment';	// The extension key.
-	var $pi_checkCHash = TRUE;
 	
 	/**
 	 * The main method of the PlugIn
@@ -242,14 +241,15 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$subparts = array();
 		
 		$result = &$this->assessment->getResult();
-		$categories = $result->getCategories();
 		$content = $this->util->getTemplate();
 		
-		foreach($categories as $category) {
-			$answers = $result->getAnswersForCategory($category);		
-			$response = tx_wecassessment_response::calculate($category, $answers, $this->assessment->getMinimumValue(), $this->assessment->getMaximumValue());
-			$responseHTML[] = $this->displayResponse($response);
+		$responses = &$result->getResponses();
+		if(is_array($responses)) {
+			foreach($responses as $response) {
+				$this->displayResponse($response);
+			}
 		}
+		
 		$subparts['responses'] = implode(chr(10), $responseHTML);
 		$markers['restart'] = $this->displayRestart();
 

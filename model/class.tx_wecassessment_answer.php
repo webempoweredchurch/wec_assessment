@@ -321,7 +321,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @return		array		Array of answers matching search criteria.
 	 * @todo	Figure out a better array key.
 	 */
-	function findAll($pid, $additionalWhere='') {
+	function findAll($pid, $additionalWhere='', $questionAsKey=true) {
 		$answers = array();
 		$table = 'tx_wecassessment_answer';
 		
@@ -329,10 +329,15 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);		
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$answers[$row['question_id']] = tx_wecassessment_answer::newFromArray($row);
+			if($questionAsKey) {
+				$answers[$row['question_id']] = tx_wecassessment_answer::newFromArray($row);
+			} else {
+				$answers[] = tx_wecassessment_answer::newFromArray($row);
+				
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
-		
+
 		return $answers;
 	}
 	

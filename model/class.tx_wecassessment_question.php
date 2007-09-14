@@ -42,6 +42,7 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	var $_text;
 	var $_categoryUID;
 	var $_weight;
+	var $_allAnswers;
 	
 	/**
 	 * Default constructor.
@@ -258,6 +259,28 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		}
 		
 		return false;		
+	}
+	
+	function getAverageAnswer() {
+		if(!$this->_allAnswers) {
+			$this->_allAnswers = &tx_wecassessment_answer::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
+		}
+		
+		if(is_array($this->_allAnswers)) {
+			foreach($this->_allAnswers as $answer) {
+				$value += $answer->getValue();
+			}
+			$average = $value / $this->getTotalAnswers();
+		}
+		
+		return round($average, 2);
+	}
+	
+	function getTotalAnswers() {
+		if(!$this->_allAnswers) {
+			$this->_allAnswers = &tx_wecassessment_answer::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
+		}
+		return count($this->_allAnswers);
 	}
 	
 	/*************************************************************************

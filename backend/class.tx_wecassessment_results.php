@@ -56,6 +56,52 @@ class tx_wecassessment_results {
 				
 		return implode(chr(10), $output);
 	}
+	
+	function displayAverageForQuestion($PA, $fobj) {
+		/*
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		$assessment = new $assessmentClass(0, $PA['row']['pid']);
+		
+		$uid = $PA['row']['uid'];
+		$question = &tx_wecassessment_question::find($uid);
+
+		$averageScore = $question->getAverageAnswer();
+		$maximumScore = $assessment->getMaximumValue();
+		$totalAssessments = $question->getTotalAnswers();
+		$percentScore = round(($averageScore / $maximumScore) * 100);
+		
+		$output = array();
+		$output[] = '<div style="margin-top: 5px; border: 1px solid black; width:100px;">';
+		$output[] = '	<div style="background-color:#888; width:'.$percentScore.'%;">&nbsp;</div>';
+		$output[] = '</div>';
+		
+		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' assessment results)';
+		
+		return implode(chr(10), $output);
+		*/
+	}
+	
+	function displayAverageForCategory($PA, $fobj) {
+		/*
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		debug($config, "config");
+		$assessment = new $assessmentClass(0, $config['row']['pid']);
+		
+		$uid = $PA['row']['uid'];
+		$category = &tx_wecassessment_category::find($uid);
+		
+		$averageScore = $category->getAverageAnswer();
+		$maximumScore = $assessment->getMaximumValue();
+		$totalAssessments = $category->getTotal();
+		$percentScore = round(($averageScore / $maximumScore) * 100);
+		
+		$output = array();
+		$output[] = '<div style="margin-top: 5px; border: 1px solid black; width:100px;">';
+		$output[] = '	<div style="background-color:#888; width:'.$percentScore.'%;">&nbsp;</div>';
+		$output[] = '</div>';
+		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' assessments)';
+		*/
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_results.php'])	{
