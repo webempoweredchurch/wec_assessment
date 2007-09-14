@@ -107,6 +107,8 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */
 	function saveToRecord() {
 		$fields_values = $this->toArray();
+		$fields_values['tstamp'] = mktime();
+		$fields_values['crdate'] = mktime();
 		unset($fields_values['uid']);
 		
 		/* If we have a non-zero UID, update an existing record, otherwise create a new record */
