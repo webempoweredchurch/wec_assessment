@@ -513,8 +513,11 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		
 		$categories = &$this->getCategories();
 		foreach($categories as $category) {
-			$answers = &$this->getAnswersForCategory($category);		
-			$responses[] = &tx_wecassessment_response::calculate($category, $answers, $minValue, $maxValue);
+			$answers = &$this->getAnswersForCategory($category);
+			$responseForCategory = &tx_wecassessment_response::calculate($category, $answers, $minValue, $maxValue);
+			if(is_object($responseForCategory)) {
+				$responses[] = $responseForCategory;
+			}
 		}
 		
 		return $responses;
