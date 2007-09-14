@@ -182,7 +182,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	
 	function findInDB($feUserUID) {
 		$table = 'tx_wecassessment_result';		
-		$where = tx_wecassessment_category::getWhere($table, 'feuser_id="'.$feUserUID.'"');
+		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'"', '', 'tstamp DESC');
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);		
 		if($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
