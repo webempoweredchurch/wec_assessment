@@ -508,13 +508,13 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		return $this->getUsername();
 	}
 	
-	function getResponses() {
+	function getResponses($minValue, $maxValue) {
 		$responses = array();
 		
 		$categories = &$this->getCategories();
 		foreach($categories as $category) {
-			$answers = &$result->getAnswersForCategory($category);		
-			$responses[] = &tx_wecassessment_response::calculate($category, $answers, $this->assessment->getMinimumValue(), $this->assessment->getMaximumValue());
+			$answers = &$this->getAnswersForCategory($category);		
+			$responses[] = &tx_wecassessment_response::calculate($category, $answers, $minValue, $maxValue);
 		}
 		
 		return $responses;

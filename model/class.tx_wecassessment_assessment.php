@@ -387,6 +387,11 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 		return $row['uid'];
 	}
 	
+	function getResponses() {
+		$result = &$this->getResult();
+		return $result->getResponses($this->getMinimumValue(), $this->getMaximumValue());
+	}
+	
 	
 }
 
