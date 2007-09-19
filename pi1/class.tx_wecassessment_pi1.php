@@ -62,7 +62,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
-		$this->pi_USER_INT_obj = 1;
+		$this->pi_USER_INT_obj = 0;
 		
 		/* @fixme	Remove this line!  Only here temporarily to test caching. */
 		$GLOBALS["TSFE"]->set_no_cache(); 

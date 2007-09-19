@@ -1,5 +1,5 @@
 includeLibs.tx_wecassessment_pi1 = EXT:wec_assessment/pi1/class.tx_wecassessment_pi1.php
-plugin.tx_wecassessment_pi1 = USER_INT
+plugin.tx_wecassessment_pi1 = USER
 
 plugin.tx_wecassessment_pi1 {
 	userFunc = tx_wecassessment_pi1->main
