@@ -62,10 +62,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
-		$this->pi_USER_INT_obj = 0;
-		
-		/* @fixme	Remove this line!  Only here temporarily to test caching. */
-		$GLOBALS["TSFE"]->set_no_cache(); 
+		$this->pi_USER_INT_obj = 1;
 		
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 		$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
