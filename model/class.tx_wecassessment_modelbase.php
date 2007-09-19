@@ -74,7 +74,10 @@ class tx_wecassessment_modelbase {
 		
 	
 	function processRow($table, $row) {
-		t3lib_beFunc::workspaceOL($table,$row);
+		if(TYPO3_MODE == 'BE') {
+			t3lib_beFunc::workspaceOL($table,$row);
+		}
+		
 		return $row;
 	}
 	
