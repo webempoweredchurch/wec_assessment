@@ -66,7 +66,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 		$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
-		$result = &$this->assessment->getResult();
+		$this->result = &$this->assessment->getResult();
 		
 		/* Set variables from TS and flexform */
 		/* @todo	Merge with flexforms */
@@ -82,12 +82,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		if($this->piVars['answers']) {
 			/* Add the newly posted answers to the result and save */
-			$result->addAnswersFromPost($this->piVars['answers']);
-			$result->save();
+			$this->result->addAnswersFromPost($this->piVars['answers']);
+			$this->result->save();
 		} else {
 			/* If we need to restart, remove the answers and save */
 			if($this->piVars['restart']) {
-				$result->reset();
+				$this->result->reset();
 			}
 			
 			/**
@@ -98,7 +98,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		}	
 
 		/* If the result is complete, show responses.  Otherwise, show questions. */
-		if($result->isComplete()) {
+		if($this->result->isComplete()) {
 			$view = "displayResponses";
 		} else {
 			$view = "displayQuestions";
@@ -138,7 +138,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/assessment.js" type="text/javascript"></script>';
 		
-		$result = &$this->assessment->getResult();
 		$questions = &$this->assessment->getQuestionsInPage();
 		$content = &$this->util->getTemplate();
 		
@@ -146,7 +145,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		 * If we already have some answers and we're on the first page, then
 		 * the user has started the assessment before.
 		 */
-		if($result->hasAnswers() and $this->firstLoad) {
+		if($this->result->hasAnswers() and $this->firstLoad) {
 			$markers['welcome_back'] = $this->displayWelcomeBack();
 		} else {
 			$markers['welcome_back'] = '';
@@ -190,8 +189,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$markers = array();
 		$subparts = array();
 		
-		$result = &$this->assessment->getResult();
-		$currentAnswer = $result->lookupAnswer($question);
+		$currentAnswer = $this->result->lookupAnswer($question);
 		
 		$markers['question'] = $this->util->getOutputFromCObj($question->toArray(), $this->conf['questions.'], 'question');
 		$subparts['scale'] = $this->displayScale($question, $currentAnswer);
