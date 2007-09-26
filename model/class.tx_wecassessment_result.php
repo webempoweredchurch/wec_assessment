@@ -184,17 +184,15 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	
 	function findInDB($feUserUID) {
 		$table = 'tx_wecassessment_result';		
-		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'"', '', 'tstamp DESC');
+		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'"');
 		
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);		
-		if($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'tstamp DESC');
+		if($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$result = tx_wecassessment_result::newFromArray($row);
 			$result->getQuestions();
 			$result->getAnswers(true);
-			/**
-			 * @todo 	Wy does freeing result generate error?
-			 * $GLOBALS['TYPO3_DB']->sql_free_result($result);
-			 */
+			
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		} else {
 			$result = null;
 		}
