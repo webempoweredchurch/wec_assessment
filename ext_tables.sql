@@ -56,7 +56,7 @@ CREATE TABLE tx_wecassessment_question (
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	text text NOT NULL,
 	category_id int(11) DEFAULT '0' NOT NULL,
-	weight int(11) DEFAULT '0' NOT NULL,
+	weight double DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

@@ -242,11 +242,7 @@ $TCA["tx_wecassessment_question"] = Array (
 				"type" => "input",
 				"size" => "4",
 				"max" => "4",
-				"eval" => "integer",
-				"range" => Array (
-					"upper" => "1000",
-					"lower" => "-1000"
-				),
+				"eval" => "double",
 				"default" => 1
 			)
 		),
