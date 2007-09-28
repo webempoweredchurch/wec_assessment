@@ -25,6 +25,8 @@
 			<label index="tx_wecassessment_result.feuser_id">Frontend User</label>
 			<label index="tx_wecassessment_result.assessment_id">Assessment</label>
 			<label index="tx_wecassessment_response">Assessment Responses</label>
+			<label index="tx_wecassessment_response.type">Type</label>
+			<label index="tx_wecassessment_response.question_id">Question</label>
 			<label index="tx_wecassessment_response.category_id">Category</label>
 			<label index="tx_wecassessment_response.text">Text</label>
 			<label index="tx_wecassessment_response.min_value">Minimum Value</label>

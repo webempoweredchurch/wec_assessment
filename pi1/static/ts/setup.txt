@@ -59,8 +59,12 @@ plugin.tx_wecassessment_pi1 {
 		response = COA
 		response {
 			10 = TEXT
-			10.field = categoryWithParents
+			10.field = parentTitle
 			10.wrap = <h3>|</h3>
+			
+			15 = TEXT
+			15.field = parentText
+			15.wrap = <p>|</p>
 			
 			20 = TEXT
 			20.field = score

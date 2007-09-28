@@ -29,7 +29,10 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
+
+define('TX_WECASSESSMENT_RESPONSE_CATEGORY', 0);
+define('TX_WECASSESSMENT_RESPONSE_QUESTION', 1);
+define('TX_WECASSESSMENT_RESPONSE_ASSESSMENT', 2);
 
 class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	
@@ -38,12 +41,9 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	var $_min_value;
 	var $_max_value;
 	var $_score;
-	var $_categoryUID;
-	var $_category;
 	
 	var $_validationErrors;
-	
-	
+		
 	/**
 	 * Default constructor.
 	 *
@@ -52,15 +52,13 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 * @param		string		Text of the response.
 	 * @param		integer		Min value this response is displayed for.
 	 * @param		integer		Max value this response is displayed for.
-	 * @param		integer		Category UID this response belongs to.
 	 */
-	function tx_wecassessment_response($uid, $pid, $text, $minValue, $maxValue, $categoryUID) {
+	function tx_wecassessment_response($uid, $pid, $text, $minValue, $maxValue) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
 		$this->_text = $text;
 		$this->_min_value = $minValue;
 		$this->_max_value = $maxValue;
-		$this->_categoryUID = $categoryUID;
 		
 		$this->_validationErrors = array();
 	}
@@ -68,12 +66,9 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	/**
 	 * Converts a response to an associative array
 	 *
-	 * @todo		Decide what to do with category.  We need it in the cObj but not for SQL related stuff.
 	 * @return		Associative array representing the response.
 	 */
 	function toArray() {
-		$category = $this->getCategory();
-		
 		return array(
 			"uid" => $this->getUID(),
 			"pid" => $this->getPID(),
@@ -82,8 +77,6 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 			"max_value" => $this->getMaxValue(),
 			"score" => $this->getScore(),
 			"maxScore" => $this->getMaxScore(),
-			"category" => $category ? $category->getTitle() : "",
-			"categoryWithParents" => $category ? $category->getTitleWithParents(": ") : "",
 		);
 	}
 	
@@ -204,67 +197,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	function setMaxScore($score) {
 		$this->_maxScore = $score;
 	}
-	
-	/**
-	 * Gets the UID of the category this response belongs to.
-	 *
-	 * @return		integer		UID of the category.
-	 */
-	function getCategoryUID() { 
-		return $this->_categoryUID; 
-	}
-	
-	/**
-	 * Sets the UID of the category this response belongs to. Also, unsets
-	 * $this->_category and waits for it be reloaded as needed.
-	 *
-	 * @param		integer		UID of the category.
-	 * @return		none
-	 */
-	function setCategoryUID($uid) { 
-		$this->_categoryUID = $uid; 
-		unset($this->_category); 
-	}
-	
-	/**
-	 * Gets the category this response belongs to.
-	 *
-	 * @return		object		The category.
-	 */
-	function getCategory() {
-		if(!$this->_category and $this->getCategoryUID()) {
-			$this->_category = tx_wecassessment_category::find($this->getCategoryUID());
-		}
 		
-		return $this->_category;
-	}
-	
-	/**
-	 * Sets the category this response belongs to.  Also, resets $this->_categoryUID
-	 * to the updated UID.
-	 *
-	 * @param		object		The category.
-	 * @return		none
-	 */
-	function setCategory($category) { 
-		$this->_category = $category; 
-		$this->_categoryUID = $category->getUID(); 
-	}
-	
-	/**
-	 * Gets the label for the current record.
-	 *
-	 * @return		string
-	 */
-	function getLabel() {
-		$category = &$this->getCategory();
-		if(is_object($category)) {
-			$title = $category->getTitleWithParents(': ');
-		}
-
-		return $title.': '.$this->getMinValue().'-'.$this->getMaxValue();
-	}
-	
 	/*************************************************************************
 	 *
 	 * Static Functions
@@ -291,40 +224,23 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 			$responses[] = tx_wecassessment_response::newFromArray($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
-		
 		return $responses;
 	}
 	
-	function findAllInCategory($pid, $category_id, $additionalWhere="") {
-		$responses = array();
-		$table = 'tx_wecassessment_response';
-		
-		$where = tx_wecassessment_response::combineWhere($additionalWhere, 'pid='.$pid.' AND category_id='.$category_id);
-		$where = tx_wecassessment_response::getWhere($table, $where);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'min_value');
-		
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$responses[] = tx_wecassessment_response::newFromArray($row);
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($result);
-		
-		
+	function findAllWithType($pid, $additionalWhere="1=1", $type) {
+		$where = tx_wecassessment_response::combineWhere($additionalWhere, 'type='.$type);
+		$responses = tx_wecassessment_response::findAll($pid, $where);
 		return $responses;
-	} 
+	}
 	
 	function findResponsesAndErrors($pid) {
 		$responses = tx_wecassessment_response::findAll($pid);
 		$errors = tx_wecassessment_response::findErrors($pid);
-		
-		
 	}
 	
-
-	
-	
-	function findByValue($value, $category_id) {
+	function findByValue($value, $where='1=1') {
 		$table = 'tx_wecassessment_response';
-		$where = tx_wecassessment_response::getWhere($table, 'category_id='.$category_id.' AND min_value<='.$value.' AND max_value>'.$value);
+		$where = tx_wecassessment_response::getWhere($table, ' AND min_value<='.$value.' AND max_value>'.$value);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -339,15 +255,12 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		return $response;
 	}
 
-	function calculate($category, $answers, $minValue, $maxValue) {
+	function calculate($answers, $minValue, $maxValue) {
 		foreach($answers as $answer) {
 			$question = $answer->getQuestion();
 			
-			$answerTotal += $answer->getWeightedValue();
+			$answerTotal += $answer->getWeightedScore();
 			$weightTotal += $question->getWeight();
-			
-			$lowTotal += $question->getWeight() * $minValue;
-			$highTotal += $question->getWeight() * $maxValue;
 		}
 				
 		/* @todo		How to deal with weights of 0? */
@@ -381,8 +294,26 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	function newFromArray($row) {
 		$table = 'tx_wecassessment_response';
 		$row = tx_wecassessment_response::processRow($table, $row);
-		$responseClass = t3lib_div::makeInstanceClassName($table);
-		return new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
+		switch($row['type']) {
+			case 0:
+				$responseClass = 'tx_wecassessment_response_category';
+				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
+				break;
+			case 1:
+				$responseClass = 'tx_wecassessment_response_question';
+				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['question_id']);
+				break;
+			case 2:
+				$responseClass = 'tx_wecassessment_response_assessment';
+				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
+				break;
+			default:
+				$responseClass = t3lib_div::makeInstanceClassName($table);
+				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
+				break;
+		}
+		
+		return $response;
 	}
 		
 	/*************************************************************************
@@ -423,7 +354,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		return $valid;
 		
 	}
-	
+		
 	/*
 	 * Perform basic sanity checking to ensure that max value is not smaller
 	 * than min value.

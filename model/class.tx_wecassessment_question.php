@@ -28,13 +28,14 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
 
 /* @todo		Store the answer inside the question? */
 
-class tx_wecassessment_question extends tx_wecassessment_modelbase {
+class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
 
 	var $_uid;
 	var $_pid;
@@ -43,6 +44,9 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	var $_categoryUID;
 	var $_weight;
 	var $_allAnswers;
+	var $_allResponses;
+	
+	var $_responseClass = 'tx_wecassessment_response_question';
 	
 	/**
 	 * Default constructor.
@@ -71,6 +75,10 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	 */
 	function toArray() {
 		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
+	}
+	
+	function calculateResponse($score) {
+		return tx_wecassessment_response_question::findByScore($score, $this->getUID());
 	}
 
 	/*************************************************************************
@@ -242,6 +250,31 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	}
 	
 	/**
+	 * Gets the responses within the current category.
+	 * 
+	 * @return		array		The array for responses belonging to the current category.
+	 * @todo		Order responses based on min value.
+	 */
+	function getResponses() {
+		if(!$this->_responses) {
+			$this->_responses = tx_wecassessment_response_question::findAllInQuestion($this->getPID(), $this->getUID());
+		}
+		return $this->_responses;
+		
+	}
+	
+	/**
+	 * Adds a single response to the array of responses in this category.
+	 * @param		object		The new response object.
+	 * @return		none
+	 */
+	function addResponse($response) {
+		$response->setCategoryUID($this->getUID());
+		$this->_responses[] = $response;
+	}
+	
+	
+	/**
 	 * Checks whether this questions has an answer 
 	 * @todo		Optimize, and probably move this up to the result set.
 	 *
@@ -262,12 +295,9 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 	}
 	
 	function getAverageAnswer() {
-		if(!$this->_allAnswers) {
-			$this->_allAnswers = &tx_wecassessment_answer::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
-		}
-		
-		if(is_array($this->_allAnswers)) {
-			foreach($this->_allAnswers as $answer) {
+		$allAnswers = $this->getAllAnswers();
+		if(is_array($allAnswers)) {
+			foreach($allAnswers as $answer) {
 				$value += $answer->getValue();
 			}
 			$average = $value / $this->getTotalAnswers();
@@ -276,11 +306,29 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		return round($average, 2);
 	}
 	
-	function getTotalAnswers() {
+	function getAllAnswers() {
 		if(!$this->_allAnswers) {
 			$this->_allAnswers = &tx_wecassessment_answer::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
 		}
-		return count($this->_allAnswers);
+		
+		return $this->_allAnswers;
+	}
+	
+	function getTotalAnswers() {
+		return count($this->getAllAnswers());
+	}
+	
+	function getAllResponses() {
+		if(!$this->_allResponses) {
+			$this->_allResponses = &tx_wecassessment_response::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
+		}
+		
+		return $this->_allResponses;
+	}
+	
+	function getCalculatedResponse($score) {
+		$weightedScore = $this->getWeight() * $score;
+		return tx_wecassessment_response::findByValue($weightedScore, 'question_id='.$category_id);
 	}
 	
 	/*************************************************************************
@@ -370,9 +418,7 @@ class tx_wecassessment_question extends tx_wecassessment_modelbase {
 		$row = tx_wecassessment_question::processRow($table, $row);
 		$questionClass = t3lib_div::makeInstanceClassName($table);
 		return new $questionClass($row['uid'], $row['pid'], $row['sorting'], $row['text'], $row['category_id'], $row['weight']);
-	}
-	
-	
+	}	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_question.php'])	{

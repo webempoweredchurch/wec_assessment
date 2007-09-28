@@ -22,7 +22,6 @@ CREATE TABLE tx_wecassessment_category (
 	title tinytext NOT NULL,
 	description text NOT NULL,
 	image blob NOT NULL,
-	parent_category int(11) unsigned DEFAULT '0' NOT NULL,
 	
 	questions int(11) DEFAULT '0' NOT NULL,
 	responses int(11) DEFAULT '0' NOT NULL,
@@ -57,6 +56,8 @@ CREATE TABLE tx_wecassessment_question (
 	text text NOT NULL,
 	category_id int(11) DEFAULT '0' NOT NULL,
 	weight double DEFAULT '0' NOT NULL,
+	
+	responses int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -146,6 +147,8 @@ CREATE TABLE tx_wecassessment_response (
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	type varchar(30) DEFAULT '0' NOT NULL,
+	question_id int(11) DEFAULT '0' NOT NULL,
 	category_id int(11) DEFAULT '0' NOT NULL,
 	text text NOT NULL,
 	min_value double DEFAULT '0' NOT NULL,

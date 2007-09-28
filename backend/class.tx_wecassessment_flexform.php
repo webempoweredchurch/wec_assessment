@@ -97,27 +97,26 @@ class tx_wecassessment_flexform {
 	 */
 	function getValidationErrors($PA, $fobj) {		
 		$this->init($PA, $fobj);
-		
-		$table = "tx_wecassessment_response";		
 		$content = array();
+		$minValue = $this->assessment->getMinimumValue();
+		$maxValue = $this->assessment->getMaximumValue();
+		
+		/* Check the validity of the total response */
+		if(!$this->assessment->valid($minValue, $maxValue)) {
+			$content[] = $this->displayContainerErrors('', $assessment);
+		}
 				
-		$topLevelCategories = tx_wecassessment_category::findAllParents($this->assessment->getPID());
-		foreach($topLevelCategories as $topLevelCategory) {
-			/* Check the validity of every top level category */
-			if(!$topLevelCategory->valid($this->assessment->getMinimumValue(), $this->assessment->getMaximumValue())) {
-				$content[] = $this->displayCategoryErrors('', $topLevelCategory);
+		$categories = tx_wecassessment_category::findAll($this->assessment->getPID());
+		foreach($categories as $category) {
+			if(!$category->valid($minValue, $maxValue)) {
+				$content[] = $this->displayContainerErrors('', $category);
 			}
 			
-			/* Check the validity of each child */
-			$children = $topLevelCategory->getChildCategories();			
-			if(is_array($children)) {
-
-				foreach($children as $child) {
-	
-					/* If the category isnt valid, add the error messages */
-					if(!$child->valid($this->assessment->getMinimumValue(), $this->assessment->getMaximumValue())) {
-						$content[] = $this->displayCategoryErrors($topLevelCategory->getTitle(), $child);
-					}
+			/* Check the validity of each question */
+			$questions = $category->findQuestions();
+			foreach($questions as $question) {
+				if(!$question->valid($minValue, $maxValue)) {
+					$content[] = $this->displayContainerErrors($category->getLabel(), $question);
 				}
 			}
 		}
@@ -130,24 +129,26 @@ class tx_wecassessment_flexform {
 	
 	}
 	
-	function displayCategoryErrors($parentTitle, $category) {
+	function displayContainerErrors($parentTitle, $container) {
 		$content = array();
 		
 		if($parentTitle) {		
-			$title = $parentTitle.' : '.$category->getTitle();
+			$title = $parentTitle.' : '.$container->getLabel();
 		} else {
-			$title = $category->getTitle();
+			$title = $container->getLabel();
 		}
 		$content[] = '<h3>'.$title.'</h3>';
 
-		$errors = $category->getValidationErrors();
+		$errors = $container->getValidationErrors();
 		
-		$content[] = '<ul>';
-		foreach($errors as $error) {
-			$errorString = tx_wecassessment_flexform::errorToString($error);
-			$content[] = '<li>'.$errorString.'</li>';
+		if(is_array($errors) && count($errors)) {
+			$content[] = '<ul>';
+			foreach($errors as $error) {
+				$errorString = tx_wecassessment_flexform::errorToString($error);
+				$content[] = '<li>'.$errorString.'</li>';
+			}
+			$content[] = '</ul>';
 		}
-		$content[] = '</ul>';
 		
 		return implode(chr(10), $content);
 	}

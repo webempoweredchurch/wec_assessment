@@ -119,7 +119,8 @@ $TCA["tx_wecassessment_response"] = Array (
 		'versioningWS' => true, 
 		'origUid' => 't3_origuid',
 		"default_sortby" => "ORDER BY category_id, min_value, max_value",	
-		"delete" => "deleted",	
+		"delete" => "deleted",
+		'type' => 'type',
 		"enablecolumns" => Array (		
 			"disabled" => "hidden",
 		),

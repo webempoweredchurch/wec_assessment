@@ -214,35 +214,6 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		return $result;		
 	}
 	
-	/**
-	 * Get overall list of categories
-	 * Get answers that live in each category
-	 * Get a weighted value
-	 * Find the correct response
-	 *
-	 * @todo	Must support categories.  Throw this away?
-	 */
-	function getResponses2() {
-		
-		$answers = $this->getAnswers();	
-		foreach($answers as $answer) {
-			$question = $answer->getQuestion();
-			
-			$answerTotal += $answer->getWeightedValue();
-			$weightTotal += $question->getWeight();
-		}
-		
-		/* @todo		How to deal with weights of 0? */
-		if ($weightTotal==0) {
-			$weightTotal = 1;
-		}
-		
-		$value = $answerTotal / $weightTotal;
-		$response = tx_wecassessment_response::findByValue($value);
-		
-		return $response;
-	}
-	
 	/*************************************************************************
 	 *
 	 * Default Getters and Setters
@@ -507,23 +478,6 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function getLabel() {
 		return $this->getUsername();
 	}
-	
-	function getResponses($minValue, $maxValue) {
-		$responses = array();
-		
-		$categories = &$this->getCategories();
-		foreach($categories as $category) {
-			$answers = &$this->getAnswersForCategory($category);
-			$responseForCategory = &tx_wecassessment_response::calculate($category, $answers, $minValue, $maxValue);
-			if(is_object($responseForCategory)) {
-				$responses[] = $responseForCategory;
-			}
-		}
-		
-		return $responses;
-	}
-	
-	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_result.php'])	{

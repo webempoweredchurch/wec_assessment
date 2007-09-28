@@ -28,22 +28,20 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_category.php');
 
-class tx_wecassessment_category extends tx_wecassessment_modelbase {
+class tx_wecassessment_category extends tx_wecasssessment_responsecontainer {
 	
 	var $_uid;
 	var $_pid;
 	var $_title;
 	var $_description;
 	var $_image;
-	var $_parent;
-	var $_parentUID;
-	var $_children;
-	var $_responses;
 	
-	var $_validationErrors;
-	
+	var $_responseClass = 'tx_wecassessment_response_category';
+		
 	/**
 	 * Default constructor.
 	 * @param		integer		Unique ID for the category.
@@ -54,13 +52,12 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	 * @param		integer		Unique ID for the parent category for this category.
 	 * @return		none
 	 */
-	function tx_wecassessment_category($uid, $pid, $title, $description, $image, $parentUID) {
+	function tx_wecassessment_category($uid, $pid, $title, $description, $image) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
 		$this->_title = $title;
 		$this->_description = $description;
 		$this->_image = $image;
-		$this->_parentUID = $parentUID;
 		
 		$this->_validationErrors = array();
 	}
@@ -77,8 +74,11 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 			"title" => $this->getTitle(), 
 			"description" => $this->getDescription(), 
 			"image" => $this->getImage(), 
-			"parent_id" => $this->getParentUID()
 		);
+	}
+	
+	function calculateResponse($score) {
+		return tx_wecassessment_response_category::findByScore($score, $this->getUID());
 	}
 
 	
@@ -135,23 +135,6 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		return $this->_title; 
 	}
 	
-	/**
-	 * Gets the title of the category, along with the titles of any parent
-	 * categories.
-	 *
-	 * @param		string		Separator between category titles.
-	 * @return		string
-	 */
-	function getTitleWithParents($separator) {
-		$parent = &$this->getParentCategory();
-		if($parent) {
-			$title = $parent->getTitleWithParents($separator).$separator.$this->getTitle();
-		} else {
-			$title = $this->getTitle();
-		}
-		
-		return $title;
-	}
 	
 	/**
 	 * Sets the title of the category.
@@ -202,141 +185,13 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		$this->_image = $image;
 	}
 	
-	
-	/**
-	 * Gets the UID of the parent category.
-	 *
-	 * @return		UID of the parent category.
-	 */
-	function getParentUID() { 
-		return $this->_parentUID;
-	}
-
-	/**
-	 * Sets the UID of the parent category.  Also, unsets $this->_parent which
-	 * will be reloaded with the new UID when needed.
-	 *
-	 * @param		integer		UID of the parent category.
-	 * @return		none
-	 */
-	function setParentUID($parentUID) { 
-		$this->_parentUID = $parentUID; 
-		unset($this->_parent);
-	}
-	
-	/**
-	 * Finds the parent of the current category.  If the category is top-level
-	 * and no parent exists, return null.
-	 *
-	 * @return		object		The parent category.
-	 */
-	function getParentCategory() {
-		if(!$this->_parent) {
-			$this->_parent = tx_wecassessment_category::find($this->getParentUID());
-		}
-		return $this->_parent;
-	}
-	
-	/**
-	 * Sets the parent of the current category.  Also, resets $this->_parentUID
-	 * to the new UID.
-	 *
-	 * @param		object		The parent category.
-	 * @return		none.
-	 */
-	function setParentCategory($parent) {
-		$this->_parent = $parent;
-		$this->_parentUID = $parent->getUID();
-	}
-	
-	
-	/**
-	 * Finds the children of the current category.  If there are no children,
-	 * then an empty array is returned.
-	 *
-	 * @return		array		Array of categories that are children of the current category.
-	 */
-	function getChildCategories() {
-		if(!$this->_children) {
-			$this->_children = tx_wecassessment_category::findAll($this->getPID(), 'parent_category='.$this->getUID());
-		}
-		return $this->_children;
-	}
-	
-	/* @todo		Do we need setChildCategories()? */
-	
-	/**
-	 * Gets the responses within the current category.
-	 * 
-	 * @return		array		The array for responses belonging to the current category.
-	 * @todo		Order responses based on min value.
-	 */
-	function getResponses() {
-		if(!$this->_responses) {
-			$this->_responses = tx_wecassessment_response::findAllInCategory($this->getPID(), $this->getUID());
-		}
-		return $this->_responses;
-		
-	}
-	
-	
-	/**
-	 * Sets the responses to the specified response array.
-	 * @param		array		The array of responses in this category.
-	 * @return		none
-	 */	
-	function setResponses($responses) {
-		/* @todo 	Unset responses first */
-		foreach($responses as $response) {
-			$this->addResponse($response);
-		}
-	}
-	
-	/**
-	 * Adds a single response to the array of responses in this category.
-	 * @param		object		The new response object.
-	 * @return		none
-	 */
-	function addResponse($response) {
-		$response->setCategoryUID($this->getUID());
-		$this->_responses[] = $response;
-	}
-	
-	/**
-	 * Checks if the current category is a child of the given categoryUID.
-	 * Starts from the current category's parent and recurs up the hierarchy.
-	 *
-	 * @param		integer		The category UID that we're testing for inclusion within.
-	 * @return		boolean		True/false whether the current category lives within categoryUID.
-	 */
-	function inCategory($categoryUID) {
-		$parentCategory = $this->getParentCategory();
-		
-		/* If there is a parent, search. Else, not in category. */
-		if($parentCategory) {
-
-			/* If the parent matches what we're looking for, in category.
-			 * If not, check the parent 
-			 */
-			if($parentCategory == $categoryUID) {
-				$inCategory = true;
-			} else {
-					$inCategory = $parentCategory->inCategory($categoryUID);
-			}	
-		} else {
-			$inCategory = false;
-		}
-		
-		return $inCategory;
-	}
-	
 	/**
 	 * Gets the label for the current record.
 	 *
 	 * @return		string
 	 */
 	function getLabel() {
-		return $this->getTitleWithParents(': ');
+		return $this->getTitle();
 	}
 	
 	
@@ -385,15 +240,6 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * Finds root level categories.  That is, categories without parents.
-	 * @param		integer		Page ID where categories are stored.
-	 * @return		array		Array of root level categories.
-	 */
-	function findAllParents($pid) {
-		return tx_wecassessment_category::findAll($pid, 'parent_category=0');
-	}
-	
-	/**
 	 * Creates a new category object from an associative array.
 	 *
 	 * @param		array		Associate array for a category.
@@ -404,73 +250,14 @@ class tx_wecassessment_category extends tx_wecassessment_modelbase {
 		
 		$row = tx_wecassessment_category::processRow($table, $row);
 		$categoryClass = t3lib_div::makeInstanceClassName($table);
-		return new $categoryClass($row['uid'], $row['pid'], $row['title'], $row['description'], $row['image'], $row['parent_category']);			
+		return new $categoryClass($row['uid'], $row['pid'], $row['title'], $row['description'], $row['image']);
 	}
 
-
-	/*************************************************************************
-	 *
-	 * Validation functions
-	 *
-	 ************************************************************************/
-	
-	/* @todo		Review validation functions */
-	
-	/**
-	 * Validates responses for this category based on the min and max parameters.
-	 * Looks for overlapping ranges and uncovered ranges.
-	 *
-	 * @param		integer		The minimum value for a response.
-	 * @param		integer		The maximum value for a response.
-	 * @return		boolean		True/false whether category is valid or not.
-	 */
-	function valid($min, $max) {
-		$categoryIsValid = true;
-		$responses = $this->getResponses();
-		$messages = array();
-		
-		foreach($responses as $response) {
-			$hasErrors = false;
-			
-			if(!$response->valid($min, $max)) {
-				$responseHasErrors = true;
-			}
-			
-			if($previousResponse and !$response->validRelativeTo($previousResponse)) {
-				$responseHasErrors = true;
-			}
-			
-			if($responseHasErrors) {
-				$this->addValidationErrors($response->getValidationErrors());
-				$categoryIsValid = false;
-			}
-			
-			$previousResponse = $response;
-		}
-		
-		return $categoryIsValid;
-
-	}
-		
-	/**
-	 * Adds validation errors the existing error array.
-	 *
-	 * @param		array		Array of new validation errors.
-	 * @return		none
-	 */
-	function addValidationErrors($errorArray) {
-		$this->_validationErrors = array_merge($this->_validationErrors, $errorArray);
+	function findQuestions($recur = false) {
+		$where = 'category_id='.$this->getUID();
+		return tx_wecassessment_question::findAll($this->getPID(), $where);
 	}
 	
-	/**
-	 * Gets the validation errors for the current category.
-	 *
-	 * @return		array		Array of validation errors.
-	 */
-	function getValidationErrors() {
-		return $this->_validationErrors;
-	}
-		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_category.php'])	{

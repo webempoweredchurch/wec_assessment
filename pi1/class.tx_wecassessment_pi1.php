@@ -240,8 +240,8 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$subparts = array();
 		
 		$content = $this->util->getTemplate();
+		$responses = &$this->assessment->calculateAllResponses();
 		
-		$responses = &$this->assessment->getResponses();
 		if(is_array($responses)) {
 			foreach($responses as $response) {
 				$responseHTML[] = $this->displayResponse($response);

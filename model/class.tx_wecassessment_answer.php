@@ -97,7 +97,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @return		integer		The value of this answer after weighting.
 	 * @todo		What's the error return value of we don't get a question?
 	 */
-	function getWeightedValue() {
+	function getWeightedScore() {
 		$question = $this->getQuestion();
 		
 		if(is_a($question, "tx_wecassessment_question")) {
@@ -108,6 +108,11 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 			$weightedValue = 0;
 		}
 		return $weightedValue;
+	}
+	
+	function getWeight() {
+		$question = $this->getQuestion();
+		return $question->getWeight();
 	}
 	
 	/**
@@ -173,6 +178,10 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 */
 	function getValue() { 
 		return $this->_value; 
+	}
+	
+	function getScore() {
+		return $this->getValue();
 	}
 	
 	/**
@@ -374,6 +383,16 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$answerClass = t3lib_div::makeInstanceClassName($table);
 		return new $answerClass($row['uid'], $row['pid'], $row['value'], $row['question_id'], $row['result_id']);
 	}
+	
+	
+	function calculateResponse() {
+		$weightedValue = $this->getWeightedScore();
+		$parentTable = 'tx_wecassessment_question';
+		$parentID = $this->getQuestionUID();
+		
+		return tx_wecassessment_response::findByValue($weightedScore, $parentTable, $parentID);
+	}
+	
 		
 }
 

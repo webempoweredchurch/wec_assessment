@@ -1,8 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-require_once('backend/class.tx_wecassessment_results.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_treeview.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_results.php');
 
 $TCA["tx_wecassessment_category"] = Array (
 	"ctrl" => $TCA["tx_wecassessment_category"]["ctrl"],
@@ -67,13 +66,10 @@ $TCA["tx_wecassessment_category"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.category_id",		
 			"config" => Array (
 				"type" => "select",	
-				"form_type" => "user",
-				"userFunc" => "tx_wecassessment_treeview->displayCategoryTree",
-				"treeView" => 1,
 				"foreign_table" => "tx_wecassessment_category",	
-				"size" => 10,	
+				"size" => 1,	
 				"minitems" => 0,
-				"maxitems" => 2,	
+				"maxitems" => 1,	
 				"wizards" => Array(
 					"_PADDING" => 2,
 					"_VERTICAL" => 1,
@@ -193,13 +189,10 @@ $TCA["tx_wecassessment_question"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.category_id",		
 			"config" => Array (
 				"type" => "select",	
-				"form_type" => "user",
-				"userFunc" => "tx_wecassessment_treeview->displayCategoryTree",
-				"treeView" => 1,
 				"foreign_table" => "tx_wecassessment_category",	
-				"size" => 10,	
+				"size" => 1,	
 				"minitems" => 0,
-				"maxitems" => 2,	
+				"maxitems" => 1,	
 				"wizards" => Array(
 					"_PADDING" => 2,
 					"_VERTICAL" => 1,
@@ -419,19 +412,30 @@ $TCA["tx_wecassessment_response"] = Array (
 				"default" => "0"
 			)
 		),
-		
+		"type" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_respons.type",
+			"config" => Array (
+				"type" => "select",
+				"size" => 1,
+				"minitems" => 0,
+				"maxitems" => 1,
+				"items" => Array (
+					Array('Response for Category', 0),
+					Array('Response for Question', 1),
+					Array('Response for Entire Assessment', 2),
+				),
+			),
+		),
 		"category_id" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.category_id",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.category_id",		
 			"config" => Array (
 				"type" => "select",	
-				"form_type" => "user",
-				"userFunc" => "tx_wecassessment_treeview->displayCategoryTree",
-				"treeView" => 1,
 				"foreign_table" => "tx_wecassessment_category",	
-				"size" => 10,	
+				"size" => 1,	
 				"minitems" => 0,
-				"maxitems" => 2,	
+				"maxitems" => 1,	
 				"wizards" => Array(
 					"_PADDING" => 2,
 					"_VERTICAL" => 1,
@@ -452,6 +456,51 @@ $TCA["tx_wecassessment_response"] = Array (
 						"icon" => "list.gif",
 						"params" => Array(
 							"table"=>"tx_wecassessment_category",
+							"pid" => "###CURRENT_PID###",
+						),
+						"script" => "wizard_list.php",
+					),
+					"edit" => Array(
+						"type" => "popup",
+						"title" => "Edit",
+						"script" => "wizard_edit.php",
+						"popup_onlyOpenIfSelected" => 1,
+						"icon" => "edit2.gif",
+						"JSopenParams" => "height=350,width=580,status=0,menubar=0,scrollbars=1",
+					),
+				),
+			)
+		),
+		
+		"question_id" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.question_id",		
+			"config" => Array (
+				"type" => "select",	
+				"foreign_table" => "tx_wecassessment_question",	
+				"size" => 1,	
+				"minitems" => 0,
+				"maxitems" => 1,	
+				"wizards" => Array(
+					"_PADDING" => 2,
+					"_VERTICAL" => 1,
+					"add" => Array(
+						"type" => "script",
+						"title" => "Create new record",
+						"icon" => "add.gif",
+						"params" => Array(
+							"table"=>"tx_wecassessment_question",
+							"pid" => "###CURRENT_PID###",
+							"setValue" => "prepend"
+						),
+						"script" => "wizard_add.php",
+					),
+					"list" => Array(
+						"type" => "script",
+						"title" => "List",
+						"icon" => "list.gif",
+						"params" => Array(
+							"table"=>"tx_wecassessment_question",
 							"pid" => "###CURRENT_PID###",
 						),
 						"script" => "wizard_list.php",
@@ -512,7 +561,9 @@ $TCA["tx_wecassessment_response"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id, min_value, max_value, text;;;richtext:rte_transform[mode=ts]")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, type, category_id, min_value, max_value, text;;;richtext:rte_transform[mode=ts]"),
+		"1" => Array("showitem" => "hidden;;1;;1-1-1, type, question_id, min_value, max_value, text;;;richtext:rte_transform[mode=ts]"),
+		"2" => Array("showitem" => "hidden;;1;;1-1-1, type, min_value, max_value, text;;;richtext:rte_transform[mode=ts]")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")

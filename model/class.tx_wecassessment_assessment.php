@@ -27,26 +27,28 @@
 *
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
-class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
+class tx_wecassessment_assessment extends tx_wecasssessment_responsecontainer {
 	
-	var $_minimumValue = 0;
-	var $_maximumValue = 3;
-	var $_answerSet = array(
-		'0' => 'Never',
-		'1' => 'Rarely',
-		'2' => 'Sometimes.',
-		'3' => 'Always',
-	);
-	var $_usePaging = false;
-	var $_questionsPerPage = 0;
-	var $_pageNumber = 0;
-	var $_sorting = 'random';
+	var $_minimumValue;
+	var $_maximumValue;
+	var $_answerSet;
+	var $_usePaging;
+	var $_questionsPerPage;
+	var $_categories;
+	var $_pageNumber;
+	var $_sorting;
 	
 	var $_result;
-	var $_pid = 0;
-	var $_uid = 0;
+	var $_pid;
+	var $_uid;
+	
+	var $_responseClass = 'tx_wecassessment_response_assessment';
+	
 	
 	/**
 	 * Default constructor.
@@ -104,6 +106,13 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 			'percentComplete' => $this->getPercentComplete(),
 		);
 	}
+
+
+	/*************************************************************************
+	 *
+	 * Default getters and setters
+	 *
+	 ************************************************************************/
 	
 	/**
 	 * Gets the questions on the current page of the assessment.
@@ -143,6 +152,14 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 		}
 		
 		return $questions;
+	}
+	
+	function getCategories() {
+		if(!$this->_categories) {
+			$this->_categories = tx_wecassessment_category::findAll($this->getPID());
+		}
+		
+		return $this->_categories;
 	}
 	
 	function getUID() {
@@ -266,7 +283,53 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 		return $this->_result;
 	}
 	
+	function calculateAllResponses() {
+		$responses = array();
+		$minValue = $this->getMinimumValue();
+		$maxValue = $this->getMaximumValue();
+		
+		$result = $this->getResult();
+		$answers = $result->getAnswers();
+		
+		/* Build the category array */
+		$categoryArray = array();
+		foreach($answers as $answer) {
+			$categoryArray[$answer->getCategoryUID()]['answers'][$answer->getQuestionUID()] = $answer;
+			$categoryArray[$answer->getCategoryUID()]['totalScore'] += $answer->getWeightedScore();
+			$categoryArray[$answer->getCategoryUID()]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
+		}
+		
+		foreach($categoryArray as $categoryUID => $children) {
+			$category = tx_wecassessment_category::find($categoryUID);			
+			$categoryScore = $children['totalScore'] / count($children['answers']);
+			$response = &$category->calculateResponse($categoryScore);
+			
+			if(is_object($response)) {
+				$response->setMaxScore($this->getMaximumValue());
+				$responses[] = $response;
+			}
+			
+			foreach($children['answers'] as $answer) {
+				$question = $answer->getQuestion();
+				$questionScore = $answer->getScore();
+				
+				$response = $question->calculateResponse($questionScore);			
+				if(is_object($response)) {
+					$response->setMaxScore($this->getMaximumValue());
+					$responses[] = $response;
+				}
+			}
+		}
+		
+		return $responses;
+	}	
 	
+	
+	/*************************************************************************
+	 *
+	 * Utility Functions
+	 *
+	 ************************************************************************/
 	
 	
 	/**
@@ -386,12 +449,6 @@ class tx_wecassessment_assessment extends tx_wecassessment_modelbase {
 		
 		return $row['uid'];
 	}
-	
-	function getResponses() {
-		$result = &$this->getResult();
-		return $result->getResponses($this->getMinimumValue(), $this->getMaximumValue());
-	}
-	
 	
 }
 
