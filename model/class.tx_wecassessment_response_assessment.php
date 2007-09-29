@@ -56,7 +56,7 @@ class tx_wecassessment_response_assessment extends tx_wecassessment_response {
 	
 	function getLabel() {
 		$title = 'Total Assessment';
-		return $title.': '.$this->getMinValue().'-'.$this->getMaxValue();
+		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 	}
 	
 	function getParentUID() {
@@ -130,7 +130,7 @@ class tx_wecassessment_response_assessment extends tx_wecassessment_response {
 		foreach($answers as $answer) {
 			$question = $answer->getQuestion();
 			
-			$answerTotal += $answer->getWeightedValue();
+			$answerTotal += $answer->getWeightedScore();
 			$weightTotal += $question->getWeight();
 			
 			$lowTotal += $question->getWeight() * $minValue;

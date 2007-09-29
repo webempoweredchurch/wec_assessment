@@ -89,7 +89,7 @@ class tx_wecassessment_response_category extends tx_wecassessment_response {
 			$title = '[ No Category ]';
 		}
 
-		return $title.': '.$this->getMinValue().'-'.$this->getMaxValue();
+		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 	}
 	
 

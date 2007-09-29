@@ -89,7 +89,7 @@ class tx_wecassessment_response_question extends tx_wecassessment_response {
 			$title = '[ No Question ]';
 		}
 
-		return $title.': '.$this->getMinValue().'-'.$this->getMaxValue();
+		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 	}
 	
 
