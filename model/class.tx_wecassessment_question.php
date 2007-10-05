@@ -80,6 +80,10 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	function calculateRecommendation($score) {
 		return tx_wecassessment_recommendation_question::findByScore($score, $this->getUID());
 	}
+	
+	function getLabel() {
+		return $this->getText();
+	}
 
 	/*************************************************************************
 	 *

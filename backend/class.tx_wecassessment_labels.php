@@ -25,6 +25,27 @@ class tx_wecassessment_labels {
 	}
 	
 	/**
+	 * Gets the label for a question record.
+	 *
+	 * @param		array		Params array, passed by reference. $params['title] is set to the new label.
+	 * @param		object		Parent object.
+	 * @return		none
+	 */
+	function getQuestionLabel(&$params, &$pObj) {
+		$uid = $params['row']['uid'];
+		if(is_numeric($uid)) {
+			$question = &tx_wecassessment_question::find($uid, true);
+			if(is_object($question)) {
+				$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
+				$params['title'] = htmlspecialchars(t3lib_div::fixed_lgd_cs($question->getLabel(), $titleLength));
+			}
+		} else {
+			$params['title'] = '[ New Question ]';
+		}
+	}
+		
+	
+	/**
 	 * Gets the label for a result record.
 	 *
 	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.

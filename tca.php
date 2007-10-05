@@ -247,9 +247,24 @@ $TCA["tx_wecassessment_question"] = Array (
 				"userFunc" => 'tx_wecassessment_results->displayAverageForQuestion',
 			),
 		),
+		"recommendations" => Array (
+			"exclude" => 1,
+			"label" => "Recommendations",
+			"config" => Array (
+				"type" => "inline",
+				"foreign_table" => "tx_wecassessment_recommendation",
+				"foreign_field" => "question_id",
+				"appearance" => Array (
+					"collapseAll" => false,
+					"expandSingle" => false,
+					"newRecordLinkAddTitle" => true,
+					"newRecordLinkPosition" => "bottom",
+				),
+			),
+		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight, average_score")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight, average_score,--div--;Recommendations, recommendations")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -477,13 +492,14 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.question_id",		
 			"config" => Array (
 				"type" => "select",	
-				"foreign_table" => "tx_wecassessment_question",	
+				"foreign_table" => "tx_wecassessment_question",
 				"size" => 1,	
 				"minitems" => 0,
-				"maxitems" => 1,	
+				"maxitems" => 1,
+				/*
 				"wizards" => Array(
-					"_PADDING" => 2,
-					"_VERTICAL" => 1,
+					"_PADDING" => 6,
+					"_VERTICAL" => 0,
 					"add" => Array(
 						"type" => "script",
 						"title" => "Create new record",
@@ -514,6 +530,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 						"JSopenParams" => "height=350,width=580,status=0,menubar=0,scrollbars=1",
 					),
 				),
+				*/
 			)
 		),
 

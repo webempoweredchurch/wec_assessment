@@ -46,6 +46,7 @@ $TCA["tx_wecassessment_question"] = Array (
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_question.gif",
+		"dividers2tabs" => true,
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, category_id, text, weight",
@@ -149,7 +150,8 @@ if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
 	$TCA['tx_wecassessment_recommendation']['ctrl']['label_userFunc']="tx_wecassessment_labels->getRecommendationLabel";
 	$TCA['tx_wecassessment_result']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResultLabel";
 	$TCA['tx_wecassessment_answer']['ctrl']['label_userFunc']="tx_wecassessment_labels->getAnswerLabel";
-	$TCA['tx_wecassessment_category']['ctrl']['label_userFunc']="tx_wecassessment_labels->getCategorylabel";
+	$TCA['tx_wecassessment_category']['ctrl']['label_userFunc']="tx_wecassessment_labels->getCategoryLabel";
+	$TCA['tx_wecassessment_question']['ctrl']['label_userFunc']="tx_wecassessment_labels->getQuestionLabel";
 }
 
 
