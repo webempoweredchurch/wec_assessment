@@ -42,19 +42,19 @@ class tx_wecassessment_labels {
 	}
 	
 	/**
-	 * Gets the label for a response record.
+	 * Gets the label for a recommendation record.
 	 *
 	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
 	 */
-	function getResponseLabel(&$params, &$pObj) {
+	function getRecommendationLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
-			$response = &tx_wecassessment_response::find($uid, true);
-			$params['title'] = $response->getLabel();
+			$recommendation = &tx_wecassessment_recommendation::find($uid, true);
+			$params['title'] = $recommendation->getLabel();
 		} else {
-			$params['title'] = '[ New Response ]';
+			$params['title'] = '[ New Recommendation ]';
 		}
 	}
 	

@@ -52,12 +52,12 @@ plugin.tx_wecassessment_pi1 {
 		stdWrap.wrap = <fieldset class="question">|</fieldset>
 	}
 	
-	responses {
+	recommendations {
 		score = TEXT
 		score.value = <div id="score">{field:score}</div>
 		
-		response = COA
-		response {
+		recommendation = COA
+		recommendation {
 			10 = TEXT
 			10.field = parentTitle
 			10.wrap = <h3>|</h3>
@@ -77,7 +77,7 @@ plugin.tx_wecassessment_pi1 {
 			30.parseFunc < tt_content.text.20.parseFunc
 		    
 
-			wrap = <div class="response">|</div>
+			wrap = <div class="recommendation">|</div>
 
 		}
 	}

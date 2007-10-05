@@ -28,14 +28,14 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
 
 /* @todo		Store the answer inside the question? */
 
-class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
+class tx_wecassessment_question extends tx_wecasssessment_recommendationcontainer {
 
 	var $_uid;
 	var $_pid;
@@ -44,9 +44,9 @@ class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
 	var $_categoryUID;
 	var $_weight;
 	var $_allAnswers;
-	var $_allResponses;
+	var $_allRecommendations;
 	
-	var $_responseClass = 'tx_wecassessment_response_question';
+	var $_recommendationClass = 'tx_wecassessment_recommendation_question';
 	
 	/**
 	 * Default constructor.
@@ -77,8 +77,8 @@ class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
 		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
 	}
 	
-	function calculateResponse($score) {
-		return tx_wecassessment_response_question::findByScore($score, $this->getUID());
+	function calculateRecommendation($score) {
+		return tx_wecassessment_recommendation_question::findByScore($score, $this->getUID());
 	}
 
 	/*************************************************************************
@@ -250,27 +250,27 @@ class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
 	}
 	
 	/**
-	 * Gets the responses within the current category.
+	 * Gets the recommendations within the current category.
 	 * 
-	 * @return		array		The array for responses belonging to the current category.
-	 * @todo		Order responses based on min value.
+	 * @return		array		The array for recommendations belonging to the current category.
+	 * @todo		Order recommendations based on min value.
 	 */
-	function getResponses() {
-		if(!$this->_responses) {
-			$this->_responses = tx_wecassessment_response_question::findAllInQuestion($this->getPID(), $this->getUID());
+	function getRecommendations() {
+		if(!$this->_recommendations) {
+			$this->_recommendations = tx_wecassessment_recommendation_question::findAllInQuestion($this->getPID(), $this->getUID());
 		}
-		return $this->_responses;
+		return $this->_recommendations;
 		
 	}
 	
 	/**
-	 * Adds a single response to the array of responses in this category.
-	 * @param		object		The new response object.
+	 * Adds a single recommendation to the array of recommendations in this category.
+	 * @param		object		The new recommendation object.
 	 * @return		none
 	 */
-	function addResponse($response) {
-		$response->setCategoryUID($this->getUID());
-		$this->_responses[] = $response;
+	function addRecommendation($recommendation) {
+		$recommendation->setCategoryUID($this->getUID());
+		$this->_recommendations[] = $recommendation;
 	}
 	
 	
@@ -318,17 +318,17 @@ class tx_wecassessment_question extends tx_wecasssessment_responsecontainer {
 		return count($this->getAllAnswers());
 	}
 	
-	function getAllResponses() {
-		if(!$this->_allResponses) {
-			$this->_allResponses = &tx_wecassessment_response::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
+	function getAllRecommendations() {
+		if(!$this->_allRecommendations) {
+			$this->_allRecommendations = &tx_wecassessment_recommendation::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
 		}
 		
-		return $this->_allResponses;
+		return $this->_allRecommendations;
 	}
 	
-	function getCalculatedResponse($score) {
+	function getCalculatedRecommendation($score) {
 		$weightedScore = $this->getWeight() * $score;
-		return tx_wecassessment_response::findByValue($weightedScore, 'question_id='.$category_id);
+		return tx_wecassessment_recommendation::findByValue($weightedScore, 'question_id='.$category_id);
 	}
 	
 	/*************************************************************************

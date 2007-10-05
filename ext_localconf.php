@@ -10,7 +10,7 @@ t3lib_extMgm::addUserTSConfig('
 	options.saveDocNew.tx_wecassessment_answer=1
 ');
 t3lib_extMgm::addUserTSConfig('
-	options.saveDocNew.tx_wecassessment_response=1
+	options.saveDocNew.tx_wecassessment_recommendation=1
 ');
 
   ## Extending TypoScript from static template uid=43 to set up userdefined tag:

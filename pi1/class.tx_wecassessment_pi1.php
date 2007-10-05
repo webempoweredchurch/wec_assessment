@@ -30,7 +30,7 @@
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'pi1/class.tx_wecassessment_util.php');
@@ -97,9 +97,9 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			$this->firstLoad = true;
 		}	
 
-		/* If the result is complete, show responses.  Otherwise, show questions. */
+		/* If the result is complete, show recommendations.  Otherwise, show questions. */
 		if($this->result->isComplete()) {
-			$view = "displayResponses";
+			$view = "displayRecommendations";
 		} else {
 			$view = "displayQuestions";
 		}
@@ -114,7 +114,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 * Template initializaation function.
 	 *
 	 * @param		string		Name of the view to initialize.  Current
-	 *							options are displayQuestions and displayResponses.
+	 *							options are displayQuestions and displayRecommendations.
 	 * @return		none
 	 */
 	function initTemplate($view) {
@@ -230,25 +230,25 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Displays the HTML markup for all responses.
+	 * Displays the HTML markup for all recommendations.
 	 *
-	 * @return	The HTML markup for all responses.
+	 * @return	The HTML markup for all recommendations.
 	 */
-	function displayResponses() {
-		$responseHTML = array();
+	function displayRecommendations() {
+		$recommendationHTML = array();
 		$markers = array();
 		$subparts = array();
 		
 		$content = $this->util->getTemplate();
-		$responses = &$this->assessment->calculateAllResponses();
+		$recommendations = &$this->assessment->calculateAllRecommendations();
 		
-		if(is_array($responses)) {
-			foreach($responses as $response) {
-				$responseHTML[] = $this->displayResponse($response);
+		if(is_array($recommendations)) {
+			foreach($recommendations as $recommendation) {
+				$recommendationHTML[] = $this->displayRecommendation($recommendation);
 			}
 		}
 		
-		$subparts['responses'] = implode(chr(10), $responseHTML);
+		$subparts['recommendations'] = implode(chr(10), $recommendationHTML);
 		$markers['restart'] = $this->displayRestart();
 
 		$this->util->substituteMarkersAndSubparts($content, $markers, $subparts);
@@ -262,11 +262,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	 *
 	 * @return The HTML markup for one reponse.
 	 */
-	function displayResponse($response) {
+	function displayRecommendation($recommendation) {
 		$markers = array();
-		$markers['response'] = $this->util->getOutputFromCObj($response->toArray(), $this->conf['responses.'], 'response');
+		$markers['recommendation'] = $this->util->getOutputFromCObj($recommendation->toArray(), $this->conf['recommendations.'], 'recommendation');
 		
-		$content = $this->util->getTemplateSubpart('responses');
+		$content = $this->util->getTemplateSubpart('recommendations');
 		$this->util->substituteMarkers($content, $markers);
 		
 		return $content;
@@ -302,7 +302,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$content = array();
 		
 		$content[] = '<div id="wec-assessment-alert">';
-		$content[] = '<p>'.$this->pi_getLL('responseRestartMessage').'</p>';
+		$content[] = '<p>'.$this->pi_getLL('recommendationRestartMessage').'</p>';
 					
 		$content[] = '<form action="'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'" method="post">';
 		$content[] = '<input type="hidden" name="tx_wecassessment_pi1[restart]" value="1" />';

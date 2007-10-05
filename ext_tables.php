@@ -23,7 +23,7 @@ $TCA["tx_wecassessment_category"] = Array (
 		"dividers2tabs" => true,
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, title, description, image, questions, responses",
+		"fe_admin_fieldList" => "hidden, title, description, image, questions, recommendations",
 	)
 );
 
@@ -107,11 +107,11 @@ $TCA["tx_wecassessment_result"] = Array (
 );
 
 
-t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_response");
+t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_recommendation");
 
-$TCA["tx_wecassessment_response"] = Array (
+$TCA["tx_wecassessment_recommendation"] = Array (
 	"ctrl" => Array (
-		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response',		
+		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation',		
 		'label' => 'category_id',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -125,7 +125,7 @@ $TCA["tx_wecassessment_response"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_response.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_recommendation.gif",
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, category_id, text, min_value, max_value",
@@ -146,7 +146,7 @@ require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_lab
 
 // enable label_userFunc only for TYPO3 v 4.1 and higher
 if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
-	$TCA['tx_wecassessment_response']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResponseLabel";
+	$TCA['tx_wecassessment_recommendation']['ctrl']['label_userFunc']="tx_wecassessment_labels->getRecommendationLabel";
 	$TCA['tx_wecassessment_result']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResultLabel";
 	$TCA['tx_wecassessment_answer']['ctrl']['label_userFunc']="tx_wecassessment_labels->getAnswerLabel";
 	$TCA['tx_wecassessment_category']['ctrl']['label_userFunc']="tx_wecassessment_labels->getCategorylabel";

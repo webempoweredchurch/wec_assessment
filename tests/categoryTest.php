@@ -46,7 +46,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
      */
     protected function setUp() {
 		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
-		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_response.php');
+		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
     }
 
     /**
@@ -75,7 +75,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 	}
 	
 	
-	public function test_noInitialResponses() {
+	public function test_noInitialRecommendations() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_SELECTquery', 'sql_fetch_assoc'));
@@ -86,65 +86,65 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 							->method('sql_fetch_assoc')
 							->will($this->returnValue(array()));
 
-		$this->assertEquals(count($category->getResponses()), 0);
+		$this->assertEquals(count($category->getRecommendations()), 0);
 	}
 	
-	public function test_setResponsesRightUID() {
+	public function test_setRecommendationsRightUID() {
 		
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 	
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses, both with category uid 1
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 2);
-		$response2 = new $responseClass(2, 0, 'Text 2', 11, 20, 2);
+		// create two recommendations, both with category uid 1
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 10, 2);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 11, 20, 2);
 
-		// now add both responses to category with uid 0
-		$category->setResponses(array($response1, $response2));
+		// now add both recommendations to category with uid 0
+		$category->setRecommendations(array($recommendation1, $recommendation2));
 
-		// get responses back
-		$responses = $category->getResponses();
+		// get recommendations back
+		$recommendations = $category->getRecommendations();
 		
-		// make sure that the responses now have category uid 0 set
-		foreach( $responses as $response) {
-			$this->assertEquals($response->getCategoryUID(), 1);
+		// make sure that the recommendations now have category uid 0 set
+		foreach( $recommendations as $recommendation) {
+			$this->assertEquals($recommendation->getCategoryUID(), 1);
 		}
 	}
 	
-	public function test_responseOverlap() {
+	public function test_recommendationOverlap() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 11, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 10, 20, 1);
+		// create two recommendations
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 11, 1);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 10, 20, 1);
 		
-		// now add both responses to category
-		$category->setResponses(array($response1, $response2));
+		// now add both recommendations to category
+		$category->setRecommendations(array($recommendation1, $recommendation2));
 
 		// test for overlap - make sure category is not valid
 		$this->assertEquals($category->valid(0,20), false);
 
 	}
 	
-	public function test_responseGap() {
+	public function test_recommendationGap() {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 20, 30, 1);
+		// create two recommendations
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 10, 1);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 20, 30, 1);
 		
-		// now add both responses to category
-		$category->setResponses(array($response1, $response2));
+		// now add both recommendations to category
+		$category->setRecommendations(array($recommendation1, $recommendation2));
 
 		// test for overlap - make sure returned array is not 0
 		$this->assertEquals($category->valid(0,30), false);
@@ -155,15 +155,15 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'My Title', 'My Description', 'image.jpg', 0);
 				
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 11, 30, 1);
+		// create two recommendations
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 10, 1);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 11, 30, 1);
 		
-		// now add both responses to category
-		$category->setResponses(array($response1, $response2));
+		// now add both recommendations to category
+		$category->setRecommendations(array($recommendation1, $recommendation2));
 
 		// test for validity
 		$this->assertTrue($category->valid(0,30));

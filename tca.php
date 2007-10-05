@@ -122,12 +122,12 @@ $TCA["tx_wecassessment_category"] = Array (
 			),
 		),
 		
-		"responses" => Array (
+		"recommendations" => Array (
 			"exclude" => 1,
-			"label" => "Responses",
+			"label" => "Recommendations",
 			"config" => Array (
 				"type" => "inline",
-				"foreign_table" => "tx_wecassessment_response",
+				"foreign_table" => "tx_wecassessment_recommendation",
 				"foreign_field" => "category_id",
 				"appearance" => Array (
 					"collapseAll" => false,
@@ -140,7 +140,7 @@ $TCA["tx_wecassessment_category"] = Array (
 				
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "--div--;Main,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image, parent_category,--div--;Questions, questions, --div--;Responses, responses")
+		"0" => Array("showitem" => "--div--;Main,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image, parent_category,--div--;Questions, questions, --div--;Recommendations, recommendations")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -397,12 +397,12 @@ $TCA["tx_wecassessment_result"] = Array (
 
 
 
-$TCA["tx_wecassessment_response"] = Array (
-	"ctrl" => $TCA["tx_wecassessment_response"]["ctrl"],
+$TCA["tx_wecassessment_recommendation"] = Array (
+	"ctrl" => $TCA["tx_wecassessment_recommendation"]["ctrl"],
 	"interface" => Array (
 		"showRecordFieldList" => "hidden,category_id,text,min_value,max_value"
 	),
-	"feInterface" => $TCA["tx_wecassessment_response"]["feInterface"],
+	"feInterface" => $TCA["tx_wecassessment_recommendation"]["feInterface"],
 	"columns" => Array (
 		"hidden" => Array (		
 			"exclude" => 1,
@@ -421,15 +421,15 @@ $TCA["tx_wecassessment_response"] = Array (
 				"minitems" => 0,
 				"maxitems" => 1,
 				"items" => Array (
-					Array('Response for Category', 0),
-					Array('Response for Question', 1),
-					Array('Response for Entire Assessment', 2),
+					Array('Recommendation for Category', 0),
+					Array('Recommendation for Question', 1),
+					Array('Recommendation for Entire Assessment', 2),
 				),
 			),
 		),
 		"category_id" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.category_id",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.category_id",		
 			"config" => Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecassessment_category",	
@@ -474,7 +474,7 @@ $TCA["tx_wecassessment_response"] = Array (
 		
 		"question_id" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.question_id",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.question_id",		
 			"config" => Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecassessment_question",	
@@ -519,7 +519,7 @@ $TCA["tx_wecassessment_response"] = Array (
 
 		"min_value" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.min_value",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.min_value",		
 			"config" => Array (
 				"type" => "input",
 				"size" => "4",
@@ -530,7 +530,7 @@ $TCA["tx_wecassessment_response"] = Array (
 		),
 		"max_value" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.max_value",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.max_value",		
 			"config" => Array (
 				"type" => "input",
 				"size" => "4",
@@ -541,7 +541,7 @@ $TCA["tx_wecassessment_response"] = Array (
 		),
 		"text" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_response.text",		
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.text",		
 			"config" => Array (
 				"type" => "text",
 				"cols" => "30",

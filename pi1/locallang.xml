@@ -18,7 +18,7 @@
 				where you left off, just continue answering the questions below. 
 				If you'd like to start over again, click the button below.
 			</label>
-			<label index="responseRestartMessage">
+			<label index="recommendationRestartMessage">
 				If you'd like to restart this assessment, just click the button below.
 			</label>
 			

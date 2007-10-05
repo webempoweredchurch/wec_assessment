@@ -34,7 +34,7 @@ define('TX_WECASSESSMENT_RESPONSE_CATEGORY', 0);
 define('TX_WECASSESSMENT_RESPONSE_QUESTION', 1);
 define('TX_WECASSESSMENT_RESPONSE_ASSESSMENT', 2);
 
-class tx_wecassessment_response extends tx_wecassessment_modelbase {
+class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	
 	var $_uid;
 	var $_text;
@@ -47,13 +47,13 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	/**
 	 * Default constructor.
 	 *
-	 * @param		integer		UID of the response.
-	 * @param		integer		Page ID of the response.
-	 * @param		string		Text of the response.
-	 * @param		integer		Min value this response is displayed for.
-	 * @param		integer		Max value this response is displayed for.
+	 * @param		integer		UID of the recommendation.
+	 * @param		integer		Page ID of the recommendation.
+	 * @param		string		Text of the recommendation.
+	 * @param		integer		Min value this recommendation is displayed for.
+	 * @param		integer		Max value this recommendation is displayed for.
 	 */
-	function tx_wecassessment_response($uid, $pid, $text, $minValue, $maxValue) {
+	function tx_wecassessment_recommendation($uid, $pid, $text, $minValue, $maxValue) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
 		$this->_text = $text;
@@ -64,9 +64,9 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 
 	/**
-	 * Converts a response to an associative array
+	 * Converts a recommendation to an associative array
 	 *
-	 * @return		Associative array representing the response.
+	 * @return		Associative array representing the recommendation.
 	 */
 	function toArray() {
 		return array(
@@ -87,18 +87,18 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 ************************************************************************/
 	
 	/**
-	 * Gets the UID of the response.
+	 * Gets the UID of the recommendation.
 	 *
-	 * @return		integer		The UID of the response.
+	 * @return		integer		The UID of the recommendation.
 	 */
 	function getUID() { 
 		return $this->_uid; 
 	}
 	
 	/**
-	 * Sets the UID of the response.
+	 * Sets the UID of the recommendation.
 	 *
-	 * @param		integer		The UID of the response.
+	 * @param		integer		The UID of the recommendation.
 	 * @return		none
 	 */
 	function setUID($uid) { 
@@ -106,18 +106,18 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * Gets the Page ID the response is stored on.
+	 * Gets the Page ID the recommendation is stored on.
 	 *
-	 * @return		integer		The Page ID the response is stored on.
+	 * @return		integer		The Page ID the recommendation is stored on.
 	 */
 	function getPID() { 
 		return $this->_pid; 
 	}
 	
 	/**
-	 * Sets the Page ID the response is stored on.
+	 * Sets the Page ID the recommendation is stored on.
 	 *
-	 * @param		integer		The Page ID the response is stored on.
+	 * @param		integer		The Page ID the recommendation is stored on.
 	 * @return		none
 	 */
 	function setPID($pid) { 
@@ -125,18 +125,18 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * Gets the text of the response.
+	 * Gets the text of the recommendation.
 	 *
-	 * @return		integer		The text of the response.
+	 * @return		integer		The text of the recommendation.
 	 */
 	function getText() { 
 		return $this->_text; 
 	}
 	
 	/**
-	 * Sets the text of the response.
+	 * Sets the text of the recommendation.
 	 *
-	 * @param		string		The text of the response.
+	 * @param		string		The text of the recommendation.
 	 * @return		none
 	 */
 	function setText($text) { 
@@ -145,18 +145,18 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	
 	
 	/**
-	 * Gets the minimum value of the response.
+	 * Gets the minimum value of the recommendation.
 	 *
-	 * @return		integer		The minimum value of the response.
+	 * @return		integer		The minimum value of the recommendation.
 	 */
 	function getMinValue() { 
 		return $this->_min_value; 
 	}
 	
 	/**
-	 * Sets the minimum value of the response.
+	 * Sets the minimum value of the recommendation.
 	 *
-	 * @param		integer		The minimum value of the response.
+	 * @param		integer		The minimum value of the recommendation.
 	 * @return		none
 	 */
 	function setMinValue($value) { 
@@ -164,18 +164,18 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * Gets the maximum value of the response.
+	 * Gets the maximum value of the recommendation.
 	 *
-	 * @return		integer		The maximum value of the response.
+	 * @return		integer		The maximum value of the recommendation.
 	 */
 	function getMaxValue() { 
 		return $this->_max_value; 
 	}
 	
 	/**
-	 * Sets the maximum value of the response.
+	 * Sets the maximum value of the recommendation.
 	 *
-	 * @param		integer		The maximum value of the response.
+	 * @param		integer		The maximum value of the recommendation.
 	 * @return		none
 	 */
 	function setMaxValue($value) { 
@@ -205,54 +205,54 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	 ************************************************************************/
 	
 	function find($uid, $showHidden=false) {
-		$table = 'tx_wecassessment_response';
+		$table = 'tx_wecassessment_recommendation';
 		
-		$row = tx_wecassessment_response::getRow($table, $uid, '', $showHidden);
-		$response = tx_wecassessment_response::newFromArray($row);
+		$row = tx_wecassessment_recommendation::getRow($table, $uid, '', $showHidden);
+		$recommendation = tx_wecassessment_recommendation::newFromArray($row);
 
-		return $response;
+		return $recommendation;
 	}
 	
 	function findAll($pid, $additionalWhere="") {
-		$responses = array();
-		$table = 'tx_wecassessment_response';
+		$recommendations = array();
+		$table = 'tx_wecassessment_recommendation';
 		
-		$where = tx_wecassessment_response::getWhere($table, $additionalWhere.' AND pid='.$pid);	
+		$where = tx_wecassessment_recommendation::getWhere($table, $additionalWhere.' AND pid='.$pid);	
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'min_value');
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			$responses[] = tx_wecassessment_response::newFromArray($row);
+			$recommendations[] = tx_wecassessment_recommendation::newFromArray($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
-		return $responses;
+		return $recommendations;
 	}
 	
 	function findAllWithType($pid, $additionalWhere="1=1", $type) {
-		$where = tx_wecassessment_response::combineWhere($additionalWhere, 'type='.$type);
-		$responses = tx_wecassessment_response::findAll($pid, $where);
-		return $responses;
+		$where = tx_wecassessment_recommendation::combineWhere($additionalWhere, 'type='.$type);
+		$recommendations = tx_wecassessment_recommendation::findAll($pid, $where);
+		return $recommendations;
 	}
 	
-	function findResponsesAndErrors($pid) {
-		$responses = tx_wecassessment_response::findAll($pid);
-		$errors = tx_wecassessment_response::findErrors($pid);
+	function findRecommendationsAndErrors($pid) {
+		$recommendations = tx_wecassessment_recommendation::findAll($pid);
+		$errors = tx_wecassessment_recommendation::findErrors($pid);
 	}
 	
 	function findByValue($value, $where='1=1') {
-		$table = 'tx_wecassessment_response';
-		$where = tx_wecassessment_response::getWhere($table, ' AND min_value<='.$value.' AND max_value>'.$value);
+		$table = 'tx_wecassessment_recommendation';
+		$where = tx_wecassessment_recommendation::getWhere($table, ' AND min_value<='.$value.' AND max_value>'.$value);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		if(is_array($row)) {
-			$response = &tx_wecassessment_response::newFromArray($row);
+			$recommendation = &tx_wecassessment_recommendation::newFromArray($row);
 		} else {
-			$response = null;
+			$recommendation = null;
 		}
 		
-		return $response;
+		return $recommendation;
 	}
 
 	function calculate($answers, $minValue, $maxValue) {
@@ -270,50 +270,50 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		
 		$value = $answerTotal / $weightTotal;
 		
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a response */
+		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
 		if($value == $maxValue) {
-			$response = tx_wecassessment_response::findByValue($value-0.01, $category->getUID());
+			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $category->getUID());
 		} else {
-			$response = tx_wecassessment_response::findByValue($value, $category->getUID());
+			$recommendation = tx_wecassessment_recommendation::findByValue($value, $category->getUID());
 		}
 		
-		if(is_object($response)) {				
-			$response->setScore($value);
-			$response->setMaxScore($highTotal / $weightTotal);
+		if(is_object($recommendation)) {				
+			$recommendation->setScore($value);
+			$recommendation->setMaxScore($highTotal / $weightTotal);
 		}
 		
-		return $response;
+		return $recommendation;
 	}
 	
 	/**
-	 * Creates a new response object from an associative array.
+	 * Creates a new recommendation object from an associative array.
 	 *
-	 * @param		array		Associate array for a response.
+	 * @param		array		Associate array for a recommendation.
 	 * @return		object		Answer object.
 	 */
 	function newFromArray($row) {
-		$table = 'tx_wecassessment_response';
-		$row = tx_wecassessment_response::processRow($table, $row);
+		$table = 'tx_wecassessment_recommendation';
+		$row = tx_wecassessment_recommendation::processRow($table, $row);
 		switch($row['type']) {
 			case 0:
-				$responseClass = 'tx_wecassessment_response_category';
-				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
+				$recommendationClass = 'tx_wecassessment_recommendation_category';
+				$recommendation = new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
 				break;
 			case 1:
-				$responseClass = 'tx_wecassessment_response_question';
-				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['question_id']);
+				$recommendationClass = 'tx_wecassessment_recommendation_question';
+				$recommendation = new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['question_id']);
 				break;
 			case 2:
-				$responseClass = 'tx_wecassessment_response_assessment';
-				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
+				$recommendationClass = 'tx_wecassessment_recommendation_assessment';
+				$recommendation = new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
 				break;
 			default:
-				$responseClass = t3lib_div::makeInstanceClassName($table);
-				$response = new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
+				$recommendationClass = t3lib_div::makeInstanceClassName($table);
+				$recommendation = new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
 				break;
 		}
 		
-		return $response;
+		return $recommendation;
 	}
 		
 	/*************************************************************************
@@ -324,8 +324,8 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	
 	
 	/**
-	 * Performs internal validation of a response, based on a given valid
-	 * range.  A response is checked to make sure it falls within this range
+	 * Performs internal validation of a recommendation, based on a given valid
+	 * range.  A recommendation is checked to make sure it falls within this range
 	 * and its max value is actually greater than its min value.
 	 *
 	 * @param	integer		Minimum valid value.
@@ -337,17 +337,17 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		$valid = true;
 		
 		if (!$this->checkRange()) {
-			$this->addError("Maximum response value (".$this->getMaxValue().") is less than minimum response value (".$this->getMinValue().").", $this->getUID());
+			$this->addError("Maximum recommendation value (".$this->getMaxValue().") is less than minimum recommendation value (".$this->getMinValue().").", $this->getUID());
 			$valid = false;
 		}
 		
 		if (!$this->checkLowerBound($min)) {
-			$this->addError("Response value is less than the minimum allowed (".$min.").", $this->getUID());
+			$this->addError("Recommendation value is less than the minimum allowed (".$min.").", $this->getUID());
 			$valid = false;
 		}
 		
 		if (!$this->checkUpperBound($max)) {
-			$this->addError("Response value is greater than the maximum allowed (".$max.").", $this->getUID());
+			$this->addError("Recommendation value is greater than the maximum allowed (".$max.").", $this->getUID());
 			$valid = false;
 		}
 		
@@ -371,8 +371,8 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	/*
-	 * Checks if lower bound for this response is valid.
-	 * @param		integer		Smallest response value allowed.
+	 * Checks if lower bound for this recommendation is valid.
+	 * @param		integer		Smallest recommendation value allowed.
 	 * @return		boolean		Test result.
 	 */
 	function checkLowerBound($lowerBound) {
@@ -386,8 +386,8 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 	}
 	
 	/*
-	 * Checks if the upper bound for this response is valid.
-	 * @param		integer		Largest response value allowed.
+	 * Checks if the upper bound for this recommendation is valid.
+	 * @param		integer		Largest recommendation value allowed.
 	 * @return		boolean		Test result.
 	 */
 	function checkUpperBound($upperBound) {
@@ -400,24 +400,24 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		return $validUpperBound;
 	}
 	
-	function validRelativeTo($previousResponse) {
+	function validRelativeTo($previousRecommendation) {
 		/* @todo 	What should gap tolerance be set to and where should it be defined? */
 		$gapTolerance = 1;
 		
 		$valid = true;
 		$currentUID = $this->getUID();
-		$previousUID = $previousResponse->getUID();
+		$previousUID = $previousRecommendation->getUID();
 		
-		$previousMax = $previousResponse->getMaxValue();
+		$previousMax = $previousRecommendation->getMaxValue();
 		$currentMin = $this->getMinValue();
 
 		if($previousMax > $currentMin) {
-			$this->addError("Response values overlap.", $previousUID, $currentUID);
+			$this->addError("Recommendation values overlap.", $previousUID, $currentUID);
 			$valid = false;
 		} else {
 			$gap = $currentMin - $previousMax;
 			if($gap > $gapTolerance) {
-				$this->addError("A gap exists between response values.", $previousUID, $currentUID);
+				$this->addError("A gap exists between recommendation values.", $previousUID, $currentUID);
 				$valid = false;
 			}
 		}
@@ -435,7 +435,7 @@ class tx_wecassessment_response extends tx_wecassessment_modelbase {
 		
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_response.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_response.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation.php']);
 }
 ?>

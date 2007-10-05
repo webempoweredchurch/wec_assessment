@@ -385,12 +385,12 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	}
 	
 	
-	function calculateResponse() {
+	function calculateRecommendation() {
 		$weightedValue = $this->getWeightedScore();
 		$parentTable = 'tx_wecassessment_question';
 		$parentID = $this->getQuestionUID();
 		
-		return tx_wecassessment_response::findByValue($weightedScore, $parentTable, $parentID);
+		return tx_wecassessment_recommendation::findByValue($weightedScore, $parentTable, $parentID);
 	}
 	
 		

@@ -28,7 +28,7 @@ require_once('initTYPO3.php');
 /**
  * Test class for tx_xxx
  */
-class responseTest extends PHPUnit_Framework_Testcase  {
+class recommendationTest extends PHPUnit_Framework_Testcase  {
 
     /****************************************************************
      * main, setUP, tearDown
@@ -46,7 +46,7 @@ class responseTest extends PHPUnit_Framework_Testcase  {
      */
     protected function setUp() {
 		// require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
-		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_response.php');
+		require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
     }
 
     /**
@@ -63,52 +63,52 @@ class responseTest extends PHPUnit_Framework_Testcase  {
 	 */
 	
 	public function test_toArray() {
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
-		$response = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
+		$recommendation = new $recommendationClass(1, 0, 'Text 1', 0, 10, 1);
 		
 		// create category
 		$categoryClass = t3lib_div::makeInstanceClassName('tx_wecassessment_category');
 		$category = new $categoryClass(1, 0, 'Title', 'Description', 'image.jpg', 1);
 		
-		// add category to response
-		$response->setCategory($category);
+		// add category to recommendation
+		$recommendation->setCategory($category);
 		
 		$expectedArray = array('uid' => 1, 'pid' => 0, 'text' => 'Text 1', 'min_value' => 0,
 							   'max_value' => 10, 'category' => $category->getTitle());
 		
-		$this->assertEquals($response->toArray(), $expectedArray);
+		$this->assertEquals($recommendation->toArray(), $expectedArray);
 	}
 	
 	public function test_validRelativeToPrevious() {
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 11, 20, 1);
+		// create two recommendations
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 10, 1);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 11, 20, 1);
 		
 
 		// test they are valid relative to each other
-		$this->assertTrue($response2->validRelativeTo($response1));
+		$this->assertTrue($recommendation2->validRelativeTo($recommendation1));
 	}
 	
 	public function test_checkRange() {
-		// get response class
-		$responseClass = t3lib_div::makeInstanceClassName('tx_wecassessment_response');
+		// get recommendation class
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation');
 		
-		// create two responses
-		$response1 = new $responseClass(1, 0, 'Text 1', 0, 10, 1);
-		$response2 = new $responseClass(2, 0, 'Text 2', 10, 0, 1);
+		// create two recommendations
+		$recommendation1 = new $recommendationClass(1, 0, 'Text 1', 0, 10, 1);
+		$recommendation2 = new $recommendationClass(2, 0, 'Text 2', 10, 0, 1);
 		
-		$this->assertEquals($response1->getMinValue(), 0);
-		$this->assertEquals($response1->getMaxValue(), 10);
-		$this->assertEquals($response2->getMinValue(), 10);
-		$this->assertEquals($response2->getMaxValue(), 0);
+		$this->assertEquals($recommendation1->getMinValue(), 0);
+		$this->assertEquals($recommendation1->getMaxValue(), 10);
+		$this->assertEquals($recommendation2->getMinValue(), 10);
+		$this->assertEquals($recommendation2->getMaxValue(), 0);
 
 		// test for overlap
-		$this->assertTrue($response1->checkRange());
-		$this->assertFalse($response2->checkRange());
+		$this->assertTrue($recommendation1->checkRange());
+		$this->assertFalse($recommendation2->checkRange());
 	}
 
 }

@@ -28,22 +28,22 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
 
-class tx_wecassessment_response_assessment extends tx_wecassessment_response {
+class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recommendation {
 	
-	var $_tableName = 'tx_wecassessment_response';
+	var $_tableName = 'tx_wecassessment_recommendation';
 	
 	/**
 	 * Default constructor.
 	 *
-	 * @param		integer		UID of the response.
-	 * @param		integer		Page ID of the response.
-	 * @param		string		Text of the response.
-	 * @param		integer		Min value this response is displayed for.
-	 * @param		integer		Max value this response is displayed for.
+	 * @param		integer		UID of the recommendation.
+	 * @param		integer		Page ID of the recommendation.
+	 * @param		string		Text of the recommendation.
+	 * @param		integer		Min value this recommendation is displayed for.
+	 * @param		integer		Max value this recommendation is displayed for.
 	 */
-	function tx_wecassessment_response_assessment($uid, $pid, $text, $minValue, $maxValue) {
+	function tx_wecassessment_recommendation_assessment($uid, $pid, $text, $minValue, $maxValue) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
 		$this->_text = $text;
@@ -73,52 +73,52 @@ class tx_wecassessment_response_assessment extends tx_wecassessment_response {
 	 *
 	 ************************************************************************/
 	function findByScore($score) {
-		$table = 'tx_wecassessment_response';
-		$where = tx_wecassessment_response_assessment::getWhere($table, ' AND min_value <= '.$value.' AND max_value > '.$value.' AND type='.TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
+		$table = 'tx_wecassessment_recommendation';
+		$where = tx_wecassessment_recommendation_assessment::getWhere($table, ' AND min_value <= '.$value.' AND max_value > '.$value.' AND type='.TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
 		if(is_array($row)) {
-			$response = &tx_wecassessment_response_assessment::newFromArray($row);
+			$recommendation = &tx_wecassessment_recommendation_assessment::newFromArray($row);
 		} else {
-			$response = null;
+			$recommendation = null;
 		}
 		
-		return $response;
+		return $recommendation;
 	}
 	
 	
 	function findAll($pid, $additionalWhere="") {
-		$responses = tx_wecassessment_response_assessment::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
-		return $responses;
+		$recommendations = tx_wecassessment_recommendation_assessment::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
+		return $recommendations;
 	}
 	
 	function findAllInAssessment($pid, $additionalWhere="") {
-		return tx_wecassessment_response_assessment::findAll($pid, $additionalWhere);
+		return tx_wecassessment_recommendation_assessment::findAll($pid, $additionalWhere);
 	}
 	
 	function findAllInParent($pid, $parentID=0, $additionalWhere="") {
-		return tx_wecassessment_response_assessment::findAll($pid, $additionalWhere);
+		return tx_wecassessment_recommendation_assessment::findAll($pid, $additionalWhere);
 	}
 	
-	function findResponsesAndErrors($pid) {
-		$responses = tx_wecassessment_response_assessment::findAll($pid);
-		$errors = tx_wecassessment_response_assessment::findErrors($pid);
+	function findRecommendationsAndErrors($pid) {
+		$recommendations = tx_wecassessment_recommendation_assessment::findAll($pid);
+		$errors = tx_wecassessment_recommendation_assessment::findErrors($pid);
 	}
 	
 	/**
-	 * Creates a new response object from an associative array.
+	 * Creates a new recommendation object from an associative array.
 	 *
-	 * @param		array		Associate array for a response.
+	 * @param		array		Associate array for a recommendation.
 	 * @return		object		Answer object.
 	 */
 	function newFromArray($row) {
-		$table = 'tx_wecassessment_response';
-		$row = tx_wecassessment_response_asssessment::processRow($table, $row);
-		$responseClass = t3lib_div::makeInstanceClassName($table);
-		return new $responseClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
+		$table = 'tx_wecassessment_recommendation';
+		$row = tx_wecassessment_recommendation_asssessment::processRow($table, $row);
+		$recommendationClass = t3lib_div::makeInstanceClassName($table);
+		return new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
 	}
 	
 	
@@ -144,26 +144,26 @@ class tx_wecassessment_response_assessment extends tx_wecassessment_response {
 		
 		$value = $answerTotal / $weightTotal;
 		
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a response */
+		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
 		if($value == $maxValue) {
-			$response = tx_wecassessment_response_assessment::findByValue($value-0.01);
+			$recommendation = tx_wecassessment_recommendation_assessment::findByValue($value-0.01);
 		} else {
-			$response = tx_wecassessment_response_assessment::findByValue($value);
+			$recommendation = tx_wecassessment_recommendation_assessment::findByValue($value);
 		}
 		
-		if(is_object($response)) {				
-			$response->setScore($value);
-			$response->setMaxScore($highTotal / $weightTotal);
+		if(is_object($recommendation)) {				
+			$recommendation->setScore($value);
+			$recommendation->setMaxScore($highTotal / $weightTotal);
 		}
 		
-		return $response;
+		return $recommendation;
 	}
 	
 
 		
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_response_assessment.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_response_assessment.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation_assessment.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation_assessment.php']);
 }
 ?>

@@ -28,7 +28,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
 
@@ -101,7 +101,7 @@ class tx_wecassessment_flexform {
 		$minValue = $this->assessment->getMinimumValue();
 		$maxValue = $this->assessment->getMaximumValue();
 		
-		/* Check the validity of the total response */
+		/* Check the validity of the total recommendation */
 		if(!$this->assessment->valid($minValue, $maxValue)) {
 			$content[] = $this->displayContainerErrors('', $assessment);
 		}
@@ -160,35 +160,35 @@ class tx_wecassessment_flexform {
 		$return = $message.'<br />';
 		
 		if($uid1) {
-			$response1 = tx_wecassessment_response::find($uid1);
-			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $response1->getLabel(), $response1->getTableName());
+			$recommendation1 = tx_wecassessment_recommendation::find($uid1);
+			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $recommendation1->getLabel(), $recommendation1->getTableName());
 			$return .= $uid1Link.'<br />';
 		}
 		
 		if($uid2) {
-			$response2 = tx_wecassessment_response::find($uid2);
-			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $response2->getLabel(), $response2->getTableName());
+			$recommendation2 = tx_wecassessment_recommendation::find($uid2);
+			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $recommendation2->getLabel(), $recommendation2->getTableName());
 			$return .= $uid2Link.'<br />';
 		}
 		
 		return $return;
 	}
 	
-	function displayResponse($response, $errors) {
+	function displayRecommendation($recommendation, $errors) {
 		
 		$content = array();	
-		$link = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response');
+		$link = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
 		
 		$content[] = '<div class="tx_wecassessment_reponse">';
-		$content[] = '<h3>'.$response->getMinValue().' - '.$response->getMaxValue().'</h3>';
+		$content[] = '<h3>'.$recommendation->getMinValue().' - '.$recommendation->getMaxValue().'</h3>';
 		$content[] = '</div>';
 						
 		return implode(chr(10), $content);
 	}
 	
-	function getErrors($response, $errors, $type='') {
+	function getErrors($recommendation, $errors, $type='') {
 		foreach($errors as $error) {
-			if($error->getResponseUID() == $response->getUID() && $error->getType() == $type) {
+			if($error->getRecommendationUID() == $recommendation->getUID() && $error->getType() == $type) {
 				$filteredErrors[] = $error;
 			}
 		}
@@ -200,10 +200,10 @@ class tx_wecassessment_flexform {
 		$content = array();
 		
 		$content[] = $error->getMessage();
-		$content[] = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response'); 
+		$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation'); 
 
 		if($error->getUID2()) {
-			$content[] = $this->returnEditLink($response->getUID(), 'Edit Record', 'tx_wecassessment_response');
+			$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
 		}
 		
 		return implode(chr(10), $content);

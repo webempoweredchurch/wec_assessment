@@ -28,11 +28,11 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_category.php');
 
-class tx_wecassessment_category extends tx_wecasssessment_responsecontainer {
+class tx_wecassessment_category extends tx_wecasssessment_recommendationcontainer {
 	
 	var $_uid;
 	var $_pid;
@@ -40,7 +40,7 @@ class tx_wecassessment_category extends tx_wecasssessment_responsecontainer {
 	var $_description;
 	var $_image;
 	
-	var $_responseClass = 'tx_wecassessment_response_category';
+	var $_recommendationClass = 'tx_wecassessment_recommendation_category';
 		
 	/**
 	 * Default constructor.
@@ -77,8 +77,8 @@ class tx_wecassessment_category extends tx_wecasssessment_responsecontainer {
 		);
 	}
 	
-	function calculateResponse($score) {
-		return tx_wecassessment_response_category::findByScore($score, $this->getUID());
+	function calculateRecommendation($score) {
+		return tx_wecassessment_recommendation_category::findByScore($score, $this->getUID());
 	}
 
 	

@@ -24,7 +24,7 @@ CREATE TABLE tx_wecassessment_category (
 	image blob NOT NULL,
 	
 	questions int(11) DEFAULT '0' NOT NULL,
-	responses int(11) DEFAULT '0' NOT NULL,
+	recommendations int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -57,7 +57,7 @@ CREATE TABLE tx_wecassessment_question (
 	category_id int(11) DEFAULT '0' NOT NULL,
 	weight double DEFAULT '0' NOT NULL,
 	
-	responses int(11) DEFAULT '0' NOT NULL,
+	recommendations int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -128,9 +128,9 @@ CREATE TABLE tx_wecassessment_result (
 
 
 #
-# Table structure for table 'tx_wecassessment_response'
+# Table structure for table 'tx_wecassessment_recommendation'
 #
-CREATE TABLE tx_wecassessment_response (
+CREATE TABLE tx_wecassessment_recommendation (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,

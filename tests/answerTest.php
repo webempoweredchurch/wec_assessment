@@ -68,7 +68,7 @@ class answerTest extends PHPUnit_Framework_Testcase  {
 		
 	}
 	
-	public function test_getWeightedValue() {
+	public function test_getWeightedScore() {
 
 		// create answer and question objects
 		$answerClass = t3lib_div::makeInstanceClassName('tx_wecassessment_answer');

@@ -27,12 +27,12 @@
 *
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_responsecontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_response_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_assessment.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
-class tx_wecassessment_assessment extends tx_wecasssessment_responsecontainer {
+class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontainer {
 	
 	var $_minimumValue;
 	var $_maximumValue;
@@ -47,7 +47,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_responsecontainer {
 	var $_pid;
 	var $_uid;
 	
-	var $_responseClass = 'tx_wecassessment_response_assessment';
+	var $_recommendationClass = 'tx_wecassessment_recommendation_assessment';
 	
 	
 	/**
@@ -283,8 +283,8 @@ class tx_wecassessment_assessment extends tx_wecasssessment_responsecontainer {
 		return $this->_result;
 	}
 	
-	function calculateAllResponses() {
-		$responses = array();
+	function calculateAllRecommendations() {
+		$recommendations = array();
 		$minValue = $this->getMinimumValue();
 		$maxValue = $this->getMaximumValue();
 		
@@ -302,26 +302,26 @@ class tx_wecassessment_assessment extends tx_wecasssessment_responsecontainer {
 		foreach($categoryArray as $categoryUID => $children) {
 			$category = tx_wecassessment_category::find($categoryUID);			
 			$categoryScore = $children['totalScore'] / count($children['answers']);
-			$response = &$category->calculateResponse($categoryScore);
+			$recommendation = &$category->calculateRecommendation($categoryScore);
 			
-			if(is_object($response)) {
-				$response->setMaxScore($this->getMaximumValue());
-				$responses[] = $response;
+			if(is_object($recommendation)) {
+				$recommendation->setMaxScore($this->getMaximumValue());
+				$recommendations[] = $recommendation;
 			}
 			
 			foreach($children['answers'] as $answer) {
 				$question = $answer->getQuestion();
 				$questionScore = $answer->getScore();
 				
-				$response = $question->calculateResponse($questionScore);			
-				if(is_object($response)) {
-					$response->setMaxScore($this->getMaximumValue());
-					$responses[] = $response;
+				$recommendation = $question->calculateRecommendation($questionScore);			
+				if(is_object($recommendation)) {
+					$recommendation->setMaxScore($this->getMaximumValue());
+					$recommendations[] = $recommendation;
 				}
 			}
 		}
 		
-		return $responses;
+		return $recommendations;
 	}	
 	
 	

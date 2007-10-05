@@ -62,8 +62,8 @@ class tx_wecassessment_util {
 			case 'displayQuestions':
 				$subpart = 'display_questions';
 				break;
-			case 'displayResponses':
-			 	$subpart = 'display_responses';
+			case 'displayRecommendations':
+			 	$subpart = 'display_recommendations';
 				break;
 			default:
 				$subpart = $cmd;

@@ -24,13 +24,13 @@
 			<label index="tx_wecassessment_result.type">Type</label>
 			<label index="tx_wecassessment_result.feuser_id">Frontend User</label>
 			<label index="tx_wecassessment_result.assessment_id">Assessment</label>
-			<label index="tx_wecassessment_response">Assessment Responses</label>
-			<label index="tx_wecassessment_response.type">Type</label>
-			<label index="tx_wecassessment_response.question_id">Question</label>
-			<label index="tx_wecassessment_response.category_id">Category</label>
-			<label index="tx_wecassessment_response.text">Text</label>
-			<label index="tx_wecassessment_response.min_value">Minimum Value</label>
-			<label index="tx_wecassessment_response.max_value">Maximum Value</label>
+			<label index="tx_wecassessment_recommendation">Assessment Recommendations</label>
+			<label index="tx_wecassessment_recommendation.type">Type</label>
+			<label index="tx_wecassessment_recommendation.question_id">Question</label>
+			<label index="tx_wecassessment_recommendation.category_id">Category</label>
+			<label index="tx_wecassessment_recommendation.text">Text</label>
+			<label index="tx_wecassessment_recommendation.min_value">Minimum Value</label>
+			<label index="tx_wecassessment_recommendation.max_value">Maximum Value</label>
 			
 			<label index="tt_content.list_type_pi1">WEC Assessment</label>
 			

@@ -15,10 +15,10 @@ class tx_wecassessment_tceforms_getmainfields {
 			*/
 		}
 		
-		if($table == 'tx_wecassessment_response') {
+		if($table == 'tx_wecassessment_recommendation') {
 			/* If we have posted data and a new record, preset values to what they were on the previous record */
-			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_response']) && strstr($row['uid'], 'NEW')) {
-				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_response']);
+			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']) && strstr($row['uid'], 'NEW')) {
+				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']);
 				
 				$row['type'] = $postData['type'];
 				$row['question_id'] = $postData['question_id'];
