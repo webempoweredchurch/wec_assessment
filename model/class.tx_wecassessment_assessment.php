@@ -162,6 +162,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $this->_categories;
 	}
 	
+	function getlabel() {
+		/* @todo 	Localize! */
+		return 'Total Assessment';
+	}
+	
 	function getUID() {
 		return $this->_uid;
 	}

@@ -103,7 +103,7 @@ class tx_wecassessment_flexform {
 		
 		/* Check the validity of the total recommendation */
 		if(!$this->assessment->valid($minValue, $maxValue)) {
-			$content[] = $this->displayContainerErrors('', $assessment);
+			$content[] = $this->displayContainerErrors('', $this->assessment);
 		}
 				
 		$categories = tx_wecassessment_category::findAll($this->assessment->getPID());
