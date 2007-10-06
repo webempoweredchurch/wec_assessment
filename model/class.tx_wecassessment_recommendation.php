@@ -30,9 +30,9 @@
 
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
 
-define('TX_WECASSESSMENT_RESPONSE_CATEGORY', 0);
-define('TX_WECASSESSMENT_RESPONSE_QUESTION', 1);
-define('TX_WECASSESSMENT_RESPONSE_ASSESSMENT', 2);
+define('TX_WECASSESSMENT_RECOMMENDATION_CATEGORY', 0);
+define('TX_WECASSESSMENT_RECOMMENDATION_QUESTION', 1);
+define('TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT', 2);
 
 class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	

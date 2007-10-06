@@ -49,7 +49,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		$this->_text = $text;
 		$this->_min_value = $minValue;
 		$this->_max_value = $maxValue;
-		$this->_type = TX_WECASSESSMENT_RESPONSE_ASSESSMENT;
+		$this->_type = TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT;
 		
 		$this->_validationErrors = array();
 	}
@@ -74,7 +74,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 ************************************************************************/
 	function findByScore($score) {
 		$table = 'tx_wecassessment_recommendation';
-		$where = tx_wecassessment_recommendation_assessment::getWhere($table, ' AND min_value <= '.$value.' AND max_value > '.$value.' AND type='.TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
+		$where = tx_wecassessment_recommendation_assessment::getWhere($table, ' AND min_value <= '.$value.' AND max_value > '.$value.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -91,7 +91,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	
 	
 	function findAll($pid, $additionalWhere="") {
-		$recommendations = tx_wecassessment_recommendation_assessment::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RESPONSE_ASSESSMENT);
+		$recommendations = tx_wecassessment_recommendation_assessment::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);
 		return $recommendations;
 	}
 	
