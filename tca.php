@@ -429,7 +429,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 		),
 		"type" => Array (
 			"exclude" => 1,
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_respons.type",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.type",
 			"config" => Array (
 				"type" => "select",
 				"size" => 1,
@@ -450,7 +450,8 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 				"foreign_table" => "tx_wecassessment_category",	
 				"size" => 1,	
 				"minitems" => 0,
-				"maxitems" => 1,	
+				"maxitems" => 1,
+				/*	
 				"wizards" => Array(
 					"_PADDING" => 2,
 					"_VERTICAL" => 1,
@@ -484,6 +485,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 						"JSopenParams" => "height=350,width=580,status=0,menubar=0,scrollbars=1",
 					),
 				),
+				*/
 			)
 		),
 		
