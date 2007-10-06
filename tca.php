@@ -61,50 +61,6 @@ $TCA["tx_wecassessment_category"] = Array (
 				"maxitems" => 1,
 			)
 		),
-		"parent_category" => Array (		
-			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.category_id",		
-			"config" => Array (
-				"type" => "select",	
-				"foreign_table" => "tx_wecassessment_category",	
-				"size" => 1,	
-				"minitems" => 0,
-				"maxitems" => 1,	
-				"wizards" => Array(
-					"_PADDING" => 2,
-					"_VERTICAL" => 1,
-					"add" => Array(
-						"type" => "script",
-						"title" => "Create new record",
-						"icon" => "add.gif",
-						"params" => Array(
-							"table"=>"tx_wecassessment_category",
-							"pid" => "###CURRENT_PID###",
-							"setValue" => "prepend"
-						),
-						"script" => "wizard_add.php",
-					),
-					"list" => Array(
-						"type" => "script",
-						"title" => "List",
-						"icon" => "list.gif",
-						"params" => Array(
-							"table"=>"tx_wecassessment_category",
-							"pid" => "###CURRENT_PID###",
-						),
-						"script" => "wizard_list.php",
-					),
-					"edit" => Array(
-						"type" => "popup",
-						"title" => "Edit",
-						"script" => "wizard_edit.php",
-						"popup_onlyOpenIfSelected" => 1,
-						"icon" => "edit2.gif",
-						"JSopenParams" => "height=350,width=580,status=0,menubar=0,scrollbars=1",
-					),
-				),
-			)
-		),
 
 		"questions" => Array (
 			"exclude" => 1,
@@ -140,7 +96,7 @@ $TCA["tx_wecassessment_category"] = Array (
 				
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "--div--;Main,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image, parent_category,--div--;Questions, questions, --div--;Recommendations, recommendations")
+		"0" => Array("showitem" => "--div--;Main,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image,--div--;Questions, questions, --div--;Recommendations, recommendations")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -189,7 +145,8 @@ $TCA["tx_wecassessment_question"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.category_id",		
 			"config" => Array (
 				"type" => "select",	
-				"foreign_table" => "tx_wecassessment_category",	
+				"foreign_table" => "tx_wecassessment_category",
+				"foreign_table_where" => "AND tx_wecassessment_category.pid=###CURRENT_PID### ORDER BY tx_wecassessment_category.title ASC",	
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,	
@@ -306,7 +263,7 @@ $TCA["tx_wecassessment_answer"] = Array (
 			"config" => Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecassessment_question",	
-				"foreign_table_where" => "AND tx_wecassessment_question.pid=###CURRENT_PID### ORDER BY tx_wecassessment_question.uid",	
+				"foreign_table_where" => "AND tx_wecassessment_question.pid=###CURRENT_PID### ORDER BY tx_wecassessment_question.sorting",	
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -447,7 +404,8 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.category_id",		
 			"config" => Array (
 				"type" => "select",	
-				"foreign_table" => "tx_wecassessment_category",	
+				"foreign_table" => "tx_wecassessment_category",
+				"foreign_table_where" => "AND tx_wecassessment_category.pid=###CURRENT_PID### ORDER BY tx_wecassessment_category.title ASC",	
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -495,6 +453,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 			"config" => Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecassessment_question",
+				"foreign_table_where" => "AND tx_wecassessment_question.pid=###CURRENT_PID### ORDER BY tx_wecassessment_question.sorting ASC",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
