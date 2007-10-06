@@ -58,7 +58,6 @@ class tx_wecassessment_results {
 	}
 	
 	function displayAverageForQuestion($PA, $fobj) {
-		/*
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 		$assessment = new $assessmentClass(0, $PA['row']['pid']);
 		
@@ -75,10 +74,9 @@ class tx_wecassessment_results {
 		$output[] = '	<div style="background-color:#888; width:'.$percentScore.'%;">&nbsp;</div>';
 		$output[] = '</div>';
 		
-		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' assessment results)';
+		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' completed assessments)';
 		
 		return implode(chr(10), $output);
-		*/
 	}
 	
 	function displayAverageForCategory($PA, $fobj) {
