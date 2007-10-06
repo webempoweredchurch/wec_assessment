@@ -116,7 +116,7 @@ class tx_wecassessment_flexform {
 			$questions = $category->findQuestions();
 			foreach($questions as $question) {
 				if(!$question->valid($minValue, $maxValue)) {
-					$content[] = $this->displayContainerErrors($category->getLabel(), $question);
+					$content[] = $this->displayContainerErrors($this->crop($category->getLabel()), $question);
 				}
 			}
 		}
@@ -133,9 +133,9 @@ class tx_wecassessment_flexform {
 		$content = array();
 		
 		if($parentTitle) {		
-			$title = $parentTitle.' : '.$container->getLabel();
+			$title = $parentTitle.' : '.$this->crop($container->getLabel());
 		} else {
-			$title = $container->getLabel();
+			$title = $this->crop($container->getLabel());
 		}
 		$content[] = '<h3>'.$title.'</h3>';
 
@@ -161,13 +161,13 @@ class tx_wecassessment_flexform {
 		
 		if($uid1) {
 			$recommendation1 = tx_wecassessment_recommendation::find($uid1);
-			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $recommendation1->getLabel(), $recommendation1->getTableName());
+			$uid1Link = tx_wecassessment_flexform::returnEditLink($uid1, $this->crop($recommendation1->getLabel()), $recommendation1->getTableName());
 			$return .= $uid1Link.'<br />';
 		}
 		
 		if($uid2) {
 			$recommendation2 = tx_wecassessment_recommendation::find($uid2);
-			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $recommendation2->getLabel(), $recommendation2->getTableName());
+			$uid2Link = tx_wecassessment_flexform::returnEditLink($uid2, $this->crop($recommendation2->getLabel()), $recommendation2->getTableName());
 			$return .= $uid2Link.'<br />';
 		}
 		
@@ -238,6 +238,12 @@ class tx_wecassessment_flexform {
 		$out .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit me" border="0" alt="" />';
 		$out .= '</a>';
 		return $out;
+	}
+
+	function crop($string) {
+		$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
+		return htmlspecialchars(t3lib_div::fixed_lgd_cs($string, $titleLength));
+		
 	}
 }
 
