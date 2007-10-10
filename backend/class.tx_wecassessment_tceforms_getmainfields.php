@@ -34,11 +34,15 @@ class tx_wecassessment_tceforms_getmainfields {
 					if($inlineStructure['field'] == 'recommendations') {
 						switch($inlineStructure['table']) {
 							case 'tx_wecassessment_question':
-								//$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['type'] = 'none';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['type'] = 'user';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['userFunc'] = 'EXT:wec_assessment/backend/class.tx_wecassessment_results.php:tx_wecassessment_results->displayHiddenRecommendationType';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['noTableWrapping'] = true;
 								$row['type'] = 1;
 								break;
 							case 'tx_wecassessment_category':
-								//$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['type'] = 'none';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['type'] = 'user';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['userFunc'] = 'EXT:wec_assessment/backend/class.tx_wecassessment_results.php:tx_wecassessment_results->displayHiddenRecommendationType';
+								$GLOBALS['TCA']['tx_wecassessment_recommendation']['columns']['type']['config']['noTableWrapping'] = true;
 								$row['type'] = 0;
 								break;
 						}

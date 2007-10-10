@@ -57,6 +57,13 @@ class tx_wecassessment_results {
 		return implode(chr(10), $output);
 	}
 	
+	function displayHiddenRecommendationType($PA, $fobj) {
+		$name = $PA['itemFormElName'];
+		$value = $PA['itemFormElValue'];
+		
+		return '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
+	}
+	
 	function displayAverageForQuestion($PA, $fobj) {
 		$pid = intval($PA['row']['pid']);
 		$table = $PA['table'];
