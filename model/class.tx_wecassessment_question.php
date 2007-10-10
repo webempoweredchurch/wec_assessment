@@ -304,7 +304,13 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 			foreach($allAnswers as $answer) {
 				$value += $answer->getValue();
 			}
-			$average = $value / $this->getTotalAnswers();
+			
+			if($totalAnswers = $this->getTotalAnswers()) {
+				$average = $value / $totalAnswers;	
+			} else {
+				$average = 0;
+			}
+			
 		}
 		
 		return round($average, 2);

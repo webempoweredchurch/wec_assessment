@@ -58,16 +58,31 @@ class tx_wecassessment_results {
 	}
 	
 	function displayAverageForQuestion($PA, $fobj) {
+		$pid = intval($PA['row']['pid']);
+		$table = $PA['table'];
+		if ($pid < 0)	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid='.abs($pid));
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+
+			$pid = intval($row['pid']);
+		}
+		
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
-		$assessment = new $assessmentClass(0, $PA['row']['pid']);
+		$assessment = new $assessmentClass(0, $pid);
 		
 		$uid = $PA['row']['uid'];
-		$question = &tx_wecassessment_question::find($uid);
+		if(!strstr($uid,'NEW')) {
+			$question = &tx_wecassessment_question::find($uid);
 
-		$averageScore = $question->getAverageAnswer();
+			$averageScore = $question->getAverageAnswer();
+			$totalAssessments = $question->getTotalAnswers();
+		} else {
+			$averageScore = 0;
+			$totalAssessments = 0;
+		}
 		$maximumScore = $assessment->getMaximumValue();
-		$totalAssessments = $question->getTotalAnswers();
 		$percentScore = round(($averageScore / $maximumScore) * 100);
+		
 		
 		$output = array();
 		$output[] = '<div style="margin-top: 5px; border: 1px solid black; width:100px;">';
