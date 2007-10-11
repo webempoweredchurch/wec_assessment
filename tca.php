@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_results.php');
 
-$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['cal']);
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
 if(!intval($confArr['inlineEditing'])) {
 	$enableInlineEditing = false;
 } else {
