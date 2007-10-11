@@ -1,8 +1,14 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_category");
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
+if(!$confArr['manualQuestionSorting']) {
+	$enableManualQuestionSorting = false;
+} else {
+	$enableManualQuestionSorting = true;
+}
 
+t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_category");
 $TCA["tx_wecassessment_category"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_category',		
@@ -29,7 +35,6 @@ $TCA["tx_wecassessment_category"] = Array (
 
 
 t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_question");
-
 $TCA["tx_wecassessment_question"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question',		
@@ -53,9 +58,13 @@ $TCA["tx_wecassessment_question"] = Array (
 	)
 );
 
+if(!$enableManualQuestionSorting) {
+	unset($TCA["tx_wecassessment_question"]["ctrl"]["sortby"]);
+	$TCA["tx_wecassessment_question"]["ctrl"]["default_sortby"] = "ORDER BY text ASC";
+}
+
 
 t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_answer");
-
 $TCA["tx_wecassessment_answer"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer',		
@@ -81,7 +90,6 @@ $TCA["tx_wecassessment_answer"] = Array (
 );
 
 t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_result");
-
 $TCA["tx_wecassessment_result"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_result',		
@@ -109,7 +117,6 @@ $TCA["tx_wecassessment_result"] = Array (
 
 
 t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_recommendation");
-
 $TCA["tx_wecassessment_recommendation"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation',		

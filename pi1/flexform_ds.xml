@@ -12,22 +12,7 @@
 							<label>Sorting</label>
 							<config>
 								<type>select</type>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">Random</numIndex>
-										<numIndex index="1">random</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">Use Backend Sorting</numIndex>
-										<numIndex index="1">backend</numIndex>
-									</numIndex>
-								<!--
-									<numIndex index="2" type="array">
-										<numIndex index="0">Group By Category</numIndex>
-										<numIndex index="1">category</numIndex>
-									</numIndex>
-								-->
-								</items>
+								<itemsProcFunc>EXT:wec_assessment/backend/class.tx_wecassessment_itemsProcFunc.php:tx_wecassessment_itemsProcFunc->getSortItems</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</sorting>

@@ -1,7 +1,13 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-
 require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_results.php');
+
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['cal']);
+if(!intval($confArr['inlineEditing'])) {
+	$enableInlineEditing = false;
+} else {
+	$enableInlineEditing = true;
+}
 
 $TCA["tx_wecassessment_category"] = Array (
 	"ctrl" => $TCA["tx_wecassessment_category"]["ctrl"],
@@ -103,6 +109,11 @@ $TCA["tx_wecassessment_category"] = Array (
 	)
 );
 
+if(!$enableInlineEditing) {
+	$TCA['tx_wecassessment_category']['columns']['questions']['config']['type'] = 'passthrough';
+	$TCA['tx_wecassessment_category']['columns']['recommendations']['config']['type'] = 'passthrough';	
+}
+
 
 
 $TCA["tx_wecassessment_question"] = Array (
@@ -201,7 +212,7 @@ $TCA["tx_wecassessment_question"] = Array (
 			"label" => "Average Score",
 			"config" => Array(
 				"type" => "user",
-				"userFunc" => 'tx_wecassessment_results->displayAverageForQuestion',
+				"userFunc" => 'EXT:wec_assessment/backend/class.tx_wecassessment_results.php:tx_wecassessment_results->displayAverageForQuestion',
 			),
 		),
 		"recommendations" => Array (
@@ -228,6 +239,9 @@ $TCA["tx_wecassessment_question"] = Array (
 	)
 );
 
+if(!$enableInlineEditing) {
+	$TCA['tx_wecassessment_question']['columns']['recommendations']['config']['type'] = 'passthrough';	
+}
 
 
 $TCA["tx_wecassessment_answer"] = Array (
@@ -367,7 +381,9 @@ $TCA["tx_wecassessment_result"] = Array (
 	)
 );
 
-
+if(!$enableInlineEditing) {
+	$TCA['tx_wecassessment_result']['columns']['answers']['config']['type'] = 'passthrough';	
+}
 
 $TCA["tx_wecassessment_recommendation"] = Array (
 	"ctrl" => $TCA["tx_wecassessment_recommendation"]["ctrl"],

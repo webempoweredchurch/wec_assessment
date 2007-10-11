@@ -1,0 +1,5 @@
+# cat=basic/enable/20; type=boolean; label= Manual sorting of questions: Turning this option on allows questions to be manually sorted in the backend. This sort order can be used when displaying questions in the frontend. Without it, questions are sorted by their text in the backend and displayed in a random order in the frontend.
+manualQuestionSorting = 1
+
+# cat=basic/enable/40; type=boolean; label= Inline editing of records: Turning this option on enables TYPO3's inline editing features for assessment records.  This feature makes data entry much quicker.
+inlineEditing = 1
