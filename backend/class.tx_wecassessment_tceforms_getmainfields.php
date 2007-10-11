@@ -18,6 +18,16 @@ class tx_wecassessment_tceforms_getmainfields {
 			/* If we have posted data and a new record, preset values to what they were on the previous record */
 			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']) && strstr($row['uid'], 'NEW')) {
 				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']);
+
+				$pid = $row['pid'];
+				if ($pid < 0)	{
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid='.abs($pid));
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					$pid = intval($row['pid']);
+				}
+				$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+				$assessment = new $assessmentClass(0, $pid);
+				
 				
 				$row['type'] = $postData['type'];
 				$row['question_id'] = $postData['question_id'];
@@ -26,6 +36,15 @@ class tx_wecassessment_tceforms_getmainfields {
 				$range = $postData['max_value'] - $postData['min_value'];
 				$row['min_value'] = $postData['max_value'];
 				$row['max_value'] = $postData['max_value'] + $range;
+				
+				if($assessment->getMaximumValue() != 0 && $row['min_value'] > $assessment->getMaximumValue()) {
+					$row['min_value'] = $assessment->getMaximumValue();
+				}
+				
+				if($assessment->getMaximumValue() != 0 && $row['max_value'] > $assessment->getMaximumValue()) {
+					$row['max_value'] = $assessment->getMaximumValue();
+				}
+				
 			}
 			
 			/* Sniff for the parent table of the current IRRE child, set the type, and hide it */
