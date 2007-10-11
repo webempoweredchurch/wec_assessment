@@ -1,6 +1,5 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_results.php');
 
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
 if(!intval($confArr['inlineEditing'])) {
@@ -288,7 +287,7 @@ $TCA["tx_wecassessment_answer"] = Array (
 			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer.value",		
 			"config" => Array (
 				"type" => "radio",
-				"itemsProcFunc" => "tx_wecassessment_labels->getAnswerOptions"
+				"itemsProcFunc" => "EXT:wec_assessment/backend/class.tx_wecassessment_itemsProcFunc.php:tx_wecassessment_itemsProcFunc->getAnswerOptions"
 			),
 		),
 	),

@@ -1,6 +1,8 @@
 <?php
 
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
 class tx_wecassessment_labels {
 	
@@ -95,19 +97,6 @@ class tx_wecassessment_labels {
 			$params['title'] = '[ New Answer ]';
 		}
 	}
-	
-	function getAnswerOptions($config) {
-		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
-		$assessment = new $assessmentClass(0, $config['row']['pid']);
-		$answerSet = &$assessment->getAnswerSet();
-		
-		foreach($answerSet as $value => $label) {
-			$config['items'][] = Array($label, $value);
-		}
-		
-		return $config;
-	}
-		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_labels.php']) {

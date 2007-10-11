@@ -36,11 +36,6 @@
  */
 class tx_wecassessment_itemsProcFunc {
 	
-	/**
-	 * Gets the items array of all available translations.
-	 * @param	array		The current config array.
-	 * @return	array
-	 */
 	function getSortItems($config=null) {
 		if(!isset($config)) {
 			$config = array();
@@ -51,6 +46,24 @@ class tx_wecassessment_itemsProcFunc {
 		$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
 		if($confArr['manualQuestionSorting']) {
 			$config['items'][] = Array('Use backend sorting', 'backend');
+		}
+		
+		return $config;
+	}
+	
+	function getAnswerOptions($config) {
+		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+		
+		/**
+		 * @todo 	Empty array is a temporary fix to avoid creating a
+		 *			frontend session.  Really need a persistent object here,
+		 *			maybe borrowing from the registry in cal.
+		 */ 
+		$assessment = new $assessmentClass(0, $config['row']['pid'], array());
+		$answerSet = &$assessment->getAnswerSet();
+		
+		foreach($answerSet as $value => $label) {
+			$config['items'][] = Array($label, $value);
 		}
 		
 		return $config;
