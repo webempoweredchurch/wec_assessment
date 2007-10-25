@@ -388,6 +388,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	}
 	
 	function initializeFrontend($pid, $feUserObj=''){
+		define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
 		require_once (PATH_tslib.'/class.tslib_content.php');
 		require_once (PATH_tslib.'class.tslib_fe.php');
 		require_once(PATH_t3lib.'class.t3lib_userauth.php');
