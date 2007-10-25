@@ -24,6 +24,8 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Category ]';
 		}
+		
+		$params['title'] = strip_tags($params['title']);
 	}
 	
 	/**
@@ -44,6 +46,8 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Question ]';
 		}
+		
+		$params['title'] = strip_tags($params['title']);
 	}
 		
 	
@@ -62,6 +66,8 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Result ]';
 		}
+		
+		$params['title'] = strip_tags($params['title']);
 	}
 	
 	/**
@@ -79,6 +85,8 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Recommendation ]';
 		}
+		
+		$params['title'] = strip_tags($params['title']);
 	}
 	
 	/**
@@ -96,6 +104,8 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Answer ]';
 		}
+		
+		$params['title'] = strip_tags($params['title']);
 	}
 }
 
