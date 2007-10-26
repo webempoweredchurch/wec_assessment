@@ -101,6 +101,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		
 		if(is_array($row)) {
 			$recommendation = &tx_wecassessment_recommendation_assessment::newFromArray($row);
+			$recommendation->setScore($score);
 		} else {
 			$recommendation = null;
 		}
@@ -171,7 +172,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		}
 		
 		if(is_object($recommendation)) {				
-			$recommendation->setScore($score);
+			$recommendation->setScore($value);
 			$recommendation->setMaxScore($highTotal / $weightTotal);
 		}
 		
