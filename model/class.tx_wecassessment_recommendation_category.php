@@ -71,7 +71,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 			"text" => $this->getText(),
 			"min_value" => $this->getMinValue(),
 			"max_value" => $this->getMaxValue(),
-			"score" => $this->getScore(),
+			"score" => round($this->getScore(), 2),
 			"maxScore" => $this->getMaxScore(),
 			"parentTitle" => $category->getTitle(),
 			"parentText" => "",

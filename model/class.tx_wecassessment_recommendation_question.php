@@ -72,7 +72,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			"text" => $this->getText(),
 			"min_value" => $this->getMinValue(),
 			"max_value" => $this->getMaxValue(),
-			"score" => $this->getScore(),
+			"score" => round($this->getScore(), 2),
 			"maxScore" => $this->getMaxScore(),
 			"parentTitle" => "",
 			"parentText" => $question->getText(),
