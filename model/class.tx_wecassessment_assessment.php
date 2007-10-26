@@ -288,6 +288,10 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $this->_result;
 	}
 	
+	function setResult($result) {
+		$this->_result = $result;
+	}
+	
 	function calculateAllRecommendations() {
 		$totalAssessmentScore = 0;
 		$recommendations = array();

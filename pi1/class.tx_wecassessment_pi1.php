@@ -96,6 +96,9 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			 */
 			$this->firstLoad = true;
 		}	
+		
+		/* Ugly hack to make sure the result saves properly in the assessment object */
+		$this->assessment->setResult($this->result);
 
 		/* If the result is complete, show recommendations.  Otherwise, show questions. */
 		if($this->result->isComplete()) {
