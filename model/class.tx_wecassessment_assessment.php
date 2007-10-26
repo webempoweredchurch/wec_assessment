@@ -308,7 +308,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		}
 		
 		/* Total Assessment Recommendations */
-		$score = $totalAssesmentScore / count($answers);
+		$score = $totalAssessmentScore / count($answers);
 		$recommendation = &$this->calculateRecommendation($score);
 		if(is_object($recommendation)) {
 			$recommendation->setMaxScore($this->getMaximumValue());

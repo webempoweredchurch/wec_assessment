@@ -171,7 +171,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		}
 		
 		if(is_object($recommendation)) {				
-			$recommendation->setScore($value);
+			$recommendation->setScore($score);
 			$recommendation->setMaxScore($highTotal / $weightTotal);
 		}
 		
