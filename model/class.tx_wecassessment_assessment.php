@@ -304,24 +304,32 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		/* Build the category array */
 		$categoryArray = array();
 		foreach($answers as $answer) {
-			$categoryArray[$answer->getCategoryUID()]['answers'][$answer->getQuestionUID()] = $answer;
-			$categoryArray[$answer->getCategoryUID()]['totalScore'] += $answer->getWeightedScore();
-			$categoryArray[$answer->getCategoryUID()]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
+			$category = tx_wecassessment_category::find($answer->getCategoryUID());
+			$sorting = $category->getSorting();
 			
-			$totalAssessmentScore += $answer->getWeightedScore();
+			if(is_object($category)) {
+				$categoryArray[$sorting]['uid'] = $category->getUID();
+				$categoryArray[$sorting]['answers'][$answer->getQuestionUID()] = $answer;
+				$categoryArray[$sorting]['totalScore'] += $answer->getWeightedScore();
+				$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
+			
+				$totalAssessmentScore += $answer->getWeightedScore();
+			}
 		}
+		
+		ksort($categoryArray);
 		
 		/* Total Assessment Recommendations */
 		$score = $totalAssessmentScore / count($answers);
 		$recommendation = &$this->calculateRecommendation($score);
 		if(is_object($recommendation)) {
 			$recommendation->setMaxScore($this->getMaximumValue());
-			$recommendations[] = $recommendation;
+			$recommendations[0] = $recommendation;
 		}
 		
 		/* Category Recommendations */
-		foreach($categoryArray as $categoryUID => $children) {
-			$category = tx_wecassessment_category::find($categoryUID);			
+		foreach($categoryArray as $sorting => $children) {
+			$category = tx_wecassessment_category::find($children['uid']);			
 			$categoryScore = $children['totalScore'] / count($children['answers']);
 			$recommendation = &$category->calculateRecommendation($categoryScore);
 			

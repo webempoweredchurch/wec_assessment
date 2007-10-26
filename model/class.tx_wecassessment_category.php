@@ -36,6 +36,7 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	
 	var $_uid;
 	var $_pid;
+	var $_sorting;
 	var $_title;
 	var $_description;
 	var $_image;
@@ -52,9 +53,10 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	 * @param		integer		Unique ID for the parent category for this category.
 	 * @return		none
 	 */
-	function tx_wecassessment_category($uid, $pid, $title, $description, $image) {
+	function tx_wecassessment_category($uid, $pid, $sorting, $title, $description, $image) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
+		$this->_sorting = $sorting;
 		$this->_title = $title;
 		$this->_description = $description;
 		$this->_image = $image;
@@ -70,7 +72,8 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	function toArray() {
 		return array(
 			"uid" => $this->getUID(), 
-			"pid" => $this->getPID(), 
+			"pid" => $this->getPID(),
+			"sorting" => $this->getSorting(),
 			"title" => $this->getTitle(), 
 			"description" => $this->getDescription(), 
 			"image" => $this->getImage(), 
@@ -124,6 +127,14 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	 */
 	function setPID($pid) { 
 		$this->_pid = $pid; 
+	}
+	
+	function getSorting() {
+		return $this->_sorting;
+	}
+	
+	function setSorting($sorting) {
+		$this->_sorting = $sorting;
 	}
 	
 	/**
@@ -250,7 +261,7 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 		
 		$row = tx_wecassessment_category::processRow($table, $row);
 		$categoryClass = t3lib_div::makeInstanceClassName($table);
-		return new $categoryClass($row['uid'], $row['pid'], $row['title'], $row['description'], $row['image']);
+		return new $categoryClass($row['uid'], $row['pid'], $row['sorting'], $row['title'], $row['description'], $row['image']);
 	}
 
 	function findQuestions($recur = false) {
