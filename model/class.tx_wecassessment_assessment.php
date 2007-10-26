@@ -395,6 +395,8 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		require_once(PATH_tslib.'class.tslib_feuserauth.php');
 		require_once(PATH_t3lib.'class.t3lib_befunc.php');
 		require_once(PATH_t3lib.'class.t3lib_timetrack.php');
+		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
+		require_once(PATH_t3lib.'class.t3lib_page.php');
 
 		$GLOBALS['TT'] = new t3lib_timeTrack;
 	
@@ -420,9 +422,6 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	
 	function getConf($pid) {
 		$this->initializeFrontend($pid);
-		
-		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
-		require_once(PATH_t3lib.'class.t3lib_page.php');
 		
 		//we need to get the plugin setup to create correct source URLs
 		$template = t3lib_div::makeInstance('t3lib_tsparser_ext'); // Defined global here!
