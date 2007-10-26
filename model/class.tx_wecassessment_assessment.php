@@ -294,6 +294,8 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	
 	function calculateAllRecommendations() {
 		$totalAssessmentScore = 0;
+		$maxAssessmentScore = 0;
+		
 		$recommendations = array();
 		$minValue = $this->getMinimumValue();
 		$maxValue = $this->getMaximumValue();
@@ -314,12 +316,18 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
 			
 				$totalAssessmentScore += $answer->getWeightedScore();
+				$maxAssessmentScore +- $answer->getWeight() * $this->getMaximumValue();
 			}
 		}
 		
 		ksort($categoryArray);
 		
-		/* Total Assessment Recommendations */
+		/* Hack to include perfect score */
+		if($maxAssessmentScore == $totalAssessmentScore) {
+			$totalAssessmentScore -= .0001;
+		}
+		
+		/* Total Assessment Recommendations */		
 		$score = $totalAssessmentScore / count($answers);
 		$recommendation = &$this->calculateRecommendation($score);
 		if(is_object($recommendation)) {
@@ -329,7 +337,13 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		
 		/* Category Recommendations */
 		foreach($categoryArray as $sorting => $children) {
-			$category = tx_wecassessment_category::find($children['uid']);			
+			$category = tx_wecassessment_category::find($children['uid']);
+			
+			/* Hack to include perfect score */
+			if($children['maxScore'] == $children['totalScore']) {
+				$children['totalScore'] -= .0001;
+			}			
+
 			$categoryScore = $children['totalScore'] / count($children['answers']);
 			$recommendation = &$category->calculateRecommendation($categoryScore);
 			
