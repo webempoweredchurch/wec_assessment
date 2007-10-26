@@ -28,18 +28,29 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
+
 class tx_wecassessment_tcemain_processdatamap {
 	
 	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {		
-		if($table == 'tt_content') {
-			//debug($incomingFieldArray, "incomfing field array");
-		}
+
 	}
 	
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
-		if($table = 'tt_content') {
-			//debug($fieldArray, "fieldArray");
-			//debug($this, "this");
+		if($table = 'tx_wecassessment_recommendation') {
+			switch($fieldArray['type']) {
+				case TX_WECASSESSMENT_RECOMMENDATION_CATEGORY:
+					$fieldArray['question_id'] = 0;
+				break;
+				case TX_WECASSESSMENT_RECOMMENDATION_QUESTION:
+					$fieldArray['category_id'] = 0;
+				break;
+				case TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT:
+					$fieldArray['question_id'] = 0;
+					$fieldArray['category_id'] = 0;
+				break;
+			}
+			
 		}
 	}
 }
