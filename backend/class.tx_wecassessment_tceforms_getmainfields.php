@@ -4,7 +4,6 @@ class tx_wecassessment_tceforms_getmainfields {
 	
 	function getMainFields_preProcess($table,&$row, $tceform) {
 		if($table == 'tx_wecassessment_question' or $table == 'tx_wecassessment_category') {
-			
 			/* If we're in a question or a category, turn off sorting for questions */
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
 			$GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['default_sortby'] = "ORDER BY uid";

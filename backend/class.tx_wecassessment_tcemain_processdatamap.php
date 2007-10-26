@@ -32,8 +32,11 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 
 class tx_wecassessment_tcemain_processdatamap {
 	
-	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {		
-
+	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {
+		/* If we're saving a question from within a category, don't resort */
+		if($table == 'tx_wecassessment_category') {		
+			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
+		}
 	}
 	
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
@@ -51,7 +54,7 @@ class tx_wecassessment_tcemain_processdatamap {
 				break;
 			}
 			
-		}
+		}		
 	}
 }
 
