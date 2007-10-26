@@ -54,6 +54,25 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		$this->_validationErrors = array();
 	}
 	
+	/**
+	 * Converts a recommendation to an associative array
+	 *
+	 * @return		Associative array representing the recommendation.
+	 */
+	function toArray() {
+		return array(
+			"uid" => $this->getUID(),
+			"pid" => $this->getPID(),
+			"text" => $this->getText(),
+			"min_value" => $this->getMinValue(),
+			"max_value" => $this->getMaxValue(),
+			"score" => round($this->getScore(), 2),
+			"maxScore" => $this->getMaxScore(),
+			"parentTitle" => "Overall Score",
+			"parentText" => "",
+		);
+	}
+	
 	function getLabel() {
 		$title = 'Total Assessment';
 		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
@@ -74,7 +93,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 ************************************************************************/
 	function findByScore($score) {
 		$table = 'tx_wecassessment_recommendation';
-		$where = tx_wecassessment_recommendation_assessment::getWhere($table, ' AND min_value <= '.$value.' AND max_value > '.$value.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);
+		$where = tx_wecassessment_recommendation_assessment::getWhere($table, 'min_value <= '.$score.' AND max_value > '.$score.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -116,8 +135,8 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 */
 	function newFromArray($row) {
 		$table = 'tx_wecassessment_recommendation';
-		$row = tx_wecassessment_recommendation_asssessment::processRow($table, $row);
-		$recommendationClass = t3lib_div::makeInstanceClassName($table);
+		$row = tx_wecassessment_recommendation_assessment::processRow($table, $row);
+		$recommendationClass = t3lib_div::makeInstanceClassName('tx_wecassessment_recommendation_assessment');
 		return new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value']);
 	}
 	

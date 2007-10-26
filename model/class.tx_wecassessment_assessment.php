@@ -289,6 +289,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	}
 	
 	function calculateAllRecommendations() {
+		$totalAssessmentScore = 0;
 		$recommendations = array();
 		$minValue = $this->getMinimumValue();
 		$maxValue = $this->getMaximumValue();
@@ -302,8 +303,19 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 			$categoryArray[$answer->getCategoryUID()]['answers'][$answer->getQuestionUID()] = $answer;
 			$categoryArray[$answer->getCategoryUID()]['totalScore'] += $answer->getWeightedScore();
 			$categoryArray[$answer->getCategoryUID()]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
+			
+			$totalAssessmentScore += $answer->getWeightedScore();
 		}
 		
+		/* Total Assessment Recommendations */
+		$score = $totalAssesmentScore / count($answers);
+		$recommendation = &$this->calculateRecommendation($score);
+		if(is_object($recommendation)) {
+			$recommendation->setMaxScore($this->getMaximumValue());
+			$recommendations[] = $recommendation;
+		}
+		
+		/* Category Recommendations */
 		foreach($categoryArray as $categoryUID => $children) {
 			$category = tx_wecassessment_category::find($categoryUID);			
 			$categoryScore = $children['totalScore'] / count($children['answers']);
@@ -327,6 +339,10 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		}
 		
 		return $recommendations;
+	}
+	
+	function calculateRecommendation($score) {
+		return tx_wecassessment_recommendation_assessment::findByScore($score, $this->getUID());
 	}	
 	
 	
