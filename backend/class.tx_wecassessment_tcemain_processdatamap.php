@@ -37,7 +37,7 @@ class tx_wecassessment_tcemain_processdatamap {
 	}
 	
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
-		if($table = 'tx_wecassessment_recommendation') {
+		if($table == 'tx_wecassessment_recommendation') {
 			switch($fieldArray['type']) {
 				case TX_WECASSESSMENT_RECOMMENDATION_CATEGORY:
 					$fieldArray['question_id'] = 0;

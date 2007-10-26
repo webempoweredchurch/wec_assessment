@@ -3,15 +3,11 @@
 class tx_wecassessment_tceforms_getmainfields {
 	
 	function getMainFields_preProcess($table,&$row, $tceform) {
-		if($table == 'tx_wecassessment_question') {
-
-			/* If we have posted data and a new record, preset values to what they were on the previous record */
-			/*
-			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_question']) && strstr($row['uid'], 'NEW')) {
-				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_question']);			
-				$row['weight'] = $postData['weight'];
-			}
-			*/
+		if($table == 'tx_wecassessment_question' or $table == 'tx_wecassessment_category') {
+			
+			/* If we're in a question or a category, turn off sorting for questions */
+			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
+			$GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['default_sortby'] = "ORDER BY uid";
 		}
 		
 		if($table == 'tx_wecassessment_recommendation') {
