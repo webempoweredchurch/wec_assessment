@@ -327,8 +327,12 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 			$totalAssessmentScore -= .0001;
 		}
 		
-		/* Total Assessment Recommendations */		
-		$score = $totalAssessmentScore / count($answers);
+		/* Total Assessment Recommendations */
+		if(count($answers) == 0) {
+			$score = 0;
+		} else {
+			$score = $totalAssessmentScore / count($answers);
+		}
 		$recommendation = &$this->calculateRecommendation($score);
 		if(is_object($recommendation)) {
 			$recommendation->setMaxScore($this->getMaximumValue());
