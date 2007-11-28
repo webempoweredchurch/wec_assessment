@@ -76,6 +76,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			"maxScore" => $this->getMaxScore(),
 			"parentTitle" => "",
 			"parentText" => $question->getText(),
+			"type" => 'question'
 		);
 		
 		return $recommendationArray;

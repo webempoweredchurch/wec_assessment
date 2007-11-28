@@ -70,6 +70,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 			"maxScore" => $this->getMaxScore(),
 			"parentTitle" => "Overall Score",
 			"parentText" => "",
+			"type" => 'assessment'
 		);
 	}
 	

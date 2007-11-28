@@ -75,6 +75,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 			"maxScore" => $this->getMaxScore(),
 			"parentTitle" => $category->getTitle(),
 			"parentText" => "",
+			"type" => 'category'
 		);
 		
 		return $recommendationArray;

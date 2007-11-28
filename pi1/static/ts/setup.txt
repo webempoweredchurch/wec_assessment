@@ -53,11 +53,12 @@ plugin.tx_wecassessment_pi1 {
 	}
 	
 	recommendations {
-		score = TEXT
-		score.value = <div id="score">{field:score}</div>
+		# Possible types are assessment, category, and question.
+		recommendation = CASE
+		recommendation.key.field = type
 		
-		recommendation = COA
-		recommendation {
+		recommendation.default = COA
+		recommendation.default {
 			10 = TEXT
 			10.field = parentTitle
 			10.wrap = <h3>|</h3>
@@ -78,7 +79,6 @@ plugin.tx_wecassessment_pi1 {
 		    
 
 			wrap = <div class="recommendation">|</div>
-
 		}
 	}
 	
