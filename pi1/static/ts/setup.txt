@@ -80,6 +80,19 @@ plugin.tx_wecassessment_pi1 {
 
 			wrap = <div class="recommendation">|</div>
 		}
+		
+		recommendation.category < plugin.tx_wecassessment_pi1.recommendations.recommendation.default
+		recommendation.category {
+			12 = IMAGE
+			12 {
+				file.import = uploads/tx_wecassessment/
+				file.import {
+					field = parentImage
+					listNum = 0
+				}
+				altText.field = parentTitle
+			}
+		}
 	}
 	
 	
