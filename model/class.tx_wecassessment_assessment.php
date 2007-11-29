@@ -360,6 +360,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$question = $answer->getQuestion();
 				$questionScore = $answer->getScore();
 				
+				/* Hack to include perfect score */
+				if($questionScore == $this->getMaximumValue()) {
+					$questionScore -= .0001;
+				}
+				
 				$recommendation = $question->calculateRecommendation($questionScore);			
 				if(is_object($recommendation)) {
 					$recommendation->setMaxScore($this->getMaximumValue());
