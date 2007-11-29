@@ -41,19 +41,20 @@ class tx_wecassessment_tcemain_processdatamap {
 	
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
 		if($table == 'tx_wecassessment_recommendation') {
-			switch($fieldArray['type']) {
-				case TX_WECASSESSMENT_RECOMMENDATION_CATEGORY:
-					$fieldArray['question_id'] = 0;
-				break;
-				case TX_WECASSESSMENT_RECOMMENDATION_QUESTION:
-					$fieldArray['category_id'] = 0;
-				break;
-				case TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT:
-					$fieldArray['question_id'] = 0;
-					$fieldArray['category_id'] = 0;
-				break;
+			if(array_key_exists('type', $fieldArray)) {
+				switch($fieldArray['type']) {
+					case TX_WECASSESSMENT_RECOMMENDATION_CATEGORY:
+						$fieldArray['question_id'] = 0;
+					break;
+					case TX_WECASSESSMENT_RECOMMENDATION_QUESTION:
+						$fieldArray['category_id'] = 0;
+					break;
+					case TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT:
+						$fieldArray['question_id'] = 0;
+						$fieldArray['category_id'] = 0;
+					break;
+				}
 			}
-			
 		}		
 	}
 }
