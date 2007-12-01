@@ -82,15 +82,20 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 		return $recommendationArray;
 	}
 	
-	function getLabel() {
-		$question = &$this->getQuestion();
-		if(is_object($question)) {
-			$title = $question->getLabel();
+	function getLabel($isInline=false) {
+		if($isInline) {
+			$label = $this->getMinValue().'-'.$this->getMaxValue();
 		} else {
-			$title = '[ No Question ]';
+			$question = &$this->getQuestion();
+			if(is_object($question)) {
+				$title = $question->getLabel();
+			} else {
+				$title = '[ No Question ]';
+			}
+			$label = $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 		}
-
-		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
+		
+		return $label;
 	}
 	
 

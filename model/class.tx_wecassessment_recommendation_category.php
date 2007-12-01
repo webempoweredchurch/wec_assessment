@@ -83,15 +83,20 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	}
 	
 	
-	function getLabel() {
-		$category = &$this->getCategory();
-		if(is_object($category)) {
-			$title = $category->getTitle();
+	function getLabel($isInline=false) {
+		if($isInline) {
+			$label = $this->getMinValue().'-'.$this->getMaxValue();
 		} else {
-			$title = '[ No Category ]';
+			$category = &$this->getCategory();
+			if(is_object($category)) {
+				$title = $category->getTitle();
+			} else {
+				$title = '[ No Category ]';
+			}
+			$label = $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 		}
-
-		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
+		
+		return $label;
 	}
 	
 

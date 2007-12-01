@@ -34,13 +34,17 @@ class tx_wecassessment_labels {
 	 * @param		object		Parent object.
 	 * @return		none
 	 */
-	function getQuestionLabel(&$params, &$pObj) {
+	function getQuestionLabel(&$params, &$pObj=null) {
+		if($pObj == null) {
+			$isInline = true;
+		}
+		
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
 			$question = &tx_wecassessment_question::find($uid, true);
 			if(is_object($question)) {
 				$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
-				$params['title'] = t3lib_div::fixed_lgd_cs(strip_tags($question->getLabel()), $titleLength);
+				$params['title'] = t3lib_div::fixed_lgd_cs(strip_tags($question->getLabel($isInline)), $titleLength);
 			}
 		} else {
 			$params['title'] = '[ New Question ]';
@@ -72,11 +76,15 @@ class tx_wecassessment_labels {
 	 * @param		object		Parent object.
 	 * @return		none
 	 */
-	function getRecommendationLabel(&$params, &$pObj) {
+	function getRecommendationLabel(&$params, &$pObj=null) {
+		if($pObj == null) {
+			$isInline = true;
+		}
+		
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
 			$recommendation = &tx_wecassessment_recommendation::find($uid, true);
-			$params['title'] = $recommendation->getLabel();
+			$params['title'] = $recommendation->getLabel($isInline);
 		} else {
 			$params['title'] = '[ New Recommendation ]';
 		}
