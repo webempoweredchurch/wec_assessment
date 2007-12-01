@@ -48,7 +48,10 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * Default constructor.
 	 * @param		integer		Unique ID of the result.
 	 * @param		integer		Page ID where result is stored.
-	 * @param		integer		???
+	 * @param		integer		The type of result, either user (0) or anonymous (1).
+	 * @param		mixed		The user id.  For frontend users, this is the user_id
+	 *							for the fe_user. For anonymous users, this is their
+	 *							temporary session ID.
 	 * @param		array		Array of question objects.
 	 * @param		array		Array of answer objects.
 	 * @return		none
