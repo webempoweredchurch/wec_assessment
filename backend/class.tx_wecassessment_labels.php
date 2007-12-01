@@ -34,7 +34,7 @@ class tx_wecassessment_labels {
 	 * @param		object		Parent object.
 	 * @return		none
 	 */
-	function getQuestionLabel(&$params, &$pObj=null) {
+	function getQuestionLabel(&$params, &$pObj) {
 		if($pObj == null) {
 			$isInline = true;
 		}
@@ -76,7 +76,7 @@ class tx_wecassessment_labels {
 	 * @param		object		Parent object.
 	 * @return		none
 	 */
-	function getRecommendationLabel(&$params, &$pObj=null) {
+	function getRecommendationLabel(&$params, &$pObj) {
 		if($pObj == null) {
 			$isInline = true;
 		}
