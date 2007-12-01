@@ -3,6 +3,40 @@
 class tx_wecassessment_tceforms_getmainfields {
 	
 	function getMainFields_preProcess($table,&$row, $tceform) {
+		if($row['CType'] == 'list' && $row['list_type'] == 'wec_assessment_pi1') {
+			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+			$assessment = new $assessmentClass($row['uid'], $row['pid'], '', t3lib_div::xml2array($row['pi_flexform']));
+			
+			$content = array();
+			$minValue = $assessment->getMinimumValue();
+			$maxValue = $assessment->getMaximumValue();
+
+			/* Check the validity of the total recommendation */
+			if(!$assessment->valid($minValue, $maxValue)) {
+				$content[] = $this->displayContainerErrors('', $assessment);
+			}
+
+			/* Check all categories */
+			$categories = tx_wecassessment_category::findAll($assessment->getPID());
+			foreach($categories as $category) {
+				if(!$category->valid($minValue, $maxValue)) {
+					$content[] = $this->displayContainerErrors('', $category);
+				}
+
+				/* Check the validity of each question */
+				$questions = $category->findQuestions();
+				foreach($questions as $question) {
+					if(!$question->valid($minValue, $maxValue)) {
+						$content[] = $this->displayContainerErrors($this->crop($category->getLabel()), $question);
+					}
+				}
+			}
+			
+			if(count($content) > 0) {
+				$tceform->extraFormHeaders[] = '<div style="background-color: yellow; border: 2px solid black; width: 88%; padding: 15px; margin-bottom: 15px;">'.implode(chr(10), $content).'</div>';
+			}
+		}
+		
 		if($table == 'tx_wecassessment_question' or $table == 'tx_wecassessment_category') {
 			/* If we're in a question or a category, turn off sorting for questions */
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
@@ -64,6 +98,123 @@ class tx_wecassessment_tceforms_getmainfields {
 				}
 			}
 		}
+	}
+	
+	function displayContainerErrors($parentTitle, $container) {
+		$content = array();
+		
+		if($parentTitle) {		
+			$title = $parentTitle.' : '.$this->crop($container->getLabel());
+		} else {
+			$title = $this->crop($container->getLabel());
+		}
+		$content[] = '<h3 style="background-color:yellow;">'.$title.'</h3>';
+
+		$errors = $container->getValidationErrors();
+		
+		if(is_array($errors) && count($errors)) {
+			$content[] = '<ul>';
+			foreach($errors as $error) {
+				$errorString = tx_wecassessment_tceforms_getmainfields::errorToString($error);
+				$content[] = '<li>'.$errorString.'</li>';
+			}
+			$content[] = '</ul>';
+		}
+		
+		return implode(chr(10), $content);
+	}
+	
+	function errorToString($errorArray) {
+		$uid1 = $errorArray['uid1'];
+		$uid2 = $errorArray['uid2'];
+		$message = $errorArray['message'];
+		$return = $message.'<br />';
+		
+		if($uid1) {
+			$recommendation1 = tx_wecassessment_recommendation::find($uid1);
+			$uid1Link = tx_wecassessment_tceforms_getmainfields::returnEditLink($uid1, $this->crop($recommendation1->getLabel()), $recommendation1->getTableName());
+			$return .= $uid1Link.'<br />';
+		}
+		
+		if($uid2) {
+			$recommendation2 = tx_wecassessment_recommendation::find($uid2);
+			$uid2Link = tx_wecassessment_tceforms_getmainfields::returnEditLink($uid2, $this->crop($recommendation2->getLabel()), $recommendation2->getTableName());
+			$return .= $uid2Link.'<br />';
+		}
+		
+		return $return;
+	}
+	
+	function displayRecommendation($recommendation, $errors) {
+		
+		$content = array();	
+		$link = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
+		
+		$content[] = '<div class="tx_wecassessment_response">';
+		$content[] = '<h3 style="background-color:yellow;">'.$recommendation->getMinValue().' - '.$recommendation->getMaxValue().'</h3>';
+		$content[] = '</div>';
+						
+		return implode(chr(10), $content);
+	}
+	
+	function getErrors($recommendation, $errors, $type='') {
+		foreach($errors as $error) {
+			if($error->getRecommendationUID() == $recommendation->getUID() && $error->getType() == $type) {
+				$filteredErrors[] = $error;
+			}
+		}
+		
+		return $filteredErrors;
+	}
+	
+	function displayError($error) {
+		$content = array();
+		
+		$content[] = $error->getMessage();
+		$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation'); 
+
+		if($error->getUID2()) {
+			$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
+		}
+		
+		return implode(chr(10), $content);
+	}
+	
+	
+	
+	function returnNewLink($title,$tablename = false) {
+		if (empty($tablename)) $tablename = $this->tconf['name'];
+		$params = '&edit['.$tablename.']['.$this->spid.']=new';
+
+		$out .=	'<a href="#" onclick="'.
+		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
+		'">';
+		$out .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_record.gif','width="11" height="12"').' title="Edit me" border="0" alt="" /></a>';
+		$out .=	' <a href="#" onclick="'.
+		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
+		'">';
+		$out .= $title.'</a>';
+		return $out;
+	}
+
+
+
+	function returnEditLink($uid,$title,$tablename = false) {
+		if (empty($tablename)) $tablename = $this->tconf['name'];
+		$params = '&edit['.$tablename.']['.$uid.']=edit';
+		$out .=	'<a href="#" onclick="'.
+		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
+		'">';
+		$out .= $title;
+		$out .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit me" border="0" alt="" />';
+		$out .= '</a>';
+		return $out;
+	}
+
+	function crop($string) {
+		$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
+		return htmlspecialchars(t3lib_div::fixed_lgd_cs($string, $titleLength));
+		
 	}
 }
 
