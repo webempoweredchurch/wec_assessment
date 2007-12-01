@@ -210,7 +210,8 @@ $TCA["tx_wecassessment_question"] = Array (
 			"exclude" => 1,
 			"label" => "Average Score",
 			"config" => Array(
-				"type" => "user",
+				"type" => "passthrough",
+				"form_type" => "user",
 				"userFunc" => 'EXT:wec_assessment/backend/class.tx_wecassessment_results.php:tx_wecassessment_results->displayAverageForQuestion',
 			),
 		),
