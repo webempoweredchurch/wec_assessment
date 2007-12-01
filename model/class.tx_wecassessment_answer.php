@@ -45,7 +45,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * Default constructor.
 	 * @param		integer		Unique ID of the answer.
 	 * @param		integer		Page ID where the answer is stored.
-	 * @param		string		Answer text.
+	 * @param		integer		Value of the answer.
 	 * @param		integer		Unique ID of the question this object answers.
 	 * @param		integer		Unique ID of the overall result this answer belongs to.
 	 * @return		none
