@@ -164,7 +164,7 @@ if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
 
 // Adds wizard icon to the content element wizard.
 if (TYPO3_MODE=='BE')	{
-	//$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_wecflashplayer_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecflashplayer_pi2_wizicon.php';
+	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_wecassessment_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecassessment_pi1_wizicon.php';
 }
 
 
