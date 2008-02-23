@@ -20,7 +20,8 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg','
 
 /* If inline editing is enabled, hide the answer table in list view */
 if($enableInlineEditing) {
-	t3lib_extMgm::addPageTSConfig('mod.web_list.hideTables = tx_wecassessment_answer');
+	t3lib_extMgm::addPageTSConfig('mod.web_list.hideTables := addToList(tx_wecassessment_answer)');
+	
 }
 
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_wecassessment_pi1.php','_pi1','list_type',0);
