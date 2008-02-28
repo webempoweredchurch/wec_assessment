@@ -4,6 +4,7 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>General</sheetTitle>
+					<cshFile>LLL:EXT:wec_assessment/csh/locallang_csh_pi1.xml</cshFile>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -91,6 +92,7 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>Labels</sheetTitle>
+					<cshFile>LLL:EXT:wec_assessment/csh/locallang_csh_pi1.xml</cshFile>
 				</TCEforms>
 				<type>array</type>
 				<el>

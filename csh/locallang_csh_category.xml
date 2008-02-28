@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH labels for the Recommendation table of WEC Assessment</description>
+		<type>CSH</type>
+		<csh_table>tx_wecassessment_category</csh_table>
+		<fileId>EXT:wec_assessment/csh/locallang_csh_category.xml</fileId>
+		<labelContext type="array"></labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="hidden.description">You can choose to hide this category to keep it and all associated questions and recommendations hidden from the Frontend.</label>
+			<label index="title.description">You must give the category a title. This field is required.</label>
+			<label index="description.description">Although the description field is optional, it gives your Frontend users an idea about what the category contains.</label>
+			<label index="image.description">You can add a related image to the category. Options for the image's display can be adjusted through the CSS file.</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH labels for the Question table of WEC Assessment</description>
+		<type>CSH</type>
+		<csh_table>tx_wecassessment_question</csh_table>
+		<fileId>EXT:wec_assessment/csh/locallang_csh_question.xml</fileId>
+		<labelContext type="array"></labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="sorting.description">Determines the order in which the questions appear in the Frontend.</label>
+			<label index="hidden.description">Enabling the Hide field will prevent the assessment question (and any associated recommendations) from displaying in the Frontend.</label>
+			<label index="category_id.description">Select a category to associate the question with. All questions must be tied to a category.</label>
+			<label index="text.description">Put the question itself in this field.</label>
+			<label index="weight.description">You can weight the score of individual questions differently by changing the default (1) to another number. A weight of 2 means that when the question is scored, the answer receives twice as much emphasis as a question weighted as 1.</label>
+			<label index="average_score.description">As assessment questions are answered in the Frontend, the average score for the question will be displayed here. This allows for the gathering and analysis of significant statistics.</label>
+		</languageKey>
+	</data>
+</T3locallang>

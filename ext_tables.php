@@ -167,6 +167,12 @@ if (TYPO3_MODE=='BE')	{
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_wecassessment_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecassessment_pi1_wizicon.php';
 }
 
+// Add CSH Labels
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_category','EXT:wec_assessment/csh/locallang_csh_category.php');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_question','EXT:wec_assessment/csh/locallang_csh_question.php');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_assessment/csh/locallang_csh_recommendation.php');
+
+
 
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/ts/", "WEC Assessment");
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/css/", "WEC Assessment CSS Styles");

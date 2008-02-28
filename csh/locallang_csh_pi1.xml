@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH labels for the WEC Assessment Frontend Plugin</description>
+		<type>CSH</type>
+		<csh_table></csh_table>
+		<fileId>EXT:wec_assessment/csh/locallang_csh_pi1.xml</fileId>
+		<labelContext type="array"></labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="sorting.description">Determines the order in which the questions appear in the Frontend.</label>
+			<label index="sorting.details">Options include Random and Use Backend Sorting. The Backend Sorting option will display the order of the questions based on their order in the List Module.</label>
+			<label index="paging.description">Spreads questions across multiple pages with a progress bar at the top of each page.</label>
+			<label index="perPage.description">If paging is enabled, the number of questions that appear on each page.</label>
+			<label index="minRange.description">The lowest score possible for an answer. Typically 0 or 1.</label>
+			<label index="maxRange.description">The highest score possible for an answer.</label>
+			<label index="maxRange.details">This will be determined by what sort of continuum you are using for scoring the assessment. If your answers will be "Never, Sometimes, Often" enter either the number 2 or 3, depending on whether the minimum score is 0 or 1.</label>
+			<label index="scale.details">The number of labels you can add to the assessment answers will be determined by the Minimum and Maximum Answer Values you chose on the General Tab. You must provide a label for each value.</label>
+		</languageKey>
+	</data>
+</T3locallang>

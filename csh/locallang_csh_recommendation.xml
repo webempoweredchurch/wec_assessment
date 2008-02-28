@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH labels for the Recommendation table of WEC Assessment</description>
+		<type>CSH</type>
+		<csh_table>tx_wecassessment_recommendation</csh_table>
+		<fileId>EXT:wec_assessment/csh/locallang_csh_recommendation.xml</fileId>
+		<labelContext type="array"></labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="hidden.description">Enabling the Hide field will prevent the assessment recommendation from displaying in the Frontend.</label>
+			<label index="type.description">Select whether you want to associate this recommendation record with a category, a question, or the full assessment.</label>
+			<label index="min_value.description">The minimum score that will generate this recommendation.</label>
+			<label index="max_value.description">The maximum score that will generate this recommendation.</label>
+			<label index="max_value.details">Values must overlap in order to ensure all possible average scores will be covered: 0-2, 2-4, 4-8, etc. This is important because if an average score generated at 2.5 and the range of recommendations was 1-2, 3-4, 5-6, then the 2.5 would not trigger a recommendation, since it fell between the 1-2 and the 3-4 range. Tied values (such as an average score of 2 in this example) generate the higher recommendation.</label>
+			<label index="text.value">The text of the recommendation. Note that you can include links and images if needed.</label>
+		</languageKey>
+	</data>
+</T3locallang>
