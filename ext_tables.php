@@ -25,7 +25,7 @@ $TCA["tx_wecassessment_category"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_category.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icons/icon_tx_wecassessment_category.gif",
 		"dividers2tabs" => true,
 	),
 	"feInterface" => Array (
@@ -50,7 +50,7 @@ $TCA["tx_wecassessment_question"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_question.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icons/icon_tx_wecassessment_question.gif",
 		"dividers2tabs" => true,
 	),
 	"feInterface" => Array (
@@ -82,7 +82,7 @@ $TCA["tx_wecassessment_answer"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_answer.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icons/icon_tx_wecassessment_answer.gif",
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, value, question_id, result_id",
@@ -107,7 +107,7 @@ $TCA["tx_wecassessment_result"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_result.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icons/icon_tx_wecassessment_result.gif",
 		"dividers2tabs" => true,
 	),
 	"feInterface" => Array (
@@ -133,7 +133,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecassessment_recommendation.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icons/icon_tx_wecassessment_recommendation.gif",
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, category_id, text, min_value, max_value",
