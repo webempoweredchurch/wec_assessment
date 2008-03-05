@@ -10,37 +10,54 @@
 			<label index="tx_wecassessment_category.title">Title</label>
 			<label index="tx_wecassessment_category.description">Description</label>
 			<label index="tx_wecassessment_category.image">Image</label>
-			<label index="tx_wecassessment_question">Assessment Questions</label>
+			<label index="tx_wecassessment_category.questions">Question</label>
+			<label index="tx_wecassessment_category.recommendations">Recommendations</label>
+			<label index="tx_wecassessment_question">Assessment Question</label>
 			<label index="tx_wecassessment_question.text">Text</label>
 			<label index="tx_wecassessment_question.category_id">Category</label>
 			<label index="tx_wecassessment_question.weight">Weight</label>
+			<label index="tx_wecassessment_question.average_score">Average Score</label>
+			<label index="tx_wecassessment_question.recommendations">Recommendations</label>
 			<label index="tx_wecassessment_answer">Assessment Answer</label>
 			<label index="tx_wecassessment_answer.value">Value</label>
 			<label index="tx_wecassessment_answer.question_id">Question</label>
 			<label index="tx_wecassessment_answer.result_id">Result</label>
+			
 			<label index="tx_wecassessment_result">Assessment Result</label>
 			<label index="tx_wecassessment_result.type.feuser.0">Frontend User</label>
 			<label index="tx_wecassessment_result.type.anonymous.1">Anonymous</label>
 			<label index="tx_wecassessment_result.type">Type</label>
 			<label index="tx_wecassessment_result.feuser_id">Frontend User</label>
 			<label index="tx_wecassessment_result.assessment_id">Assessment</label>
+			<label index="tx_wecassessment_result.assessment_id">Answers</label>
+			
 			<label index="tx_wecassessment_recommendation">Assessment Recommendations</label>
 			<label index="tx_wecassessment_recommendation.type">Type</label>
+			<label index="tx_wecassessment_recommendation.type.category">Recommendation for Category</label>
+			<label index="tx_wecassessment_recommendation.type.question">Recommendation for Question</label>
+			<label index="tx_wecassessment_recommendation.type.assessment">Recommendation for Entire Assessment</label>
 			<label index="tx_wecassessment_recommendation.question_id">Question</label>
 			<label index="tx_wecassessment_recommendation.category_id">Category</label>
 			<label index="tx_wecassessment_recommendation.text">Text</label>
 			<label index="tx_wecassessment_recommendation.min_value">Minimum Value</label>
 			<label index="tx_wecassessment_recommendation.max_value">Maximum Value</label>
-			
+
+			<label index="tx_wecassessment_tabs.general">General</label>
+			<label index="tx_wecassessment_tabs.questions">Questions</label>
+			<label index="tx_wecassessment_tabs.answers">Answers</label>
+			<label index="tx_wecassessment_tabs.recommendations">Recommendations</label>
+
 			<label index="tt_content.list_type_pi1">WEC Assessment</label>
 			
+			<label index="tt_content.pi_flexform.general">General</label>
+			<label index="tt_content.pi_flexform.sorting">Sorting</label>
 			<label index="tt_content.pi_flexform.minRange">Minimum Answer Value</label>
 			<label index="tt_content.pi_flexform.maxRange">Maximum Answer Value</label>
 			<label index="tt_content.pi_flexform.errors">Validation Errors</label>
-			
 			<label index="tt_content.pi_flexform.paging">Split Questions Acoss Multiple Pages?</label>
 			<label index="tt_content.pi_flexform.perPage">Questions Per Page</label>
-			
+			<label index="tt_content.pi_flexform.labels">Labels</label>
+			<label index="tt_content.pi_flexform.scale">Scale</label>
 		</languageKey>
 	</data>
 </T3locallang>

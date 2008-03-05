@@ -3,14 +3,14 @@
 		<general>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>General</sheetTitle>
+					<sheetTitle>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.general</sheetTitle>
 					<cshFile>LLL:EXT:wec_assessment/csh/locallang_csh_pi1.xml</cshFile>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<sorting>
 						<TCEforms>
-							<label>Sorting</label>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.sorting</label>
 							<config>
 								<type>select</type>
 								<itemsProcFunc>EXT:wec_assessment/backend/class.tx_wecassessment_itemsProcFunc.php:tx_wecassessment_itemsProcFunc->getSortItems</itemsProcFunc>
@@ -65,25 +65,6 @@
 						</TCEforms>
 					</maxRange>
 					
-					
-					<!--
-					<pages>
-						<TCEforms>
-							<exclude>1</exclude>
-							<label>LLL:EXT:lang/locallang_general.php:LGL.startingpoint</label>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
-								<allowed>pages</allowed>
-								<size>3</size>
-								<maxitems>22</maxitems>
-								<minitems>0</minitems>
-								<show_thumbs>1</show_thumbs>
-							</config>
-						</TCEforms>
-					</pages>
-					-->
-					
 				</el>
 			</ROOT>
 		</general>
@@ -91,7 +72,7 @@
 		<labels>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>Labels</sheetTitle>
+					<sheetTitle>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.labels</sheetTitle>
 					<cshFile>LLL:EXT:wec_assessment/csh/locallang_csh_pi1.xml</cshFile>
 				</TCEforms>
 				<type>array</type>
@@ -99,7 +80,7 @@
 					
 					<scale>
 						<TCEforms>
-							<label>Scale</label>
+							<label>LLL:EXT:wec_assessment/locallang_db.php:tt_content.pi_flexform.scale</label>
 							<config>
 								<type>user</type>
 								<userFunc>tx_wecassessment_flexform->getScaleForm</userFunc>

@@ -69,7 +69,7 @@ $TCA["tx_wecassessment_category"] = Array (
 
 		"questions" => Array (
 			"exclude" => 1,
-			"label" => "Questions",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_category.questions",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_question",
@@ -85,7 +85,7 @@ $TCA["tx_wecassessment_category"] = Array (
 		
 		"recommendations" => Array (
 			"exclude" => 1,
-			"label" => "Recommendations",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_category.recommendations",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_recommendation",
@@ -101,7 +101,7 @@ $TCA["tx_wecassessment_category"] = Array (
 				
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "--div--;Main,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image,--div--;Questions, questions, --div--;Recommendations, recommendations")
+		"0" => Array("showitem" => "--div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.general,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext:rte_transform[mode=ts];3-3-3, image,--div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.questions, questions, --div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.recommendations, recommendations")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -208,7 +208,7 @@ $TCA["tx_wecassessment_question"] = Array (
 		),
 		"average_score" => Array(
 			"exclude" => 1,
-			"label" => "Average Score",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.average_score",
 			"config" => Array(
 				"type" => "passthrough",
 				"form_type" => "user",
@@ -217,7 +217,7 @@ $TCA["tx_wecassessment_question"] = Array (
 		),
 		"recommendations" => Array (
 			"exclude" => 1,
-			"label" => "Recommendations",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question.recommendations",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_recommendation",
@@ -232,7 +232,7 @@ $TCA["tx_wecassessment_question"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight, average_score,--div--;Recommendations, recommendations")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, category_id,text;;;richtext:rte_transform[mode=ts];3-3-3, weight, average_score,--div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.recommendations, recommendations")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -343,20 +343,9 @@ $TCA["tx_wecassessment_result"] = Array (
 				"maxitems" => 1,
 			),
 		),
-		/*
-		"details" => Array (
-			"exclude" => 1,
-			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_result.details",
-			"config" => Array (
-				"type" => "user",
-				"userFunc" => "tx_wecassessment_results->displayResults",
-				"noTableWrapping" => true,
-			),
-		),
-		*/
 		"answers" => Array (
 			"exclude" => 1,
-			"label" => "Answers",
+			"label" => "LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_result.answers",
 			"config" => Array (
 				"type" => "inline",
 				"foreign_table" => "tx_wecassessment_answer",
@@ -373,8 +362,8 @@ $TCA["tx_wecassessment_result"] = Array (
 		),		
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, feuser_id, --div--;Answers, answers"),
-		"1" => Array("showitem" => "--div--;Overview,hidden;;1;;1-1-1, type, --div--;Answers, answers"),
+		"0" => Array("showitem" => "--div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.general,hidden;;1;;1-1-1, type, feuser_id, --div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.answers, answers"),
+		"1" => Array("showitem" => "--div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.general,hidden;;1;;1-1-1, type, --div--;LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_tabs.answers, answers"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -409,9 +398,9 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 				"minitems" => 0,
 				"maxitems" => 1,
 				"items" => Array (
-					Array('Recommendation for Category', 0),
-					Array('Recommendation for Question', 1),
-					Array('Recommendation for Entire Assessment', 2),
+					Array('LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.type.category', 0),
+					Array('LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.type.question', 1),
+					Array('LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation.type.assessment', 2),
 				),
 			),
 		),
