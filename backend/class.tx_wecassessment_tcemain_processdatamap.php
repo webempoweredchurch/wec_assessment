@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -30,8 +30,23 @@
 
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
 
+/**
+ * Class for pre and post processing TCE Main configuration.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_tcemain_processdatamap {
 	
+	/**
+	 * Preprocessing of backend form data.  Prevents resorting when questions are saved within IRRE.
+	 * @param		array		Array of form data.
+	 * @param		string		Name of the table being saved.
+	 * @param		mixed		UID of the record being saved. Can be a string for new records.
+	 * @param		object		tcemain object.
+	 * @return		none
+	 */
 	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {
 		/* If we're saving a question from within a category, don't resort */
 		if($table == 'tx_wecassessment_category') {		
@@ -39,6 +54,16 @@ class tx_wecassessment_tcemain_processdatamap {
 		}
 	}
 	
+	/**
+	 * Post processing of backend form data.  As the recommenation type is switched,
+	 * empty out the values that no longer matter.
+	 * @param		string		Status code.
+	 * @param		string		Name of the table that was saved.
+	 * @param		integer		UID of the record that was saved.
+	 * @param		array		Array of form data.
+	 * @param		object		tcemain object.
+	 * @return		none
+	 */
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, &$pObj) {
 		if($table == 'tx_wecassessment_recommendation') {
 			if(array_key_exists('type', $fieldArray)) {

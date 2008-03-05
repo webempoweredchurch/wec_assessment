@@ -1,9 +1,8 @@
 <?php
-
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -38,7 +37,7 @@ class tx_wecassessment_flexform {
 	/**
 	 * Common initialization function.
 	 * @param		array		The array of all FlexForm elements.
-	 * @param		array		???
+	 * @param		array		Form object.
 	 * @return		none
 	 */
 	function init($PA, $fobj) {

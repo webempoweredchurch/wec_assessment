@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -32,9 +32,13 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
-
-/* @todo		Store the answer inside the question? */
-
+/**
+ * Data models for Assessment Questions.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_question extends tx_wecasssessment_recommendationcontainer {
 
 	var $_uid;
@@ -77,10 +81,19 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
 	}
 	
+	/**
+	 * Calculates the recommendation for the question.
+	 * @param		integer		The score for the question.
+	 * @return		object		The recommendation object.
+	 */
 	function calculateRecommendation($score) {
 		return tx_wecassessment_recommendation_question::findByScore($score, $this->getUID());
 	}
 	
+	/**
+	 * Gets the label for question.
+	 * @return		string		The label.
+	 */
 	function getLabel() {
 		return $this->getText();
 	}
@@ -298,6 +311,10 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		return false;		
 	}
 	
+	/**
+	 * Calculates the average score for this question.
+	 * @return		integer		The average score
+	 */
 	function getAverageAnswer() {
 		$allAnswers = $this->getAllAnswers();
 		if(is_array($allAnswers)) {
@@ -316,6 +333,10 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		return round($average, 2);
 	}
 	
+	/**
+	 * Gets all answers for the current question.
+	 * @return		array		Array of answer objects.
+	 */
 	function getAllAnswers() {
 		if(!$this->_allAnswers) {
 			$this->_allAnswers = &tx_wecassessment_answer::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
@@ -324,10 +345,19 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		return $this->_allAnswers;
 	}
 	
+	/**
+	 * Gets the total number of answers for the current question.
+	 * @return		integer		The total number of answers for the current question.
+	 */
 	function getTotalAnswers() {
 		return count($this->getAllAnswers());
 	}
 	
+	
+	/**
+	 * Gets all recommendations for the current question.
+	 * @return		array		Array of recommendation objects.
+	 */
 	function getAllRecommendations() {
 		if(!$this->_allRecommendations) {
 			$this->_allRecommendations = &tx_wecassessment_recommendation::findAll($this->getPID(), 'question_id='.$this->getUID(), false);
@@ -336,6 +366,11 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		return $this->_allRecommendations;
 	}
 	
+	/**
+	 * Gets the single calculated recommendation based on the score.
+	 * @param		score		The score for the question.
+	 * @return		object		The recommendation object.
+	 */
 	function getCalculatedRecommendation($score) {
 		$weightedScore = $this->getWeight() * $score;
 		return tx_wecassessment_recommendation::findByValue($weightedScore, 'question_id='.$category_id);

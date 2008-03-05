@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -33,6 +33,14 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 define('TX_WECASSESSMENT_RECOMMENDATION_CATEGORY', 0);
 define('TX_WECASSESSMENT_RECOMMENDATION_QUESTION', 1);
 define('TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT', 2);
+
+/**
+ * Data models for Assessment Recommendation.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 
 class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	
@@ -182,18 +190,36 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		$this->_max_value = $value; 
 	}
 	
+	/**
+	 * Gets the score for the recommendation.
+	 * @return		integer		The score.
+	 */
 	function getScore() {
 		return $this->_score;
 	}
 	
+	/**
+	 * Sets the score for the recommendation.
+	 * @param		integer		The score.
+	 * @return		none
+	 */
 	function setScore($score) {
 		$this->_score = $score;
 	}
 	
+	/**
+	 * Gets the maximum possible score for the recommendation.
+	 * @return		integer		The score.
+	 */
 	function getMaxScore() {
 		return $this->_maxScore;
 	}
 	
+	/**
+	 * Sets the maximum possible score for the recommmendation.
+	 * @param		integer		The score.
+	 * @return		none
+	 */
 	function setMaxScore($score) {
 		$this->_maxScore = $score;
 	}
@@ -204,6 +230,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 *
 	 ************************************************************************/
 	
+	/**
+	 * Finds a single recommendation by its unique ID.
+	 * @param		integer		UID of the recommendation.
+	 * @param		boolean		If true, hidden records are included.
+	 * @return		object		The recommendation object.
+	 */
 	function find($uid, $showHidden=false) {
 		$table = 'tx_wecassessment_recommendation';
 		
@@ -213,6 +245,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $recommendation;
 	}
 	
+	/**
+	 * Finds all records on a given PID matching the WHERE clause.
+	 * @param		integer		The PID to search in.
+	 * @param		string		Custom WHERE clause.
+	 * @return		array		Array of recommendation objects.
+	 */
 	function findAll($pid, $additionalWhere="") {
 		$recommendations = array();
 		$table = 'tx_wecassessment_recommendation';
@@ -227,17 +265,33 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $recommendations;
 	}
 	
+	/**
+	 * Finds all recommendations of a specific type.
+	 * @param		integer		The PID to search in.
+	 * @param		string		Custom WHERE clause.
+	 * @param		string		Recommendation type.
+	 * @return		array		Array of recommendation objects.
+	 */
 	function findAllWithType($pid, $additionalWhere="1=1", $type) {
 		$where = tx_wecassessment_recommendation::combineWhere($additionalWhere, 'type='.$type);
 		$recommendations = tx_wecassessment_recommendation::findAll($pid, $where);
 		return $recommendations;
 	}
 	
+	/**
+	 * @todo 		Unused?
+	 */
 	function findRecommendationsAndErrors($pid) {
 		$recommendations = tx_wecassessment_recommendation::findAll($pid);
 		$errors = tx_wecassessment_recommendation::findErrors($pid);
 	}
 	
+	/**
+	 * Finds a recommendation by value.
+	 * @param		integer		The value we want a recommendation for.
+	 * @param		string		Custom WHERE clause.
+	 * @return		object		The recommendation object.
+	 */
 	function findByValue($value, $where='1=1') {
 		$table = 'tx_wecassessment_recommendation';
 		$where = tx_wecassessment_recommendation::getWhere($table, ' AND min_value<='.$value.' AND max_value>'.$value);
@@ -255,6 +309,13 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $recommendation;
 	}
 
+	/**
+	 * Calculate the recommendation to be used.
+	 * @param		array		Array of answer objects.
+	 * @param		integer		The minimum possible value.
+	 * @param		integer		The maximum possible value.
+	 * @return		object		The recommendation object.
+	 */
 	function calculate($answers, $minValue, $maxValue) {
 		foreach($answers as $answer) {
 			$question = $answer->getQuestion();
@@ -400,6 +461,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $validUpperBound;
 	}
 	
+	/**
+	 * Checks if this recommendations is valid relative to another recommendation.
+	 * This means that values do not overlap or have a gap.
+	 * @param		object		The recommendation to compare against.
+	 * @return		boolean
+	 */
 	function validRelativeTo($previousRecommendation) {
 		/* @todo 	What should gap tolerance be set to and where should it be defined? */
 		$gapTolerance = 1;

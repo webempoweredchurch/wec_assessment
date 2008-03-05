@@ -74,15 +74,26 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		);
 	}
 	
+	/**
+	 * Gets the label for the recommendation.
+	 * @return		string
+	 * @todo 		Localize!
+	 */
 	function getLabel() {
 		$title = 'Total Assessment';
 		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 	}
 	
+	/**
+	 * Placeholder function.
+	 */
 	function getParentUID() {
 		return 0;
 	}
 	
+	/**
+	 * Placeholder function
+	 */
 	function setParentUID($uid) {
 		/* Do nothing */
 	}
@@ -92,6 +103,12 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 * Static Functions
 	 *
 	 ************************************************************************/
+	
+	/**
+	 * Finds the recommendation for the specified score.
+	 * @param		integer		The score.
+	 * @return		object		The recommendation object.
+	 */
 	function findByScore($score) {
 		$table = 'tx_wecassessment_recommendation';
 		$where = tx_wecassessment_recommendation_assessment::getWhere($table, 'min_value <= '.$score.' AND max_value > '.$score.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);

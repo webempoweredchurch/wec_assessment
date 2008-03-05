@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -27,11 +27,19 @@
 *
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
+
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_assessment.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
+/**
+ * Data model for the main Assessment record.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontainer {
 	
 	var $_minimumValue;
@@ -154,6 +162,10 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $questions;
 	}
 	
+	/**
+	 * Gets the categories for the current assessment.
+	 * @return		array		Array of category objects.
+	 */
 	function getCategories() {
 		if(!$this->_categories) {
 			$this->_categories = tx_wecassessment_category::findAll($this->getPID());
@@ -162,27 +174,54 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $this->_categories;
 	}
 	
+	/**
+	 * Gets the label for the assessment.
+	 * @return		string		The assessment label.
+	 * @todo 		Localize!
+	 */
 	function getlabel() {
-		/* @todo 	Localize! */
 		return 'Total Assessment';
 	}
 	
+	/**
+	 * Gets the UID of the assessment record.
+	 * @return		integer		The UID.
+	 */
 	function getUID() {
 		return $this->_uid;
 	}
 	
+	
+	/**
+	 * Sets the UID of the assessment record.
+	 * @param		integer		The UID.
+	 * @return		none
+	 */
 	function setUID($value) {
 		$this->_uid = $value;
 	}
 	
+	/**
+	 * Gets the PID of the assessment record.
+	 * @return		integer		The PID.
+	 */
 	function getPID() {
 		return $this->_pid;
 	}
 
+	/**
+	 * Sets the PID of the assessment record.
+	 * @param		integer		The PID.
+	 * @return		none
+	 */
 	function setPID($value) {
 		$this->_pid = $value;
 	}
-
+	
+	/**
+	 * Gets the answer set for the current assessment.
+	 * @return		array		Array of answer objects.
+	 */
 	function getAnswerSet() {
 		/* Clean up the answerSet if we have bad values */
 		if(count($this->_answerSet) > $this->getAnswerCount) {
@@ -196,36 +235,80 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $this->_answerSet;
 	}
 	
+	/**
+	 * Get the number of answers available for each question.
+	 * @return		integer		The answer count.
+	 */
 	function getAnswerCount() {
 		return $this->getMaximumValue() - $this->getMinimumValue() + 1;
 	}
 	
+	/**
+	 * Gets the minimum value for the assessment.
+	 * @return		integer		The minimum value.
+	 */
 	function getMinimumValue() {
 		return $this->_minimumValue;
 	}
 	
+	/**
+	 * Sets the minimum value for the assessment.
+	 * @param		integer		The minimum value.
+	 * @return		none
+	 */
 	function setMinimumValue($value) {
 		$this->_minimumValue = $value;
 	}
 	
+	/**
+	 * Gets the maximum value for the assessment.
+	 * @return		integer		The maximum value.
+	 */
 	function getMaximumValue() {
 		return $this->_maximumValue;
 	}
 	
+	/**
+	 * Sets the maximum value.
+	 * @param		integer		The maximum value.
+	 * @return		none
+	 */
 	function setMaximumValue($value) {
 		$this->_maximumValue = $value;
 	}
 	
+	/**
+	 * Checks if paging should be used.
+	 * @return		boolean
+	 */
 	function usePaging() {
 		return $this->_usePaging;
 	}
 	
+	/**
+	 * Sets the paging option.
+	 * @param		boolean		True if paging is enabled, otherwise false.
+	 * @return		none
+	 */
 	function setPaging($value) {
 		$this->_usePaging = $value;
 	}
 	
+	/**
+	 * Gets the number of questions on each page.
+	 * @return		integer		The number of questions per page.
+	 */
 	function getQuestionsPerPage() {
 		return $this->_questionsPerPage;
+	}
+	
+	/**
+	 * Sets the number of questions per page.
+	 * @param		integer		The number of questions per page.
+	 * @return		none
+	 */
+	function setQuestionsPerPage($value) {
+		$this->_questionsPerPage = $value;
 	}
 	
 	/**
@@ -260,26 +343,43 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		$this->_pageNumber = $pageNumber;
 	}
 	
+	/**
+	 * Gets the next page number.
+	 * @return		integer		The next page number.
+	 */
 	function getNextPageNumber() {
 		return $this->_pageNumber + 1;
 	}
 	
-	function setQuestionsPerPage($value) {
-		$this->_questionsPerPage = $value;
-	}
-	
+	/**
+	 * Gets the percentage complete.
+	 * @return		integer		Gets the percent.
+	 */
 	function getPercentComplete() {
 		return floor(($this->getPageNumber() - 1) / $this->getTotalPages() * 100);
 	}
 	
+	/**
+	 * Gets the sorting option for the current assessment.
+	 * @return		integer		The sorting option.
+	 */
 	function getSorting() {
 		return $this->_sorting;
 	}
 	
+	/**
+	 * Sets the sorting option for the current assessment.
+	 * @param		integer		The sorting option.
+	 * @return		none
+	 */
 	function setSorting($sorting) {
 		$this->_sorting = $sorting;
 	}
 	
+	/**
+	 * Gets the result for the current user on this assessment.
+	 * @return		object		The result object.
+	 */
 	function getResult() {
 		if(!$this->_result) {			
 			/* Get the result, either from the DB or the session */
@@ -288,10 +388,19 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $this->_result;
 	}
 	
+	/**
+	 * Sets the result.
+	 * @param		object		Result object.
+	 * @return		none
+	 */
 	function setResult($result) {
 		$this->_result = $result;
 	}
 	
+	/**
+	 * Calculate all recommendations. This includes total assessment, categories, and questions.
+	 * @return		array		Data structure with scores, recommendations, etc.
+	 */
 	function calculateAllRecommendations() {
 		$totalAssessmentScore = 0;
 		$maxAssessmentScore = 0;
@@ -376,6 +485,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $recommendations;
 	}
 	
+	/**
+	 * Calculate the recommendation for the total assessment.
+	 * @param		integer		The score for the whole assessment.
+	 * @return		object		The recommendation object.
+	 */
 	function calculateRecommendation($score) {
 		return tx_wecassessment_recommendation_assessment::findByScore($score, $this->getUID());
 	}	
@@ -438,6 +552,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $tempArr[$value];
 	}
 	
+	/**
+	 * Creates a fake frontend instance.
+	 * @param		integer		The page ID to initialize.
+	 * @param		object		The frontend user object.
+	 */
 	function initializeFrontend($pid, $feUserObj=''){
 		define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
 		require_once (PATH_tslib.'/class.tslib_content.php');
@@ -471,6 +590,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		$GLOBALS['TSFE']->getConfigArray();
 	}
 	
+	/**
+	 * Gets Typoscript configuration for the specified page.
+	 * @param		integer		The page ID to initialize.
+	 * @return		array		Typoscript array.
+	 */
 	function getConf($pid) {
 		$this->initializeFrontend($pid);
 		
@@ -488,6 +612,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return $conf;
 	}
 	
+	/**
+	 * Gets an array of flexform data.
+	 * @param		integer		The PID to fetch the assessment record from.
+	 * @return		array		Array of flexform data.
+	 */
 	function getFlexform($pid) {
 		$fields = 'pi_flexform';
 		$tables = 'tt_content';
@@ -497,6 +626,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		return t3lib_div::xml2Array($row['pi_flexform']);
 	}
 	
+	/**
+	 * Gets the UID of the assessment plugin on a specific page.
+	 * @param		integer		The PID to perform the lookup on.
+	 * @return		integer		The UID.
+	 */
 	function lookupUID($pid) {
 		$fields = 'uid';
 		$tables = 'tt_content';

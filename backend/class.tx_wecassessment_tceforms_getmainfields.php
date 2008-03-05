@@ -1,8 +1,49 @@
 <?php
+/***************************************************************
+* Copyright notice
+*
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
+* All rights reserved
+*
+* This file is part of the Web-Empowered Church (WEC)
+* (http://webempoweredchurch.org) ministry of the Foundation for Evangelism
+* (http://evangelize.org). The WEC is developing TYPO3-based
+* (http://typo3.org) free software for churches around the world. Our desire
+* is to use the Internet to help offer new life through Jesus Christ. Please
+* see http://WebEmpoweredChurch.org/Jesus.
+*
+* You can redistribute this file and/or modify it under the terms of the
+* GNU General Public License as published by the Free Software Foundation;
+* either version 2 of the License, or (at your option) any later version.
+*
+* The GNU General Public License can be found at
+* http://www.gnu.org/copyleft/gpl.html.
+*
+* This file is distributed in the hope that it will be useful for ministry,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* This copyright notice MUST APPEAR in all copies of the file!
+***************************************************************/
 
+/**
+ * Class for pre and post processing TCE Form configuration.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_tceforms_getmainfields {
 	
+	/**
+	 * Preprocessing function for TCE Forms. 
+	 * @param		string		Name of the table being rendered.
+	 * @param		array		Table data.
+	 * @param		object		TCE Form object.
+	 */
 	function getMainFields_preProcess($table,&$row, $tceform) {
+		/* If the assessment plugin is being rendered, validate all data */
 		if($row['CType'] == 'list' && $row['list_type'] == 'wec_assessment_pi1') {
 			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 			$assessment = new $assessmentClass($row['uid'], $row['pid'], '', t3lib_div::xml2array($row['pi_flexform']));
@@ -33,16 +74,18 @@ class tx_wecassessment_tceforms_getmainfields {
 			}
 			
 			if(count($content) > 0) {
-				$tceform->extraFormHeaders[] = '<div style="background-color: yellow; border: 2px solid black; width: 88%; padding: 15px; margin-bottom: 15px;">'.implode(chr(10), $content).'</div>';
+				$tceform->extraFormHeaders[] = '<div style="background-color: #FFFF99; border-bottom: 2px solid black;>'.implode(chr(10), $content).'</div>';
 			}
 		}
 		
+		/* If we're looking at a question or category, tweak the sorting */
 		if($table == 'tx_wecassessment_question' or $table == 'tx_wecassessment_category') {
 			/* If we're in a question or a category, turn off sorting for questions */
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
 			$GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['default_sortby'] = "ORDER BY uid";
 		}
 		
+		/* If we're looking at a recommendation, preset some values and check for IRRE */
 		if($table == 'tx_wecassessment_recommendation') {
 			/* If we have posted data and a new record, preset values to what they were on the previous record */
 			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']) && strstr($row['uid'], 'NEW')) {
@@ -100,6 +143,12 @@ class tx_wecassessment_tceforms_getmainfields {
 		}
 	}
 	
+	/**
+	 * Helper function for showing error messages.
+	 * @param		string		Title of the parent record.
+	 * @param		object		Container to check for errors within.
+	 * @return		string		HTML display of the error messages.
+	 */ 
 	function displayContainerErrors($parentTitle, $container) {
 		$content = array();
 		
@@ -108,7 +157,7 @@ class tx_wecassessment_tceforms_getmainfields {
 		} else {
 			$title = $this->crop($container->getLabel());
 		}
-		$content[] = '<h3 style="background-color:yellow;">'.$title.'</h3>';
+		$content[] = '<h3 style="background-color:#FFFF99;">'.$title.'</h3>';
 
 		$errors = $container->getValidationErrors();
 		
@@ -124,6 +173,11 @@ class tx_wecassessment_tceforms_getmainfields {
 		return implode(chr(10), $content);
 	}
 	
+	/**
+	 * Converts an error data structure into a simple HTML string.
+	 * @param 		array		Error data structure.
+	 * @return		string		HTML.
+	 */
 	function errorToString($errorArray) {
 		$uid1 = $errorArray['uid1'];
 		$uid2 = $errorArray['uid2'];
@@ -144,44 +198,13 @@ class tx_wecassessment_tceforms_getmainfields {
 		
 		return $return;
 	}
-	
-	function displayRecommendation($recommendation, $errors) {
-		
-		$content = array();	
-		$link = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
-		
-		$content[] = '<div class="tx_wecassessment_response">';
-		$content[] = '<h3 style="background-color:yellow;">'.$recommendation->getMinValue().' - '.$recommendation->getMaxValue().'</h3>';
-		$content[] = '</div>';
-						
-		return implode(chr(10), $content);
-	}
-	
-	function getErrors($recommendation, $errors, $type='') {
-		foreach($errors as $error) {
-			if($error->getRecommendationUID() == $recommendation->getUID() && $error->getType() == $type) {
-				$filteredErrors[] = $error;
-			}
-		}
-		
-		return $filteredErrors;
-	}
-	
-	function displayError($error) {
-		$content = array();
-		
-		$content[] = $error->getMessage();
-		$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation'); 
 
-		if($error->getUID2()) {
-			$content[] = $this->returnEditLink($recommendation->getUID(), 'Edit Record', 'tx_wecassessment_recommendation');
-		}
-		
-		return implode(chr(10), $content);
-	}
-	
-	
-	
+	/**
+	 * Generates a link to create a new record.
+	 * @param		string		Title text.
+	 * @param		string		Optional name of the table to create the record in.
+	 * @return		string		HTML for the link.
+	 */
 	function returnNewLink($title,$tablename = false) {
 		if (empty($tablename)) $tablename = $this->tconf['name'];
 		$params = '&edit['.$tablename.']['.$this->spid.']=new';
@@ -198,7 +221,12 @@ class tx_wecassessment_tceforms_getmainfields {
 	}
 
 
-
+	/**
+	 * Generates a link to edit an existing record.
+	 * @param		integer		The unique ID of the record.
+	 * @param		title		Title text.
+	 * @param		tablename	Optional name of the table to edit the record in.
+	 */
 	function returnEditLink($uid,$title,$tablename = false) {
 		if (empty($tablename)) $tablename = $this->tconf['name'];
 		$params = '&edit['.$tablename.']['.$uid.']=edit';
@@ -211,6 +239,11 @@ class tx_wecassessment_tceforms_getmainfields {
 		return $out;
 	}
 
+	/**
+	 * Crops a string according to the settings for the backend user.
+	 * @param		string		The string to be cropped.
+	 * @return		string		The cropped string.
+	 */
 	function crop($string) {
 		$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		return htmlspecialchars(t3lib_div::fixed_lgd_cs($string, $titleLength));

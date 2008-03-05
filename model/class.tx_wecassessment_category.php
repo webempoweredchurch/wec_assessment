@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -32,6 +32,13 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_category.php');
 
+/**
+ * Data model for Assessment Categories.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_category extends tx_wecasssessment_recommendationcontainer {
 	
 	var $_uid;
@@ -80,6 +87,11 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 		);
 	}
 	
+	/**
+	 * Gets the calculated recommendation for the current category.
+	 * @param		integer		The overall score for the category.
+	 * @return		object		The recommendation object.
+	 */
 	function calculateRecommendation($score) {
 		return tx_wecassessment_recommendation_category::findByScore($score, $this->getUID());
 	}
@@ -129,10 +141,18 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 		$this->_pid = $pid; 
 	}
 	
+	/**
+	 * Gets the sorting position of the category.
+	 * @return		integer		The sorting of the category.
+	 */
 	function getSorting() {
 		return $this->_sorting;
 	}
 	
+	/**
+	 * Sets the sorting position of the category.
+	 * @return		integer		The sorting of the category.
+	 */
 	function setSorting($sorting) {
 		$this->_sorting = $sorting;
 	}
@@ -145,7 +165,6 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	function getTitle() { 
 		return $this->_title; 
 	}
-	
 	
 	/**
 	 * Sets the title of the category.
@@ -175,7 +194,6 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	function setDescription($description) { 
 		$this->_description = $description; 
 	}
-	
 
 	/**
 	 * Gets the path to the category image.

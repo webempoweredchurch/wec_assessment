@@ -1,9 +1,8 @@
 <?php
-
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -31,32 +30,21 @@
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
 
-
+/**
+ * General purpose class for displaying assessment results, averages, etc.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_results {
 	
-	function displayResults($PA, $fobj) {
-		$pid = $PA['row']['pid'];
-		$result_id = $PA['row']['uid'];
-		$answers = tx_wecassessment_answer::findAll($pid, "result_id=".$result_id);
-		
-		$output = array();
-		foreach($answers as $answer) {
-			$question = $answer->getQuestion();
-			
-			$output[] = '<tr class="class-main12">
-							<td><span class="nbsp">&nbsp;</span></td>
-							<td width="99%"><span style="color:;" class="class-main14"><b>'.$question->getText().'</b></span></td>
-						</tr>';
-						
-			$output[] = '<tr class="class-main11">
-							<td nowrap="nowrap"><img src="clear.gif" width="10" height="10" alt="" />'.$answer->getValue().'</td>
-						</tr>';			
-			
-		}
-				
-		return implode(chr(10), $output);
-	}
-	
+	/**
+	 * Adds a hidden field with the recommendation type.
+	 * @param		array		Parent array.
+	 * @param		object		TCE Forms object.
+	 * @return		string		HTML for hidden input field.
+	 */
 	function displayHiddenRecommendationType($PA, $fobj) {
 		$name = $PA['itemFormElName'];
 		$value = $PA['itemFormElValue'];
@@ -64,6 +52,12 @@ class tx_wecassessment_results {
 		return '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
 	}
 	
+	/**
+	 * Calculates the average answer for a question and returns it.
+	 * @param		array		Parent array.
+	 * @param		object		TCE Forms object.
+	 * @return		string		HTML for the average answer.
+	 */
 	function displayAverageForQuestion($PA, $fobj) {
 		$pid = intval($PA['row']['pid']);
 		$table = $PA['table'];
@@ -101,6 +95,12 @@ class tx_wecassessment_results {
 		return implode(chr(10), $output);
 	}
 	
+	/**
+	 * Calculates the average answer for a category and returns it.
+	 * @param		array		Parent array.
+	 * @param		object		TCE Forms object.
+	 * @return		string		HTML for the average answer.
+	 */
 	function displayAverageForCategory($PA, $fobj) {
 		/*
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');

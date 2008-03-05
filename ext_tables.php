@@ -1,7 +1,11 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_flexform.php');
+require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_labels.php');
+
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
+
 if(!$confArr['manualQuestionSorting']) {
 	$enableManualQuestionSorting = false;
 } else {
@@ -149,10 +153,7 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 t3lib_extMgm::addPlugin(array('LLL:EXT:wec_assessment/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:wec_assessment/pi1/flexform_ds.xml');
 
-require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_flexform.php');
-require_once(t3lib_extMgm::extPath($_EXTKEY).'backend/class.tx_wecassessment_labels.php');
-
-// enable label_userFunc only for TYPO3 v 4.1 and higher
+/* enable label_userFunc only for TYPO3 v 4.1 and higher */
 if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
 	$TCA['tx_wecassessment_recommendation']['ctrl']['label_userFunc']="tx_wecassessment_labels->getRecommendationLabel";
 	$TCA['tx_wecassessment_result']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResultLabel";
@@ -162,18 +163,18 @@ if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
 }
 
 
-// Adds wizard icon to the content element wizard.
+/* Adds wizard icon to the content element wizard. */
 if (TYPO3_MODE=='BE')	{
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_wecassessment_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecassessment_pi1_wizicon.php';
 }
 
-// Add CSH Labels
+/* Add CSH Labels */
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_category','EXT:wec_assessment/csh/locallang_csh_category.php');
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_question','EXT:wec_assessment/csh/locallang_csh_question.php');
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_assessment/csh/locallang_csh_recommendation.php');
 
 
-
+/* Add Static templates */
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/ts/", "WEC Assessment");
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/css/", "WEC Assessment CSS Styles");
 

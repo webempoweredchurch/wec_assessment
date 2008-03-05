@@ -3,7 +3,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation for Evangelism
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -27,10 +27,18 @@
 *
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
+
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
 
+/**
+ * Data model for Assessment Answers.
+ *
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecassessment
+ */
 class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 
 	var $_uid;
@@ -373,7 +381,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	/**
 	 * Creates a new answer object from an associative array.
 	 *
-	 * @param		array		Associate array for an answer.
+	 * @param		array		Associative array for an answer.
 	 * @return		object		Answer object.
 	 */
 	function newFromArray($row) {
@@ -384,6 +392,10 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	}
 	
 	
+	/**
+	 * Calculates the recommendation that is generated for the current answer.
+	 * @return		object		The recommendation object.
+	 */
 	function calculateRecommendation() {
 		$weightedValue = $this->getWeightedScore();
 		$parentTable = 'tx_wecassessment_question';

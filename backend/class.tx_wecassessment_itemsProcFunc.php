@@ -2,7 +2,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007 Foundation For Evangelism (info@evangelize.org)
+* (c) 2007 Foundation for Evangelism (info@evangelize.org)
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -28,7 +28,7 @@
 ***************************************************************/
 
 /**
- * General purpose class for providing a list of translations.
+ * General purpose class for providing TCA lists in the backend.
  *
  * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
  * @package TYPO3
@@ -36,6 +36,12 @@
  */
 class tx_wecassessment_itemsProcFunc {
 	
+	/**
+	 * Gets the TCA list of sort options.
+	 * @param		array		Configuration array.
+	 * @return		array		Configuration array.
+	 * @todo 		Localize!
+	 */
 	function getSortItems($config=null) {
 		if(!isset($config)) {
 			$config = array();
@@ -51,6 +57,11 @@ class tx_wecassessment_itemsProcFunc {
 		return $config;
 	}
 	
+	/**
+	 * Gets the answer options from the flexform.
+	 * @param		array		Configuration array.
+	 * @return		array		Configuration array.
+	 */
 	function getAnswerOptions($config) {
 		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 		
