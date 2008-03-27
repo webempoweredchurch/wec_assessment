@@ -74,7 +74,7 @@ class tx_wecassessment_tceforms_getmainfields {
 			}
 			
 			if(count($content) > 0) {
-				$tceform->extraFormHeaders[] = '<div style="background-color: #FFFF99; border-bottom: 2px solid black;>'.implode(chr(10), $content).'</div>';
+				$tceform->extraFormHeaders[] = '<div style="width:93%"><div style="background-color: #FFFF99; border: 2px solid black; padding:10px; margin-bottom: 10px;">'.implode(chr(10), $content).'</div></div>';
 			}
 		}
 		
