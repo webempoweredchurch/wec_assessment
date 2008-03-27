@@ -4,10 +4,12 @@ plugin.tx_wecassessment_pi1 = USER_INT
 plugin.tx_wecassessment_pi1 {
 	userFunc = tx_wecassessment_pi1->main
 	
+	# General Configuration options
 	usePaging = 0
 	questionsPerPage = 2
 	allowAnonymous = 1
 	
+	# Label Configuration options
 	minimumValue = 0
 	maximumValue = 2
 	answerLabels {
@@ -16,9 +18,11 @@ plugin.tx_wecassessment_pi1 {
 		2 = Every stinkin day.
 	}
 	
+	# Template file
 	templateFile = EXT:wec_assessment/pi1/assessment.tmpl
 	
-	# The progress bar.  
+	# The progress bar.
+	# @todo 	Should the progress bar be moved inside of questions?
 	progress = COA
 	progress {
 		10 = TEXT
@@ -33,8 +37,10 @@ plugin.tx_wecassessment_pi1 {
 		stdWrap.wrap = <div id="wec-assessment-progress"> | </div>
 	}
 	
+	# Wrapper for questions
 	questions {
 
+		# Individual question text.
 		question = COA
 		question {
 			10 = TEXT
@@ -42,6 +48,7 @@ plugin.tx_wecassessment_pi1 {
 			10.wrap = <p>|</p>
 		}
 		
+		# Individual items in the list of answers to a question.
 		scaleItem = TEXT
 		scaleItem {
 			field = label
@@ -49,14 +56,17 @@ plugin.tx_wecassessment_pi1 {
 			insertData = true
 		}
 		
+		# Wrap for the entire question and possible answers
 		stdWrap.wrap = <fieldset class="question">|</fieldset>
 	}
 	
+	# Wrapper for recommendations
 	recommendations {
 		# Possible types are assessment, category, and question.
 		recommendation = CASE
 		recommendation.key.field = type
 		
+		# Default cause: Show any parent information, the score, and the recommendation text.
 		recommendation.default = COA
 		recommendation.default {
 			10 = TEXT
@@ -81,6 +91,7 @@ plugin.tx_wecassessment_pi1 {
 			wrap = <div class="recommendation">|</div>
 		}
 		
+		# Category recommendations: Also show the category image
 		recommendation.category < plugin.tx_wecassessment_pi1.recommendations.recommendation.default
 		recommendation.category {
 			12 = IMAGE
