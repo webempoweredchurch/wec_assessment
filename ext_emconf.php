@@ -26,13 +26,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => 1,
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
+	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => 'Foundation For Evangelism',
 	'version' => '1.0.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '4.1.0-4.1.99',
+			'typo3' => '4.2.0-4.2.99',
 		),
 		'conflicts' => array(
 		),
