@@ -16,7 +16,8 @@ t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_category");
 $TCA["tx_wecassessment_category"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_category',		
-		'label' => 'title',	
+		'label' => 'title',
+		'label_userFunc' => 'tx_wecassessment_labels->getCategoryLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -42,7 +43,8 @@ t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_question");
 $TCA["tx_wecassessment_question"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_question',		
-		'label' => 'text',	
+		'label' => 'text',
+		'label_userFunc' => 'tx_wecassessment_labels->getQuestionLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -74,7 +76,8 @@ $TCA["tx_wecassessment_answer"] = Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer',		
 		'label' => 'result_id,question_id,value',
 		'label_alt' => 'result_id,question_id,value',
-		'label_alt_force' => true,	
+		'label_alt_force' => true,
+		'label_userFunc' => 'tx_wecassessment_labels->getAnswerLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -98,7 +101,8 @@ $TCA["tx_wecassessment_result"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_result',		
 		'label' => 'feuser_id',
-		"label_alt" => 'uid',
+		'label_alt' => 'uid',
+		'label_userFunc' => 'tx_wecassessment_labels->getResultLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -125,6 +129,7 @@ $TCA["tx_wecassessment_recommendation"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_recommendation',		
 		'label' => 'category_id',
+		'label_userFunc' => 'tx_wecassessment_labels->getRecommendationLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -152,15 +157,6 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 
 t3lib_extMgm::addPlugin(array('LLL:EXT:wec_assessment/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:wec_assessment/pi1/flexform_ds.xml');
-
-/* enable label_userFunc only for TYPO3 v 4.1 and higher */
-if (t3lib_div::int_from_ver(TYPO3_version) >= 4001000) {
-	$TCA['tx_wecassessment_recommendation']['ctrl']['label_userFunc']="tx_wecassessment_labels->getRecommendationLabel";
-	$TCA['tx_wecassessment_result']['ctrl']['label_userFunc']="tx_wecassessment_labels->getResultLabel";
-	$TCA['tx_wecassessment_answer']['ctrl']['label_userFunc']="tx_wecassessment_labels->getAnswerLabel";
-	$TCA['tx_wecassessment_category']['ctrl']['label_userFunc']="tx_wecassessment_labels->getCategoryLabel";
-	$TCA['tx_wecassessment_question']['ctrl']['label_userFunc']="tx_wecassessment_labels->getQuestionLabel";
-}
 
 
 /* Adds wizard icon to the content element wizard. */
