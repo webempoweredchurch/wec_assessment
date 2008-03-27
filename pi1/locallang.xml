@@ -8,7 +8,6 @@
 		<languageKey index="default" type="array">
 			<label index="back">Back</label>
 			<label index="submit_button_label">Click here to submit value</label>
-			
 			<label index="questionRestartTitle">Welcome Back!</label>
 			<label index="questionRestartMessage">
 				It looks like you've been here before.  If you'd like to pick up 
@@ -18,9 +17,12 @@
 			<label index="recommendationRestartMessage">
 				If you'd like to restart this assessment, just click the button below.
 			</label>
-			
 			<label index="restartButton">Start Over</label>
-			
+			<label index="configurationError">
+				It looks like some critical configuration options are missing. Please
+				make sure that you've included the static Typoscript template for
+				WEC Assessment.
+			</label>
 		</languageKey>
 	</data>
 </T3locallang>

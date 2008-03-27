@@ -64,51 +64,56 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_initPIflexform();
 		$this->pi_USER_INT_obj = 1;
 		
-		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
-		$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
-		$this->result = &$this->assessment->getResult();
-		
-		/* Set variables from TS and flexform */
-		/* @todo	Merge with flexforms */
-		//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
-		//$this->assessment->setPaging(intval($this->conf['usePaging']));
-		
-		/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
-		if($this->assessment->usePaging()) {
-			$this->assessment->setPageNumber(($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1);
+		if(count($this->conf) <= 3) {
+			$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">'.$this->pi_getLL('configurationError').'</div>';
 		} else {
-			$this->assessment->setPageNumber(1);
-		}
+			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
+			$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
+			$this->result = &$this->assessment->getResult();
 		
-		if($this->piVars['answers']) {
-			/* Add the newly posted answers to the result and save */
-			$this->result->addAnswersFromPost($this->piVars['answers']);
-			$this->result->save();
-		} else {
-			/* If we need to restart, remove the answers and save */
-			if($this->piVars['restart']) {
-				$this->result->reset();
+			/* Set variables from TS and flexform */
+			/* @todo	Merge with flexforms */
+			//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
+			//$this->assessment->setPaging(intval($this->conf['usePaging']));
+		
+			/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
+			if($this->assessment->usePaging()) {
+				$this->assessment->setPageNumber(($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1);
+			} else {
+				$this->assessment->setPageNumber(1);
 			}
-			
-			/**
-			 * If we don't have answers, we're in results view or on the first
-			 * page of a multi-page assessment.
-			 */
-			$this->firstLoad = true;
-		}	
 		
-		/* Ugly hack to make sure the result saves properly in the assessment object */
-		$this->assessment->setResult($this->result);
+			if($this->piVars['answers']) {
+				/* Add the newly posted answers to the result and save */
+				$this->result->addAnswersFromPost($this->piVars['answers']);
+				$this->result->save();
+			} else {
+				/* If we need to restart, remove the answers and save */
+				if($this->piVars['restart']) {
+					$this->result->reset();
+				}
+			
+				/**
+				 * If we don't have answers, we're in results view or on the first
+				 * page of a multi-page assessment.
+				 */
+				$this->firstLoad = true;
+			}	
+		
+			/* Ugly hack to make sure the result saves properly in the assessment object */
+			$this->assessment->setResult($this->result);
 
-		/* If the result is complete, show recommendations.  Otherwise, show questions. */
-		if($this->result->isComplete()) {
-			$view = "displayRecommendations";
-		} else {
-			$view = "displayQuestions";
+			/* If the result is complete, show recommendations.  Otherwise, show questions. */
+			if($this->result->isComplete()) {
+				$view = "displayRecommendations";
+			} else {
+				$view = "displayQuestions";
+			}
+		
+			$this->initTemplate($view);
+			$content = $this->$view();
 		}
 		
-		$this->initTemplate($view);
-		$content = $this->$view();
 		return $this->pi_wrapInBaseClass($content);
 	}
 	
