@@ -73,7 +73,7 @@ class tx_wecassessment_itemsProcFunc {
 		$assessment = new $assessmentClass(0, $config['row']['pid'], array());
 		$answerSet = &$assessment->getAnswerSet();
 		
-		foreach($answerSet as $value => $label) {
+		foreach((array) $answerSet as $value => $label) {
 			$config['items'][] = Array($label, $value);
 		}
 		
