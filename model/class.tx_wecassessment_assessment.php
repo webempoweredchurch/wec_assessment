@@ -225,7 +225,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	function getAnswerSet() {
 		/* Clean up the answerSet if we have bad values */
 		if(count($this->_answerSet) > $this->getAnswerCount) {
-			foreach($this->_answerSet as $value => $label) {
+			foreach((array) $this->_answerSet as $value => $label) {
 				if($value < $this->getMinimumValue() || $value > $this->getMaximumValue()) {
 					unset($this->_answerSet[$value]);
 				}
@@ -414,7 +414,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		
 		/* Build the category array */
 		$categoryArray = array();
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			$category = tx_wecassessment_category::find($answer->getCategoryUID());
 			$sorting = $category->getSorting();
 			
@@ -449,7 +449,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		}
 		
 		/* Category Recommendations */
-		foreach($categoryArray as $sorting => $children) {
+		foreach((array) $categoryArray as $sorting => $children) {
 			$category = tx_wecassessment_category::find($children['uid']);
 			
 			/* Hack to include perfect score */
@@ -465,7 +465,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$recommendations[] = $recommendation;
 			}
 			
-			foreach($children['answers'] as $answer) {
+			foreach((array) $children['answers'] as $answer) {
 				$question = $answer->getQuestion();
 				$questionScore = $answer->getScore();
 				
@@ -532,11 +532,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
 
 		$tempArr=$sheetArray;
-		foreach($fieldNameArr as $k => $v)	{
+		foreach((array) $fieldNameArr as $k => $v)	{
 			if (t3lib_div::testInt($v))	{
 				if (is_array($tempArr))	{
 					$c=0;
-					foreach($tempArr as $values)	{
+					foreach((array) $tempArr as $values)	{
 						if ($c==$v)	{
 							#debug($values);
 							$tempArr=$values;

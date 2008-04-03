@@ -108,7 +108,7 @@ class categoryTest extends PHPUnit_Framework_Testcase  {
 		$recommendations = $category->getRecommendations();
 		
 		// make sure that the recommendations now have category uid 0 set
-		foreach( $recommendations as $recommendation) {
+		foreach((array) $recommendations as $recommendation) {
 			$this->assertEquals($recommendation->getCategoryUID(), 1);
 		}
 	}

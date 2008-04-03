@@ -317,7 +317,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 * @return		object		The recommendation object.
 	 */
 	function calculate($answers, $minValue, $maxValue) {
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			$question = $answer->getQuestion();
 			
 			$answerTotal += $answer->getWeightedScore();

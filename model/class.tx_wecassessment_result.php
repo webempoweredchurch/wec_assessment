@@ -123,7 +123,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		}
 		
 		$answers = $this->getAnswers();
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			$answer->setResultUID($this->getUID());
 			$answer->save();
 		}
@@ -371,7 +371,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$categoryUID = $category->getUID();
 		$answers = $this->getAnswers();
 		
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			if($answer->getCategoryUID() == $categoryUID) {
 				$filteredAnswers[] = $answer;
 			}
@@ -390,7 +390,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function isComplete() {
 		$questions = $this->getQuestions();
 		
-		foreach($questions as $question) {
+		foreach((array) $questions as $question) {
 			if(!$question->hasAnswer($this->_answers)) {
 				return false;
 			}
@@ -408,7 +408,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */	
 	function lookUpAnswer($question) {
 		if(is_array($this->_answers)) {
-			foreach($this->_answers as $answer) {
+			foreach((array) $this->_answers as $answer) {
 				if($answer->getQuestionUID() == $question->getUID()) {
 					return $answer;
 				}
@@ -426,7 +426,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */
 	function addAnswersFromPost($postedAnswers) {
-		foreach($postedAnswers as $questionUID => $value) {
+		foreach((array) $postedAnswers as $questionUID => $value) {
 			$row = array(
 				"uid" => 0,
 				"pid" => $this->getPID(),
@@ -464,7 +464,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$answers = $this->getAnswers();
 		$categories = array();
 		
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			$question = $answer->getQuestion();
 			$category = $question->getCategory();
 			$categories[$category->getUID()] = $category;

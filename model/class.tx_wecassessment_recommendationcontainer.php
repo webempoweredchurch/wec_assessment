@@ -13,7 +13,7 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 	 */	
 	function setRecommendations($recommendations) {
 		/* @todo 	Unset recommendations first */
-		foreach($recommendations as $recommendation) {
+		foreach((array) $recommendations as $recommendation) {
 			$this->addRecommendation($recommendation);
 		}
 	}
@@ -92,7 +92,7 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 		$recommendations = $this->getRecommendations();
 				
 		if(is_array($recommendations) and count($recommendations) > 0) {
-			foreach($recommendations as $recommendation) {
+			foreach((array) $recommendations as $recommendation) {
 				$hasErrors = false;
 			
 				if(!$recommendation->valid($min, $max)) {

@@ -59,14 +59,14 @@ class tx_wecassessment_tceforms_getmainfields {
 
 			/* Check all categories */
 			$categories = tx_wecassessment_category::findAll($assessment->getPID());
-			foreach($categories as $category) {
+			foreach((array) $categories as $category) {
 				if(!$category->valid($minValue, $maxValue)) {
 					$content[] = $this->displayContainerErrors('', $category);
 				}
 
 				/* Check the validity of each question */
 				$questions = $category->findQuestions();
-				foreach($questions as $question) {
+				foreach((array) $questions as $question) {
 					if(!$question->valid($minValue, $maxValue)) {
 						$content[] = $this->displayContainerErrors($this->crop($category->getLabel()), $question);
 					}
@@ -121,7 +121,7 @@ class tx_wecassessment_tceforms_getmainfields {
 			
 			/* Sniff for the parent table of the current IRRE child, set the type, and hide it */
 			if(is_array($tceform->inline->inlineStructure['stable'])) {
-				foreach($tceform->inline->inlineStructure['stable'] as $inlineStructure) {
+				foreach((array) $tceform->inline->inlineStructure['stable'] as $inlineStructure) {
 					if($inlineStructure['field'] == 'recommendations') {
 						switch($inlineStructure['table']) {
 							case 'tx_wecassessment_question':
@@ -163,7 +163,7 @@ class tx_wecassessment_tceforms_getmainfields {
 		
 		if(is_array($errors) && count($errors)) {
 			$content[] = '<ul>';
-			foreach($errors as $error) {
+			foreach((array) $errors as $error) {
 				$errorString = tx_wecassessment_tceforms_getmainfields::errorToString($error);
 				$content[] = '<li>'.$errorString.'</li>';
 			}

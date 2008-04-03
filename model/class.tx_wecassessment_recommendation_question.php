@@ -225,7 +225,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 	
 	/* @todo 		Where should this live? */
 	function calculate($question, $answers, $minValue, $maxValue) {
-		foreach($answers as $answer) {
+		foreach((array) $answers as $answer) {
 			$question = $answer->getQuestion();
 			
 			$answerTotal += $answer->getWeightedScore();

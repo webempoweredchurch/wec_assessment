@@ -170,7 +170,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 
 		/* Display editing form for each question */
 		if(is_array($questions)) {
-			foreach($questions as $question) {
+			foreach((array) $questions as $question) {
 				$questionHTML[] = $this->displayQuestion($question);
 			}
 		}	
@@ -219,7 +219,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function displayScale($question, $answer=null) {	
 		$answerSet = $this->assessment->getAnswerSet();
 		if(is_array($answerSet)) {
-			foreach($answerSet as $value => $label) {
+			foreach((array) $answerSet as $value => $label) {
 				$content = $this->util->getTemplateSubpart('scale');
 				$dataArray = array('uid' => $value, 'label' => $label, 'questionUID' => $question->getUID());
 				
@@ -251,7 +251,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$recommendations = &$this->assessment->calculateAllRecommendations();
 		
 		if(is_array($recommendations)) {
-			foreach($recommendations as $recommendation) {
+			foreach((array) $recommendations as $recommendation) {
 				$recommendationHTML[] = $this->displayRecommendation($recommendation);
 			}
 		}

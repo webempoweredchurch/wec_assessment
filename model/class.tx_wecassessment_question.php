@@ -301,7 +301,7 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	function hasAnswer($answers) {
 		
 		if(is_array($answers)) {
-			foreach($answers as $answer) {
+			foreach((array) $answers as $answer) {
 				if ($answer->getQuestionUID() == $this->getUID()) {
 					return true;
 				}
@@ -318,7 +318,7 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	function getAverageAnswer() {
 		$allAnswers = $this->getAllAnswers();
 		if(is_array($allAnswers)) {
-			foreach($allAnswers as $answer) {
+			foreach((array) $allAnswers as $answer) {
 				$value += $answer->getValue();
 			}
 			

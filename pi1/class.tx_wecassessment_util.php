@@ -97,7 +97,7 @@ class tx_wecassessment_util {
 	}
 	
 	function substituteSubparts(&$template, $subparts) {
-		foreach($subparts as $label => $content) {
+		foreach((array) $subparts as $label => $content) {
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
 			$template = $cObj->substituteSubpart($template, '###'.strtoupper($label).'###', $content);
 		}
