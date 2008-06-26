@@ -27,6 +27,8 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+
 /**
  * Class for pre and post processing TCE Form configuration.
  *

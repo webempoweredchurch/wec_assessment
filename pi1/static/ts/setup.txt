@@ -19,15 +19,15 @@ plugin.tx_wecassessment_pi1 {
 	}
 	
 	# Template file
-	templateFile = EXT:wec_assessment/pi1/assessment.tmpl
+	templateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
 	
 	# The progress bar.
 	# @todo 	Should the progress bar be moved inside of questions?
 	progress = COA
 	progress {
 		10 = TEXT
-		10.value = <div class="bar" style="width:{field:percentComplete}%;">&nbsp;</div>
-		10.wrap = <div class="outline">|</div>
+		10.value = <div id="progress-bar" class="bar" style="width:{field:percentComplete}%;">&nbsp;</div>
+		10.wrap = <div id="progress-container" class="outline">|</div>
 		10.insertData = true
 		
 		20 = TEXT
@@ -52,7 +52,7 @@ plugin.tx_wecassessment_pi1 {
 		scaleItem = TEXT
 		scaleItem {
 			field = label
-			wrap = <div><input type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label></div>
+			wrap = <div><input onclick="nextQuestion();" type="radio" name="tx_wecassessment_pi1[answers][{field:questionUID}]" id="scale_{field:questionUID}_{field:uid}" value="{field:uid}" {field:checked} /><label for="scale_{field:questionUID}_{field:uid}">|</label></div>
 			insertData = true
 		}
 		

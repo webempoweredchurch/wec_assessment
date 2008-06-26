@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>WEC Assessment Template</title>
+	</head>
+	<body>
+		
+		<h1>Subpart for Questions</h1>
+		<!-- ###DISPLAY_QUESTIONS### begin -->
+		
+			###WELCOME_BACK###
+          
+            <style type="text/css">
+				div.scroller fieldset.question {
+					height: 145px;
+					width: 475px;
+					overflow:hidden;
+					float: left;
+					padding: 0px;
+					margin: 0px;
+					padding: 10px;
+					border: 1px solid #666666;
+					-moz-border-radius-bottomleft: 10px;
+					-webkit-border-bottom-left-radius: 10px;
+					-moz-border-radius-bottomright: 10px;
+					-webkit-border-bottom-right-radius: 10px;
+					padding: 10px;
+					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/questionbg.jpg);
+					background-repeat: no-repeat;
+					background-position: right bottom;
+				}
+
+				div.scroller {
+					height: 175px;
+					width: 500px;
+					overflow: hidden;
+					margin: 0px;
+					padding: 0px;
+				}
+				
+				div.scroller div.content {
+					width: 10000px;
+				}
+				
+				/* put the left rounded edge on the track */
+				#track1-left {
+					position: absolute;
+					width: 5px;
+					height: 10px;
+					background: transparent url(typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) no-repeat left bottom;
+				}
+
+				/* put the track and the right rounded edge on the track */
+				#track1 {
+					background: transparent url(typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) repeat-x right bottom;
+					width: 497px;
+					height: 10px;
+					margin-bottom: 9px;
+				}
+				
+				div.controls {
+					padding-left: 2px;
+					padding-bottom: 5px;
+					width: 500px;
+				}
+				.controls div {
+					float: right;
+				}
+				.controls .previous {
+					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/prevarrow.gif);
+					background-repeat: no-repeat;
+					background-position: left top;
+					display: block;
+					height: 30px;
+					width: 30px;
+					float: left;
+				}
+			.controls .next {
+				background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/nextarrow.gif);
+				background-repeat: no-repeat;
+				background-position: left top;
+				display: block;
+				height: 30px;
+				width: 30px;
+				float: left;
+			}
+			.controls .alt {
+				text-indent: -99999px;
+				position: absolute;
+			}
+			.controlsclear {
+				clear: both;
+				height: 0px;
+			}
+			.controls a.previous:hover {
+				background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/prevarrow-ovr.gif);
+				background-repeat: no-repeat;
+			}
+			.controls a.next:hover {
+				background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
+				background-repeat: no-repeat;
+			}
+
+				
+			#handle1 {
+				margin: 0px;
+				padding: 0px;
+				width: 30px;
+				height: 20px;
+				cursor: col-resize;
+				border-bottom: none;
+				background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
+				background-repeat: no-repeat;
+			}
+			#handle1:hover {
+				background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
+				background-repeat: no-repeat;
+			}
+
+				
+			#handle1 #playback-head{
+			}
+			.progress {
+				width: 500px;
+				text-align: right;
+			}
+			</style>
+			
+			<div class="progress">#<span id="current_question" style="font-weight: bold;">1</span> of <span id="total_questions" style="font-weight: bold;">###TOTAL_QUESTIONS###</span></div>
+			
+			<div id="track1" style="">
+				<div id="track1-left"></div>
+				<div id="handle1">
+				</div>
+			</div>
+			
+			<form id="assessment" action="###POST_URL###" method="post">
+				<div id="assessment-glider">
+					<div class="scroller" id="scroller">
+						<div class="content">
+							<!-- ###QUESTIONS### begin -->
+							
+								###QUESTION###
+			
+								<!-- ###SCALE### begin -->
+			
+									###SCALE_ITEM###
+			
+								<!-- ###SCALE### end -->
+			
+		
+							<!-- ###QUESTIONS### end -->
+						</div>
+					</div>
+				</div>
+				<div class="controls">
+					<div>
+                    <a href="#" onclick="previousQuestion(); return false;" class="previous"><span class="alt">Previous</span></a> <a href="#" onclick="nextQuestion(); return false" class="next"><span class="alt">Next</span></a>
+                    </div>
+                </div>
+                <div class="controlsclear"></div>
+
+				<input type="hidden" name="tx_wecassessment_pi1[nextPageNumber]" value="###NEXT_PAGE_NUMBER###" />
+				<input type="hidden" name="tx_wecassessment_pi1[questionPerPage]" value="###QUESTIONS_PER_PAGE###" />
+				<input id="submit-answers" type="submit" value="Submit Answers" />
+			</form>
+		<!-- ###DISPLAY_QUESTIONS### end -->
+
+
+
+
+		<h1>Subpart for Recommendations</h1>
+		<!-- ###DISPLAY_RECOMMENDATIONS### begin -->
+			
+			<!-- ###RECOMMENDATIONS### begin -->
+		
+				###RECOMMENDATION###
+		
+			<!-- ###RECOMMENDATIONS### end -->
+			
+			###RESTART###
+			
+		<!-- ###DISPLAY_RECOMMENDATIONS### -->
+
+	</body>
+</html>
