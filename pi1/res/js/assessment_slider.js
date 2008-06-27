@@ -84,6 +84,13 @@ function previousQuestion() {
 	} else {
 		currentSlide--;
 	}
+	
+	if(currentSlide == 0) {
+		$('assessment-previous-button').hide();
+	} else {
+		$('assessment-next-button').show();
+	}
+	
 	assessmentGlider.previous();
 	slider.setValue(currentSlide);
 	$("current_question").update(currentSlide+1);
@@ -96,6 +103,13 @@ function nextQuestion() {
 	} else {
 		currentSlide++;
 	}
+	
+	if(currentSlide == totalQuestions-1) {
+		$('assessment-next-button').hide();
+	} else {
+		$('assessment-previous-button').show();
+	}
+	
 	assessmentGlider.next();
 	slider.setValue(currentSlide);
 	$("current_question").update(currentSlide+1);
