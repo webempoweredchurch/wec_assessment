@@ -165,9 +165,9 @@ if (TYPO3_MODE=='BE')	{
 }
 
 /* Add CSH Labels */
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_category','EXT:wec_assessment/csh/locallang_csh_category.php');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_question','EXT:wec_assessment/csh/locallang_csh_question.php');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_assessment/csh/locallang_csh_recommendation.php');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_category','EXT:wec_assessment/csh/locallang_csh_category.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_question','EXT:wec_assessment/csh/locallang_csh_question.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_assessment/csh/locallang_csh_recommendation.xml');
 
 
 /* Add Static templates */
