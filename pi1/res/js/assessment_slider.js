@@ -4,6 +4,7 @@ var totalQuestions;
 var currentSlide = 0;
 
 Event.observe(window, 'load', function() {
+	$('assessment-previous-button').hide();
 	Event.observe('assessment', 'submit', checkAnswers);
 	
 	//$('assessment').getElementsBySelector('input[type="radio"]').each( function(item) {
@@ -109,7 +110,8 @@ function nextQuestion() {
 	} else {
 		$('assessment-previous-button').show();
 	}
-	
+
+			
 	assessmentGlider.next();
 	slider.setValue(currentSlide);
 	$("current_question").update(currentSlide+1);
