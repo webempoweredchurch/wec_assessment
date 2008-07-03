@@ -15,6 +15,8 @@ Event.observe(window, 'load', function() {
 
 	createSlider();
 	setTotalQuestions();
+	
+	$('assessment-previous-button').hide();
 });
 
 function updateSlider(value) {

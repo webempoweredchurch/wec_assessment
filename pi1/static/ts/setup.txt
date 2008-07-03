@@ -5,9 +5,10 @@ plugin.tx_wecassessment_pi1 {
 	userFunc = tx_wecassessment_pi1->main
 	
 	# General Configuration options
-	usePaging = 0
-	questionsPerPage = 2
+	questionsPerPage = 5
 	allowAnonymous = 1
+	
+	displayMode = single
 	
 	# Label Configuration options
 	minimumValue = 0
@@ -19,7 +20,10 @@ plugin.tx_wecassessment_pi1 {
 	}
 	
 	# Template file
-	templateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
+	templateFile = EXT:wec_assessment/pi1/res/assessment.tmpl
+	
+	# Slider Template file
+	sliderTemplateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
 	
 	# The progress bar.
 	# @todo 	Should the progress bar be moved inside of questions?

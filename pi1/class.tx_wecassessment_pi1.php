@@ -36,8 +36,6 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'pi1/class.tx_wecassessment_util.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
 
-
-
 /**
  * Plugin 'WEC Assessment' for the 'wec_assessment' extension.
  *
@@ -71,13 +69,8 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
 			$this->result = &$this->assessment->getResult();
 		
-			/* Set variables from TS and flexform */
-			/* @todo	Merge with flexforms */
-			//$this->assessment->setQuestionsPerPage(intval($this->conf['questionsPerPage']));
-			//$this->assessment->setPaging(intval($this->conf['usePaging']));
-		
 			/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
-			if($this->assessment->usePaging()) {
+			if($this->assessment->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 				$this->assessment->setPageNumber(($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1);
 			} else {
 				$this->assessment->setPageNumber(1);
@@ -128,7 +121,14 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	function initTemplate($view) {
 		$utilClass = t3lib_div::makeInstanceClassName('tx_wecassessment_util');
 		$this->util = new $utilClass($this);
-		$this->util->loadTemplate($view, $this->conf['templateFile']);
+		
+		if($this->assessment->getDisplayMode() == SLIDER_DISPLAY) {
+			$templateConfName = 'sliderTemplateFile';
+		} else {
+			$templateConfName = 'templateFile';
+		}
+		
+		$this->util->loadTemplate($view, $this->conf[$templateConfName]);
 	}
 	
 	
@@ -142,46 +142,46 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$subparts = array();	
 		$questionHTML = array();
 		
-		$GLOBALS['TSFE']->additionalHeaderData['prototype'] = '<script src="typo3/contrib/prototype/prototype.js" type="text/javascript"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_slider'] = '<script src="typo3/contrib/scriptaculous/slider.js" type="text/javascript"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_glider'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/glider.js" type="text/javascript"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/assessment_slider.js" type="text/javascript"></script>';
-		
 		$questions = &$this->assessment->getQuestionsInPage();
 		$content = &$this->util->getTemplate();
 		
-		
 		$totalQuestions = count($questions);
-		// TODO: devlog start
-		if(TYPO3_DLOG) {
-			t3lib_div::devLog($totalQuestions.' questions on the page', 'wec_assessment');
-		}
-		// devlog end
-		$valueArray = array();
-		for($i=0; $i < $totalQuestions; $i++) {
-			$valueArray[] = $i;
-		}
-		$valueString = '['.implode(',', $valueArray).']';
-		
-		$GLOBALS['TSFE']->additionalHeaderData[] = '<script type="text/javascript">
-			function createSlider() {
-				slider = new Control.Slider("handle1", "track1", {
-					range: $R(0,'.$totalQuestions.'),
-					values: '.$valueString.',
-					sliderValue: 0,
-					startSpan: "span1",
-					onSlide: function(v) { updateSlider(v); },
-					onChange: function(v) { updateSlider(v); }
-				});
-			}
+		tx_wecassessment_util::devLog($totalQuestions.' questions on the page');
+
+		$GLOBALS['TSFE']->additionalHeaderData['prototype'] = '<script src="typo3/contrib/prototype/prototype.js" type="text/javascript"></script>';
+	
+		if($this->displayMode == SLIDER_DISPLAY) {
+			$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_slider'] = '<script src="typo3/contrib/scriptaculous/slider.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_glider'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/glider.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/assessment_slider.js" type="text/javascript"></script>';
 			
-			function setTotalQuestions() {
-				totalQuestions = '.$totalQuestions.';
+			$valueArray = array();
+			for($i=0; $i < $totalQuestions; $i++) {
+				$valueArray[] = $i;
 			}
-		</script>
-		';
-		
+			$valueString = '['.implode(',', $valueArray).']';
+
+			$GLOBALS['TSFE']->additionalHeaderData[] = '<script type="text/javascript">
+				function createSlider() {
+					slider = new Control.Slider("handle1", "track1", {
+						range: $R(0,'.$totalQuestions.'),
+						values: '.$valueString.',
+						sliderValue: 0,
+						startSpan: "span1",
+						onSlide: function(v) { updateSlider(v); },
+						onChange: function(v) { updateSlider(v); }
+					});
+				}
+
+				function setTotalQuestions() {
+					totalQuestions = '.$totalQuestions.';
+				}
+			</script>
+			';
+		} else {
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/assessment.js" type="text/javascript"></script>';
+		}
 		
 		/**
 		 * If we already have some answers and we're on the first page, then
@@ -193,7 +193,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			$markers['welcome_back'] = '';
 		}
 		
-		if($this->assessment->usePaging()) {
+		if($this->assessment->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 			$markers['progress_bar'] = $this->displayProgressBar();
 		} else {
 			$markers['progress_bar'] = '';

@@ -33,6 +33,10 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_assessment.php');
 require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
 
+define(SINGLE_PAGE_DISPLAY, 0);
+define(MULTI_PAGE_DISPLAY, 1);
+define(SLIDER_DISPLAY, 2);
+
 /**
  * Data model for the main Assessment record.
  *
@@ -45,7 +49,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	var $_minimumValue;
 	var $_maximumValue;
 	var $_answerSet;
-	var $_usePaging;
+	var $_displayMode;
 	var $_questionsPerPage;
 	var $_categories;
 	var $_pageNumber;
@@ -80,7 +84,8 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		}
 		
 		if(is_array($conf)) {
-			$this->_usePaging = $conf['usePaging'];
+			$this->setDisplayMode($conf['displayMode']);
+			
 			$this->_questionsPerPage = $conf['questionsPerPage'];
 			$this->_sorting = $conf['sorting'];
 			
@@ -91,13 +96,29 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		}
 		
 		if(is_array($flexform)) {
-			$this->_usePaging = $this->pi_getFFvalue($flexform, 'paging', 'general');
-			$this->_questionsPerPage = $this->pi_getFFvalue($flexform, 'perPage', 'general');
-			$this->_sorting = $this->pi_getFFvalue($flexform, 'sorting', 'general');
+			if($displayMode = $this->pi_getFFvalue($flexform, 'displayMode', 'general')) {
+				$this->setDisplayMode($displayMode);
+			}
 			
-			$this->_minimumValue = $this->pi_getFFvalue($flexform, 'minRange', 'general');
-			$this->_maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general');
-			$this->_answerSet = $this->pi_getFFValue($flexform, 'scale_label', 'labels');
+			if($questionsPerPage = $this->pi_getFFvalue($flexform, 'perPage', 'general')) {
+				$this->_questionsPerPage = $questionsPerPage;
+			}
+			
+			if($sorting = $this->pi_getFFvalue($flexform, 'sorting', 'general')) {
+				$this->_sorting = $sorting;
+			}
+			
+			if($minimumValue = $this->pi_getFFvalue($flexform, 'minRange', 'general')) {
+				$this->_minimumValue = $minimumValue;
+			}
+			
+			if($maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general')) {
+				$this->_maximumValue = $maximumValue;
+			}
+			
+			if($answerSet = $this->pi_getFFValue($flexform, 'scale_label', 'labels')) {
+				$this->_answerSet = $answerSet;
+			}
 		}
 		
 	}
@@ -153,7 +174,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				break;
 		}
 		
-		if($this->usePaging()) {
+		if($this->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 			$questions = $result->getQuestionsInPage($this->getPageNumber(), $this->getQuestionsPerPage(), $grouping, $sorting, $randomize);
 		} else {
 			$questions = $result->getQuestions($grouping, $sorting, $randomize);
@@ -278,20 +299,30 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	}
 	
 	/**
-	 * Checks if paging should be used.
+	 * Checks the display mode for the assessment.
 	 * @return		boolean
 	 */
-	function usePaging() {
-		return $this->_usePaging;
+	function getDisplayMode() {
+		return $this->_displayMode;
 	}
 	
 	/**
 	 * Sets the paging option.
-	 * @param		boolean		True if paging is enabled, otherwise false.
+	 * @param		string		Display mode for the assessment.
 	 * @return		none
 	 */
-	function setPaging($value) {
-		$this->_usePaging = $value;
+	function setDisplayMode($value) {
+		switch($value) {
+			case 'slider':
+				$this->_displayMode = SLIDER_DISPLAY;
+				break;
+			case 'multi':
+				$this->_displayMode = MULTI_PAGE_DISPLAY;
+				break;
+			default:
+				$this->_displayMode = SINGLE_DISPLAY;
+				break;
+		}
 	}
 	
 	/**
@@ -317,7 +348,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		The total number of pages in the current assessment.
 	 */
 	function getTotalPages() {
-		if($this->getQuestionsPerPage() == 0 || !$this->usePaging()) {
+		if($this->getQuestionsPerPage() == 0 || ($this->getDisplayMode() !== MULTI_PAGE_DISPLAY)) {
 			$totalPages = 1;
 		} else {
 			$result = &$this->getResult();

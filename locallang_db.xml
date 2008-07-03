@@ -54,7 +54,12 @@
 			<label index="tt_content.pi_flexform.minRange">Minimum Answer Value</label>
 			<label index="tt_content.pi_flexform.maxRange">Maximum Answer Value</label>
 			<label index="tt_content.pi_flexform.errors">Validation Errors</label>
-			<label index="tt_content.pi_flexform.paging">Split Questions Acoss Multiple Pages?</label>
+			<label index="tt_content.pi_flexform.displayMode">Display Mode</label>
+			<label index="tt_content.pi_flexform.displayMode.default"></label>
+			<label index="tt_content.pi_flexform.displayMode.single">Show all questions on one page</label>
+			<label index="tt_content.pi_flexform.displayMode.multi">Split questions across multiple pages</label>
+			<label index="tt_content.pi_flexform.displayMode.slider">Show one question at a time</label>
+			
 			<label index="tt_content.pi_flexform.perPage">Questions Per Page</label>
 			<label index="tt_content.pi_flexform.labels">Labels</label>
 			<label index="tt_content.pi_flexform.scale">Scale</label>

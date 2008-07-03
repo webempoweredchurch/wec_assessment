@@ -128,6 +128,12 @@ class tx_wecassessment_util {
 			
 	}
 	
+	function devLog($message) {
+		if(TYPO3_DLOG) {
+			t3lib_div::devLog($message, 'wec_assessment');
+		}
+	}
+	
 	
 }
 
