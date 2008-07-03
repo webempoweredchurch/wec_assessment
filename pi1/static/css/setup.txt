@@ -1,5 +1,10 @@
 plugin.tx_wecassessment_pi1 {
 	_CSS_DEFAULT_STYLE (
+		
+		.tx-wecassessment-pi1 label {
+			display: inline;
+		}
+		
 		.tx-wecassessment-pi1 .question, 
 		.tx-wecassessment-pi1 .recommendation { 
 			border: none;
