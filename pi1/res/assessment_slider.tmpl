@@ -63,9 +63,12 @@
 					padding-bottom: 5px;
 					width: 500px;
 				}
+
 				.controls div {
 					float: right;
+					width: 65px;
 				}
+				
 				.controls .previous {
 					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/prevarrow.gif);
 					background-repeat: no-repeat;
@@ -74,10 +77,6 @@
 					height: 30px;
 					width: 30px;
 					float: left;
-				}
-				
-				.controls div {
-					width: 65px;
 				}
 
 				.controls .next {
@@ -105,14 +104,13 @@
 					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
 					background-repeat: no-repeat;
 				}
-
 				
 				#handle1 {
 					margin: 0px;
 					padding: 0px;
 					width: 30px;
 					height: 20px;
-					cursor: col-resize;
+					cursor: move;
 					border-bottom: none;
 					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
 					background-repeat: no-repeat;
@@ -121,13 +119,26 @@
 					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
 					background-repeat: no-repeat;
 				}
-
 				
-				#handle1 #playback-head{
-				}
 				.progress {
 					width: 500px;
 					text-align: right;
+				}
+				
+				#submit-answers {
+					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/submit.gif);
+					border: 0;
+					width: 90px;
+					height: 30px;
+					overflow: hidden;
+					color: transparent;
+					cursor: pointer;
+					float: right;
+					margin: 0px;
+				}
+				
+				#submit-answers:hover {
+					background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/submit-ovr.gif);
 				}
 			</style>
 			
@@ -159,15 +170,17 @@
 					</div>
 				</div>
 				<div class="controls">
+					<input id="submit-answers" type="submit" value="Submit Answers" />
 					<div>
-                    <a href="#" onclick="previousQuestion(); return false;" class="previous" id="assessment-previous-button"><span class="alt">Previous</span></a> <a href="#" onclick="nextQuestion(); return false" class="next" id="assessment-next-button"><span class="alt">Next</span></a>
-                    </div>
-                </div>
-                <div class="controlsclear"></div>
+						<a href="#" onclick="previousQuestion(); return false;" class="previous" id="assessment-previous-button" title="Previous Question"><span class="alt">Previous</span></a>
+						<a href="#" onclick="nextQuestion(); return false;" class="next" id="assessment-next-button" title="Next Question"><span class="alt">Next</span></a>
+					</div>
+				</div>
+
+				<div class="controlsclear"></div>
 
 				<input type="hidden" name="tx_wecassessment_pi1[nextPageNumber]" value="###NEXT_PAGE_NUMBER###" />
 				<input type="hidden" name="tx_wecassessment_pi1[questionPerPage]" value="###QUESTIONS_PER_PAGE###" />
-				<input id="submit-answers" type="submit" value="Submit Answers" />
 			</form>
 		<!-- ###DISPLAY_QUESTIONS### end -->
 
