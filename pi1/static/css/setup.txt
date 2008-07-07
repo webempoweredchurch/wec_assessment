@@ -45,7 +45,7 @@ plugin.tx_wecassessment_pi1 {
 			-moz-border-radius-bottomright: 10px;
 			-webkit-border-bottom-right-radius: 10px;
 			padding: 10px;
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/questionbg.jpg);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/questionbg.jpg);
 			background-repeat: no-repeat;
 			background-position: right bottom;
 		}
@@ -67,12 +67,12 @@ plugin.tx_wecassessment_pi1 {
 			position: absolute;
 			width: 5px;
 			height: 10px;
-			background: transparent url(typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) no-repeat left bottom;
+			background: transparent url(/typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) no-repeat left bottom;
 		}
 
 		/* put the track and the right rounded edge on the track */
 		#track1 {
-			background: transparent url(typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) repeat-x right bottom;
+			background: transparent url(/typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) repeat-x right bottom;
 			width: 497px;
 			height: 10px;
 			margin-bottom: 9px;
@@ -90,7 +90,7 @@ plugin.tx_wecassessment_pi1 {
 		}
 		
 		.controls .previous {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/prevarrow.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/prevarrow.gif);
 			background-repeat: no-repeat;
 			background-position: left top;
 			display: block;
@@ -100,7 +100,7 @@ plugin.tx_wecassessment_pi1 {
 		}
 
 		.controls .next {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/nextarrow.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/nextarrow.gif);
 			background-repeat: no-repeat;
 			background-position: left top;
 			display: block;
@@ -117,11 +117,11 @@ plugin.tx_wecassessment_pi1 {
 			height: 0px;
 		}
 		.controls a.previous:hover {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/prevarrow-ovr.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/prevarrow-ovr.gif);
 			background-repeat: no-repeat;
 		}
 		.controls a.next:hover {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
 			background-repeat: no-repeat;
 		}
 		
@@ -132,11 +132,11 @@ plugin.tx_wecassessment_pi1 {
 			height: 20px;
 			cursor: move;
 			border-bottom: none;
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
 			background-repeat: no-repeat;
 		}
 		#handle1:hover {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
 			background-repeat: no-repeat;
 		}
 		
@@ -146,7 +146,7 @@ plugin.tx_wecassessment_pi1 {
 		}
 		
 		#submit-answers {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/submit.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/submit.gif);
 			border: 0;
 			width: 90px;
 			height: 30px;
@@ -158,7 +158,7 @@ plugin.tx_wecassessment_pi1 {
 		}
 		
 		#submit-answers:hover {
-			background-image: url(typo3conf/ext/wec_assessment/pi1/res/images/submit-ovr.gif);
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/submit-ovr.gif);
 		}
 
 	)
