@@ -79,7 +79,7 @@ class tx_wecassessment_flexform {
 		
 		/* For each possible value, build the form elements. */
 		for($i=$this->assessment->getMinimumValue(); $i<=$this->assessment->getMaximumValue(); $i++) {
-			$output[] = '<div><label for="tx_wecassessment_label_'.$i.'">'.$i.'</label>
+			$output[] = '<div style="margin-bottom: 3px"><label for="tx_wecassessment_label_'.$i.'" style="vertical-align: baseline;">'.$i.'</label>
 								<input name="data[tt_content]['.$this->assessment->getUID().'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$labels[$i].'"/></div>';
 		}			
 		return implode(chr(10), $output);
