@@ -108,11 +108,13 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$this->_sorting = $sorting;
 			}
 			
-			if($minimumValue = $this->pi_getFFvalue($flexform, 'minRange', 'general')) {
+			$minimumValue = $this->pi_getFFvalue($flexform, 'minRange', 'general');
+			if(isset($minimumValue)) {
 				$this->_minimumValue = $minimumValue;
 			}
 			
-			if($maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general')) {
+			$maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general')
+			if(isset($maximumValue)) {
 				$this->_maximumValue = $maximumValue;
 			}
 			
