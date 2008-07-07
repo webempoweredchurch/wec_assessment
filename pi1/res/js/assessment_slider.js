@@ -82,9 +82,7 @@ function onQuestionAnswer (event) {
 }
 
 function previousQuestion() {
-	if(currentSlide == 0) {
-		currentSlide = totalQuestions;
-	} else {
+	if(currentSlide != 0) {
 		currentSlide--;
 	}
 	
@@ -97,13 +95,12 @@ function previousQuestion() {
 	assessmentGlider.previous();
 	slider.setValue(currentSlide);
 	$("current_question").update(currentSlide+1);
+		
 	return false;
 }
 
 function nextQuestion() {
-	if(currentSlide == totalQuestions-1) {
-		currentSlide = 0;
-	} else {
+	if(currentSlide != totalQuestions-1) {
 		currentSlide++;
 	}
 	
@@ -112,10 +109,12 @@ function nextQuestion() {
 	} else {
 		$('assessment-previous-button').show();
 	}
+	
+	if(currentSlide != totalQuestions) {
+		assessmentGlider.next();
+		slider.setValue(currentSlide);
+		$("current_question").update(currentSlide+1);
+	}
 
-			
-	assessmentGlider.next();
-	slider.setValue(currentSlide);
-	$("current_question").update(currentSlide+1);
 	return false;
 }
