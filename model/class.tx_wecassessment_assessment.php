@@ -113,7 +113,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$this->_minimumValue = $minimumValue;
 			}
 			
-			$maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general')
+			$maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general');
 			if(isset($maximumValue)) {
 				$this->_maximumValue = $maximumValue;
 			}
