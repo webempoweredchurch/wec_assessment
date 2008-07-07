@@ -9,10 +9,10 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="displayMode.description">Determines how questions are displayed. Options are all questions on one page, multiple pages, or one question at a time.</label>
 			<label index="sorting.description">Determines the order in which the questions appear in the Frontend.</label>
 			<label index="sorting.details">Options include Random and Use Backend Sorting. The Backend Sorting option will display the order of the questions based on their order in the List Module.</label>
-			<label index="paging.description">Spreads questions across multiple pages with a progress bar at the top of each page.</label>
-			<label index="perPage.description">If paging is enabled, the number of questions that appear on each page.</label>
+			<label index="perPage.description">If the display mode is set to show questions across multiple pages, the number of questions that appear on each page.</label>
 			<label index="minRange.description">The lowest score possible for an answer. Typically 0 or 1.</label>
 			<label index="maxRange.description">The highest score possible for an answer.</label>
 			<label index="maxRange.details">This will be determined by what sort of continuum you are using for scoring the assessment. If your answers will be "Never, Sometimes, Often" enter either the number 2 or 3, depending on whether the minimum score is 0 or 1.</label>
