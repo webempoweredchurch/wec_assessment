@@ -380,7 +380,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		integer		The next page number.
 	 */
 	function getNextPageNumber() {
-		return $this->_pageNumber + 1;
+		if($this->getTotalPages() == $this->_pageNumber) {
+			return $this->_pageNumber;
+		} else {
+			return $this->_pageNumber + 1;
+		}
 	}
 	
 	/**
