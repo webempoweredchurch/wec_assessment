@@ -201,6 +201,9 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$markers['total_questions'] = $totalQuestions;
 		$markers['post_url'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$markers['next_page_number'] = $this->assessment->getNextPageNumber();
+		$markers['SUBMIT_ANSWERS'] = $this->pi_getLL("submit_answers");
+		$markers['NEXT_QUESTION'] = $this->pi_getLL('next_question');
+		$markers['PREVIOUS_QUESTION'] = $this->pi_getLL('previous_question');
 
 		/* Display editing form for each question */
 		if(is_array($questions)) {
