@@ -74,9 +74,7 @@ t3lib_extMgm::allowTableOnStandardPages("tx_wecassessment_answer");
 $TCA["tx_wecassessment_answer"] = Array (
 	"ctrl" => Array (
 		'title' => 'LLL:EXT:wec_assessment/locallang_db.xml:tx_wecassessment_answer',		
-		'label' => 'result_id,question_id,value',
-		'label_alt' => 'result_id,question_id,value',
-		'label_alt_force' => true,
+		'label' => 'value',
 		'label_userFunc' => 'tx_wecassessment_labels->getAnswerLabel',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
