@@ -93,12 +93,8 @@ class tx_wecassessment_tceforms_getmainfields {
 			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']) && strstr($row['uid'], 'NEW')) {
 				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']);
 
-				$pid = $row['pid'];
-				if ($pid < 0)	{
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid='.abs($pid));
-					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					$pid = intval($row['pid']);
-				}
+				/* @todo 	popViewId isn't always right. May be a storage folder, etc! */
+				$pid = $GLOBALS['HTTP_POST_VARS']['popViewId'];
 				$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 				$assessment = new $assessmentClass(0, $pid);
 				
@@ -120,6 +116,7 @@ class tx_wecassessment_tceforms_getmainfields {
 				}
 				
 			}
+			
 			
 			/* Sniff for the parent table of the current IRRE child, set the type, and hide it */
 			if(is_array($tceform->inline->inlineStructure['stable'])) {
