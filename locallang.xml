@@ -8,6 +8,14 @@
 		<languageKey index="default" type="array">
 			<label index="pi1_title">WEC Assessment</label>
 			<label index="pi1_plus_wiz_description">Adds a survey or assessment to the page.</label>
+			<label index="new_category">[ New Category ]</label>
+			<label index="new_question">[ New Question ]</label>
+			<label index="new_result">[ New Result ]</label>
+			<label index="new_recommendation">[ New Recommendation ]</label>
+			<label index="new_answer">[ New Answer ]</label>
+			<label index="total_assessment">Total Assessment</label>
+			<label index="random">Random</label>
+			<label index="backend">Use Backend sorting</label>
 		</languageKey>
 	</data>
 </T3locallang>

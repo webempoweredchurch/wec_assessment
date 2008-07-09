@@ -66,6 +66,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @todo 	Initialize conf and flexform if they're not provided.
 	 */
 	function tx_wecassessment_assessment($uid=0, $pid=0, $conf=null, $flexform=null) {
+		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
 		$this->_pid = $pid;
 		
 		if($uid==0) {
@@ -199,10 +200,9 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	/**
 	 * Gets the label for the assessment.
 	 * @return		string		The assessment label.
-	 * @todo 		Localize!
 	 */
 	function getlabel() {
-		return 'Total Assessment';
+		return $GLOBALS['LANG']->getLL('total_assessment');
 	}
 	
 	/**

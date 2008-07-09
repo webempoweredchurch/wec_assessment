@@ -49,8 +49,9 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		$this->_min_value = $minValue;
 		$this->_max_value = $maxValue;
 		$this->_type = TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT;
-		
 		$this->_validationErrors = array();
+
+		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
 	}
 	
 	/**
@@ -76,10 +77,9 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	/**
 	 * Gets the label for the recommendation.
 	 * @return		string
-	 * @todo 		Localize!
 	 */
 	function getLabel() {
-		$title = 'Total Assessment';
+		$title = $GLOBALS['LANG']->getLL('total_assessment');
 		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
 	}
 	

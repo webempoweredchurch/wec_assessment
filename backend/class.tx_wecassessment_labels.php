@@ -41,12 +41,29 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
 class tx_wecassessment_labels {
 	
 	/**
+	 * Constructor
+	 *
+	 * @return void
+	 **/
+	function tx_wecassessment_labels() {
+		$this->__construct();
+	}
+	
+	/**
+	 * Constructore, sets up the Locallang stuff
+	 *
+	 * @return void
+	 **/
+	function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
+	}
+	
+	/**
 	 * Gets the label for a category record.
 	 *
 	 * @param		array		Params array, passed by reference. $params['title'] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
-	 * @todo 		Localize!
 	 */
 	function getCategoryLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
@@ -56,7 +73,7 @@ class tx_wecassessment_labels {
 				$params['title'] = $category->getLabel();
 			}
 		} else {
-			$params['title'] = '[ New Category ]';
+			$params['title'] = $GLOBALS['LANG']->getLL('new_category');
 		}
 		
 	}
@@ -67,7 +84,6 @@ class tx_wecassessment_labels {
 	 * @param		array		Params array, passed by reference. $params['title] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
-	 * @todo 		Localize!
 	 */
 	function getQuestionLabel(&$params, &$pObj) {
 		$isInline = $this->isInlineEditing($params, $pObj);
@@ -80,7 +96,7 @@ class tx_wecassessment_labels {
 				$params['title'] = t3lib_div::fixed_lgd_cs(strip_tags($question->getLabel($isInline)), $titleLength);
 			}
 		} else {
-			$params['title'] = '[ New Question ]';
+			$params['title'] = $GLOBALS['LANG']->getLL('new_question');
 		}
 	}
 		
@@ -91,7 +107,6 @@ class tx_wecassessment_labels {
 	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
-	 * @todo 		Localize!
 	 */
 	function getResultLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
@@ -99,7 +114,7 @@ class tx_wecassessment_labels {
 			$result = &tx_wecassessment_result::find($uid, true);
 			$params['title'] = $result->getLabel();
 		} else {
-			$params['title'] = '[ New Result ]';
+			$params['title'] = $GLOBALS['LANG']->getLL('new_result');
 		}
 	}
 	
@@ -109,7 +124,6 @@ class tx_wecassessment_labels {
 	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
-	 * @todo 		Localize!
 	 */
 	function getRecommendationLabel(&$params, &$pObj) {
 		$isInline = $this->isInlineEditing($params, $pObj);
@@ -119,7 +133,7 @@ class tx_wecassessment_labels {
 			$recommendation = &tx_wecassessment_recommendation::find($uid, true);
 			$params['title'] = $recommendation->getLabel($isInline);
 		} else {
-			$params['title'] = '[ New Recommendation ]';
+			$params['title'] = $GLOBALS['LANG']->getLL('new_recommendation');
 		}
 	}
 	
@@ -129,7 +143,6 @@ class tx_wecassessment_labels {
 	 * @param		array		Params array, passed by reference.  $params['title'] is set to the new label.
 	 * @param		object		Parent object.
 	 * @return		none
-	 * @todo 		Localize!
 	 */
 	function getAnswerLabel(&$params, &$pObj) {
 		$uid = $params['row']['uid'];
@@ -137,7 +150,7 @@ class tx_wecassessment_labels {
 			$answer = &tx_wecassessment_answer::find($uid, true);
 			$params['title'] = $answer->getLabel();
 		} else {
-			$params['title'] = '[ New Answer ]';
+			$params['title'] = $GLOBALS['LANG']->getLL('new_answer');
 		}
 	}
 	

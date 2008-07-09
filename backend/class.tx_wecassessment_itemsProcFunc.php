@@ -40,18 +40,18 @@ class tx_wecassessment_itemsProcFunc {
 	 * Gets the TCA list of sort options.
 	 * @param		array		Configuration array.
 	 * @return		array		Configuration array.
-	 * @todo 		Localize!
 	 */
 	function getSortItems($config=null) {
+		
 		if(!isset($config)) {
 			$config = array();
 		}
 		
-		$config['items'][] = Array('Random', 'random');
+		$config['items'][] = Array($GLOBALS['LANG']->getLL('random'), 'random');
 		
 		$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
 		if($confArr['manualQuestionSorting']) {
-			$config['items'][] = Array('Use backend sorting', 'backend');
+			$config['items'][] = Array($GLOBALS['LANG']->getLL('backend'), 'backend');
 		}
 		
 		return $config;
