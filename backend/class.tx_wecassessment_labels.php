@@ -70,9 +70,7 @@ class tx_wecassessment_labels {
 	 * @todo 		Localize!
 	 */
 	function getQuestionLabel(&$params, &$pObj) {
-		if($pObj == null) {
-			$isInline = true;
-		}
+		$isInline = $this->isInlineEditing($params, $pObj);
 		
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
@@ -114,9 +112,7 @@ class tx_wecassessment_labels {
 	 * @todo 		Localize!
 	 */
 	function getRecommendationLabel(&$params, &$pObj) {
-		if($pObj == null) {
-			$isInline = true;
-		}
+		$isInline = $this->isInlineEditing($params, $pObj);
 		
 		$uid = $params['row']['uid'];
 		if(is_numeric($uid)) {
@@ -143,6 +139,24 @@ class tx_wecassessment_labels {
 		} else {
 			$params['title'] = '[ New Answer ]';
 		}
+	}
+	
+	/**
+	 * Determines if the label userFunc is running as part of IRRE.  If so, a
+	 * shorter title with less context can be used.
+	 *
+	 * @param		array		Array of parameters, included database row.
+	 * @param		object		Parent object.
+	 * @return		none
+	 */
+	function isInlineEditing($params, $pObj) {
+		if(array_key_exists('deleted', $params['row']) && array_key_exists('hidden', $params['row'])) {
+			$isInlineEditing = true;
+		} else {
+			$isInlineEditing = false;
+		}
+		
+		return $isInlineEditing;
 	}
 }
 
