@@ -86,10 +86,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 				}
 			
 				/**
-				 * If we don't have answers, we're in results view or on the first
-				 * page of a multi-page assessment.
+				 * If we don't have answers or navigation to the next page, we're 
+				 * in results view or on the first page of a multi-page assessment.
 				 */
-				$this->firstLoad = true;
+				if(!array_key_exists('nextPageNumber', $this->piVars)) {
+					$this->firstLoad = true;
+				}
 			}	
 		
 			/* Ugly hack to make sure the result saves properly in the assessment object */
