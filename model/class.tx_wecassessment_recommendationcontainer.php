@@ -120,8 +120,25 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 		$recommendations = $this->getRecommendations();
 				
 		if(is_array($recommendations) and count($recommendations) > 0) {
+			$previousRecommendation = null;
+			$lastUID = $recommendations[count($recommendations)-1]->getUID();
+						
 			foreach((array) $recommendations as $recommendation) {
 				$hasErrors = false;
+				
+				/* If we're on the first recommendation, check the lower bound */
+				if(is_null($previousRecommendation)) {
+					if(!$recommendation->againstLowerBound($min)) {
+						$recommendationHasErrors = true;
+					}
+				}
+				
+				/* If we're on the last recommendation, check the upper bound */
+				if($recommendation->getUID() == $lastUID) {
+					if(!$recommendation->againstUpperBound($max)) {
+						$recommendationHasErrors = true;
+					}
+				}
 			
 				if(!$recommendation->valid($min, $max)) {
 					$recommendationHasErrors = true;

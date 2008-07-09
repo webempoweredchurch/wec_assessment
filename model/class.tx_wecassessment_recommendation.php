@@ -401,12 +401,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 			$valid = false;
 		}
 		
-		if (!$this->checkLowerBound($min)) {
+		if (!$this->withinLowerBound($min)) {
 			$this->addError("Recommendation value is less than the minimum allowed (".$min.").", $this->getUID());
 			$valid = false;
 		}
 		
-		if (!$this->checkUpperBound($max)) {
+		if (!$this->withinUpperBound($max)) {
 			$this->addError("Recommendation value is greater than the maximum allowed (".$max.").", $this->getUID());
 			$valid = false;
 		}
@@ -415,9 +415,10 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		
 	}
 		
-	/*
+	/**
 	 * Perform basic sanity checking to ensure that max value is not smaller
 	 * than min value.
+	 *
 	 * @return		boolean		True for pass, false for fail.
 	 */
 	function checkRange() {
@@ -430,12 +431,13 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $validRange;
 	}
 	
-	/*
+	/**
 	 * Checks if lower bound for this recommendation is valid.
+	 *
 	 * @param		integer		Smallest recommendation value allowed.
 	 * @return		boolean		Test result.
 	 */
-	function checkLowerBound($lowerBound) {
+	function withinLowerBound($lowerBound) {
 		if($this->getMinValue() >= $lowerBound) {
 			$validLowerBound = true;
 		} else {
@@ -445,16 +447,61 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $validLowerBound;
 	}
 	
-	/*
+	/**
 	 * Checks if the upper bound for this recommendation is valid.
+	 *
 	 * @param		integer		Largest recommendation value allowed.
 	 * @return		boolean		Test result.
 	 */
-	function checkUpperBound($upperBound) {
+	function withinUpperBound($upperBound) {
 		if($upperBound >= $this->getMaxValue()) {
 			$validUpperBound = true;
 		} else {
 			$validUpperBound = false;
+		}
+		
+		return $validUpperBound;
+	}
+	
+	/**
+	 * Checks if the recommendation is directly against the lower bound. This
+	 * is the desired behavior for the lowest recommendation.
+	 *  
+	 * @param		integer		The lower bound, typically the minimum value for the assessment.
+	 * @return		boolean
+	 */
+	function againstLowerBound($lowerBound) {
+		if($this->getMinValue() == $lowerBound) {
+			$validLowerBound = true;
+		} else {
+			$validLowerBound = false;
+		}
+		
+		if(!$validLowerBound) {
+			$message = "Lowest recommendation has a minimum value of " . $this->getMinValue() . " but overall assessment has a minimum value of " . $lowerBound . '.';
+			$this->addError($message, $this->getUID());
+		}
+		
+		return $validLowerBound;
+	}
+	
+	/**
+	 * Checks if the recommendation is directly against the upper bound. This is
+	 * the desired behavior for the highest recommendation.
+	 *
+	 * @param	integer		The upper bound, typically the maximum value for the assessment.
+	 * @return	boolean
+	 */
+	function againstUpperBound($upperBound) {
+		if($upperBound == $this->getMaxValue()) {
+			$validUpperBound = true;
+		} else {
+			$validUpperBound = false;
+		}
+		
+		if(!$validUpperBound) {
+			$message = "Highest recommendation has a maximum value of " . $this->getMaxValue() . " but overall assessment has a maximum value of " . $upperBound . '.';
+			$this->addError($message, $this->getUID());
 		}
 		
 		return $validUpperBound;
@@ -468,7 +515,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 */
 	function validRelativeTo($previousRecommendation) {
 		/* @todo 	What should gap tolerance be set to and where should it be defined? */
-		$gapTolerance = 1;
+		$gapTolerance = .01;
 		
 		$valid = true;
 		$currentUID = $this->getUID();
