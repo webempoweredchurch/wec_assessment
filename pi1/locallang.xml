@@ -23,6 +23,10 @@
 				make sure that you've included the static Typoscript template for
 				WEC Assessment.
 			</label>
+			<label index="cookieError">
+				Your browser must have cookies enabled in order begin the assessment. Please
+				enable them and reload this page.
+			</label>
 			<label index="submit_answers">Submit Answers</label>
 			<label index="next_question">Next Question</label>
 			<label index="previous_question">Previous Question</label>

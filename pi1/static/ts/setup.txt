@@ -10,6 +10,8 @@ plugin.tx_wecassessment_pi1 {
 	
 	displayMode = single
 	
+	revertToSingleMode = 1
+	
 	# Label Configuration options
 	minimumValue = 0
 	maximumValue = 2

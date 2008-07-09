@@ -61,11 +61,25 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$this->pi_initPIflexform();
 		$this->pi_USER_INT_obj = 1;
 		
+
+		
 		if(count($this->conf) <= 3) {
 			$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">'.$this->pi_getLL('configurationError').'</div>';
 		} else {
 			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 			$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
+			
+			/* Check if cookies are enabled */
+			if(!$_COOKIE['fe_typo_user'] && $this->assessment->getDisplayMode() != SINGLE_DISPLAY) {
+				/* Check if we should fall back to single page mode */
+				if($this->conf['revertToSingleMode']) {
+					$this->assessment->setDisplayMode('single');
+				} else {
+					$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">'.$this->pi_getLL('cookieError').'</div>';
+					return $this->pi_wrapInBaseClass($content);
+				}
+			}
+			
 			$this->result = &$this->assessment->getResult();
 		
 			/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
