@@ -51,6 +51,17 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 		$this->_type = TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT;
 		$this->_validationErrors = array();
 
+		if(!is_object($GLOBALS['LANG'])) {
+			require_once(t3lib_extMgm::extPath('lang').'lang.php');
+			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+			
+			if(TYPO3_MODE == 'BE') {
+				$GLOBALS['LANG']->init($BE_USER->uc['lang']);
+			} else {
+				$GLOBALS['LANG']->init($GLOBALS['TSFE']->config['config']['language']);
+			}
+		}
+		
 		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
 	}
 	
