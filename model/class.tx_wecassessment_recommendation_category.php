@@ -201,11 +201,6 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 		return tx_wecassessment_recommendation_category::findAllInCategory($pid, $parentUID, $additionalWhere);
 	} 
 	
-	function findRecommendationsAndErrors($pid) {
-		$recommendations = tx_wecassessment_recommendation_category::findAll($pid);
-		$errors = tx_wecassessment_recommendation_category::findErrors($pid);
-	}
-	
 	/**
 	 * Creates a new recommendation object from an associative array.
 	 *

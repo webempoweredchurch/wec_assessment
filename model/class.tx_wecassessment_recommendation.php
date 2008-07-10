@@ -278,14 +278,6 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * @todo 		Unused? C: Seems to be.
-	 */
-	function findRecommendationsAndErrors($pid) {
-		$recommendations = tx_wecassessment_recommendation::findAll($pid);
-		$errors = tx_wecassessment_recommendation::findErrors($pid);
-	}
-	
-	/**
 	 * Finds a recommendation by value.
 	 * @param		integer		The value we want a recommendation for.
 	 * @param		string		Custom WHERE clause.

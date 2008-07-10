@@ -199,12 +199,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 	function findAllInParent($pid, $parent_id, $additionalWhere="") {
 		return tx_wecassessment_recommendation_question::findAllInQuestion($pid, $parent_id, $additionalWhere);
 	} 
-	
-	function findRecommendationsAndErrors($pid) {
-		$recommendations = tx_wecassessment_recommendation_question::findAll($pid);
-		$errors = tx_wecassessment_recommendation_question::findErrors($pid);
-	}
-	
+
 	/**
 	 * Creates a new recommendation object from an associative array.
 	 *
