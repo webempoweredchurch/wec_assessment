@@ -164,7 +164,7 @@ class tx_wecassessment_tceforms_getmainfields {
 			$content[] = '<ul>';
 			foreach((array) $errors as $error) {
 				$errorString = tx_wecassessment_tceforms_getmainfields::errorToString($error);
-				$content[] = '<li>'.$errorString.'</li>';
+				$content[] = '<li style="margin-bottom: 3px">'.$errorString.'</li>';
 			}
 			$content[] = '</ul>';
 		}
