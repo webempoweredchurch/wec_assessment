@@ -324,6 +324,27 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	}
 	
 	/**
+	 * Gets all the unanswered questions in the current result.
+	 *
+	 * @param	string		The grouping option.
+	 * @param	string		The sorting option.
+	 * @param	boolean		Whether or not to randomize results.
+	 * @return	array
+	 */
+	function getUnansweredQuestions($grouping='', $sorting='sorting', $randomize=false) {
+		$questions = $this->getQuestions();
+		$unanswered = array();
+		
+		foreach((array) $questions as $question) {
+			if(!$question->hasAnswer($this->_answers)) {
+				$unanswered[] = $question;
+			}
+		}
+		
+		return $unanswered;
+	}
+	
+	/**
 	 * Gets the questions that appear for a specific page number.
 	 *
 	 * @param		integer		The page number.
