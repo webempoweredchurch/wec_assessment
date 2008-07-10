@@ -438,6 +438,22 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	}
 	
 	/**
+	 * Returns the first page that has unanswered questions left for later redirection
+	 *
+	 * @return int page number or 0 if none incomplete
+	 **/
+	function getFirstUncompletePage() {
+		$unansweredQuestions = $this->getResult()->getUnansweredQuestions($this->grouping, $this->getSorting(), $this->randomize);
+		
+		if(empty($unansweredQuestions)) {
+			return 0;
+		} else {
+			$pageNumber = floor($unansweredQuestions[0]->getUID()/$this->getQuestionsPerPage());
+			return $pageNumber;			
+		}
+	}
+	
+	/**
 	 * Sets the result.
 	 * @param		object		Result object.
 	 * @return		none
