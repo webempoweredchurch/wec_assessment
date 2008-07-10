@@ -35,10 +35,23 @@ plugin.tx_wecassessment_pi1 {
 		10.value = <div id="progress-bar" class="bar" style="width:{field:percentComplete}%;">&nbsp;</div>
 		10.wrap = <div id="progress-container" class="outline">|</div>
 		10.insertData = true
-		
-		20 = TEXT
-		20.value = <p>Page {field:currentPage} of {field:totalPages}</p>
-		20.insertData = true
+
+		20 = COA
+		20 {
+			5 = TEXT
+			5.field = previousPageLink
+			5.wrap = <span class="nav"> | </span>
+			
+			10 = TEXT
+			10.value = Page {field:currentPage} of {field:totalPages}
+			10.insertData = true
+			
+			15 = TEXT
+			15.field = nextPageLink
+			15.wrap = <span class="nav"> | </span>
+			
+			stdWrap.warp = <p> | </p>
+		}
 		
 		stdWrap.wrap = <div id="wec-assessment-progress"> | </div>
 	}

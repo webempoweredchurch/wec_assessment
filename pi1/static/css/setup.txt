@@ -26,6 +26,15 @@ plugin.tx_wecassessment_pi1 {
 		.tx-wecassessment-pi1 #wec-assessment-progress .bar {
 			background-color: #888;
 		}
+
+		.tx-wecassessment-pi1 #wec-assessment-progress .nav {
+			padding-right: 5px;
+			padding-left: 5px;
+		}
+		
+		.tx-wecassessment-pi1 #wec-assessment-progress .nav a {
+			text-decoration: none;
+		}
 		
 		.tx-wecassessment-pi1 input[type=submit] {
 			margin-top: 10px;

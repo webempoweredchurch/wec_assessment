@@ -211,19 +211,14 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		if($this->assessment->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 			$markers['progress_bar'] = $this->displayProgressBar();
-			list($markers['next_link'], $markers['previous_link']) = $this->getPageLink($this->assessment->getPageNumber(), $this->assessment->getTotalPages()); 
 		} else {
 			$markers['progress_bar'] = '';
-			$markers['next_link'] = '';
-			$markers['previous_link'] = '';
 		}
 		
 		$markers['total_questions'] = $totalQuestions;
 		$markers['post_url'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$markers['next_page_number'] = $this->assessment->getNextPageNumber();
 		$markers['SUBMIT_ANSWERS'] = $this->pi_getLL("submit_answers");
-		$markers['NEXT_QUESTION'] = $this->pi_getLL('next_question');
-		$markers['PREVIOUS_QUESTION'] = $this->pi_getLL('previous_question');
 
 		/* Display editing form for each question */
 		if(is_array($questions)) {
@@ -238,7 +233,10 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	}
 	
 	function displayProgressBar() {
-		$progress = $this->util->getOutputFromCObj($this->assessment->toArray(), $this->conf, 'progress');
+		$assessmentArray = $this->assessment->toArray();
+		list($assessmentArray['nextPageLink'], $assessmentArray['previousPageLink']) = $this->getPageLink($this->assessment->getPageNumber(), $this->assessment->getTotalPages()); 
+		
+		$progress = $this->util->getOutputFromCObj($assessmentArray, $this->conf, 'progress');
 		return $progress;
 	}
 	
@@ -390,17 +388,17 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		if($current_page == $total_pages) {
 			return array(
 				null,
-				$this->pi_linkTP_keepPIvars($this->pi_getLL('previous_question'), array('restart' => '', 'nextPageNumber' => $total_pages-1))
+				$this->pi_linkTP_keepPIvars('&larr;', array('restart' => '', 'nextPageNumber' => $total_pages-1))
 			);
 		} else if ($current_page == 1) {
 			return array(
-				$this->pi_linkTP_keepPIvars($this->pi_getLL('next_question'), array('restart' => '', 'nextPageNumber' => 2)),
+				$this->pi_linkTP_keepPIvars('&rarr;', array('restart' => '', 'nextPageNumber' => 2)),
 				null
 			);
 		} else {
 			return array(
-				$this->pi_linkTP_keepPIvars($this->pi_getLL('next_question'), array('restart' => '', 'nextPageNumber' => $current_page+1)),
-				$this->pi_linkTP_keepPIvars($this->pi_getLL('previous_question'), array('restart' => '', 'nextPageNumber' => $current_page-1))
+				$this->pi_linkTP_keepPIvars('&rarr;', array('restart' => '', 'nextPageNumber' => $current_page+1)),
+				$this->pi_linkTP_keepPIvars('&larr;', array('restart' => '', 'nextPageNumber' => $current_page-1))
 			);
 		}
 	}
