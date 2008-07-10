@@ -82,7 +82,12 @@ class tx_wecassessment_results {
 			$totalAssessments = 0;
 		}
 		$maximumScore = $assessment->getMaximumValue();
-		$percentScore = round(($averageScore / $maximumScore) * 100);
+		if($maximumScore > 0) {
+			$percentScore = round(($averageScore / $maximumScore) * 100);
+		} else {
+			$maximumScore = 0;
+			$percentScore = 0;
+		}
 		
 		
 		$output = array();
