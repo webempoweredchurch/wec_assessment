@@ -208,10 +208,14 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			$markers['welcome_back'] = '';
 		}
 		
+		
 		if($this->assessment->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 			$markers['progress_bar'] = $this->displayProgressBar();
+			list($markers['next_link'], $markers['previous_link']) = $this->getPageLink($this->assessment->getPageNumber(), $this->assessment->getTotalPages()); 
 		} else {
 			$markers['progress_bar'] = '';
+			$markers['next_link'] = '';
+			$markers['previous_link'] = '';
 		}
 		
 		$markers['total_questions'] = $totalQuestions;
@@ -372,6 +376,33 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$content[] = '</div>';
 		
 		return implode(chr(10), $content);
+	}
+	
+	/**
+	 * Correctly returns the next and previous pages in an array
+	 *
+	 * @return array 0 => next page, 1 => previous page
+	 **/
+	function getPageLink($current_page, $total_pages) {
+
+
+		
+		if($current_page == $total_pages) {
+			return array(
+				null,
+				$this->pi_linkTP_keepPIvars($this->pi_getLL('previous_question'), array('restart' => '', 'nextPageNumber' => $total_pages-1))
+			);
+		} else if ($current_page == 1) {
+			return array(
+				$this->pi_linkTP_keepPIvars($this->pi_getLL('next_question'), array('restart' => '', 'nextPageNumber' => 2)),
+				null
+			);
+		} else {
+			return array(
+				$this->pi_linkTP_keepPIvars($this->pi_getLL('next_question'), array('restart' => '', 'nextPageNumber' => $current_page+1)),
+				$this->pi_linkTP_keepPIvars($this->pi_getLL('previous_question'), array('restart' => '', 'nextPageNumber' => $current_page-1))
+			);
+		}
 	}
 		
 }
