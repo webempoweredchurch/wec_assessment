@@ -114,7 +114,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$question = $this->getQuestion();
 		
 		if(is_a($question, "tx_wecassessment_question")) {
-			/* @todo  Does getWeight() have problems? */
+			/* @todo  Does getWeight() have problems? C: just a simple getter, not sure what you mean*/
 			$weight = $question->getWeight();
 			$weightedValue = $weight * $this->getValue();
 		} else {
@@ -340,7 +340,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @param		integer		Page ID where the answer is stored.
 	 * @param		string		SQL WHERE clause for additional filtering.
 	 * @return		array		Array of answers matching search criteria.
-	 * @todo	Figure out a better array key.
+	 * @todo	Figure out a better array key. C: Why?
 	 */
 	function findAll($pid, $additionalWhere='', $questionAsKey=true) {
 		$answers = array();

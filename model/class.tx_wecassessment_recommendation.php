@@ -255,7 +255,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		$table = 'tx_wecassessment_recommendation';
 		
 		$where = tx_wecassessment_recommendation::getWhere($table, $additionalWhere.' AND pid='.$pid);	
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'min_value');
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'min_value ASC');
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$recommendations[] = tx_wecassessment_recommendation::newFromArray($row);
@@ -278,7 +278,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * @todo 		Unused?
+	 * @todo 		Unused? C: Seems to be.
 	 */
 	function findRecommendationsAndErrors($pid) {
 		$recommendations = tx_wecassessment_recommendation::findAll($pid);
