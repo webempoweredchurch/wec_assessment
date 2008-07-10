@@ -82,16 +82,22 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	/** 
 	 * Saves an answer to the database.
 	 * @return		integer		The unique ID of the answer.
-	 * @todo 		Add tstamp, cruser_id, etc.
 	 */
 	function save() {
 		$fields_values = $this->toArray();
 		unset($fields_values['uid']);
+
+		// set tstamp db field for both update and insert
+		$fields_values['tstamp'] = time();
 		
 		/* If we have a uid, update an db existing record.  If not, create a new db record. */
 		if($this->getUID()) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_answer', 'uid='.$this->getUID(), $fields_values);
 		} else {
+			
+			// set create date only if we're creating a new record. Same with create_user_id
+			$fields_values['crdate'] = time();
+			$fields_values['cruser_id'] = $GLOBALS['TSFE']->fe_user->user['uid'];
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_wecassessment_answer', $fields_values);
 			$this->setUID($GLOBALS['TYPO3_DB']->sql_insert_id());
 		}
@@ -102,7 +108,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	/**
 	 * Returns the weighted value of this answer.
 	 * @return		integer		The value of this answer after weighting.
-	 * @todo		What's the error return value of we don't get a question?
+	 * @todo		What's the error return value of we don't get a question? C: i like returning 0.
 	 */
 	function getWeightedScore() {
 		$question = $this->getQuestion();
