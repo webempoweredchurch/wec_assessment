@@ -4,7 +4,7 @@ Event.observe(window, 'load', function() {
 
 function checkAnswers(e) {
 	var allAnswered = true;
-	var questions = $('assessment').getElementsByClassName('question');
+	var questions = $('assessment').getElementsBySelector('.question');
 
 	questions.each(function (question) {
 		if(!hasAnswer(question)) {

@@ -28,13 +28,13 @@ function updateSlider(value) {
 		currentSlide--;
 	}
 	$("current_question").update(currentSlide+1);
-	questions = $('assessment-glider').getElementsByClassName('question');
+	questions = $('assessment-glider').getElementsBySelector('.question');
 	assessmentGlider.moveTo(questions[currentSlide], $('scroller'), { duration: 0.5});
 }
 
 function checkAnswers(e) {
 	var allAnswered = true;
-	var questions = $('assessment').getElementsByClassName('question');
+	var questions = $('assessment').getElementsBySelector('.question');
 
 	questions.each(function (question) {
 		if(!hasAnswer(question)) {
