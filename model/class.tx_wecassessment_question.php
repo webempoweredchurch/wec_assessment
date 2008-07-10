@@ -269,7 +269,6 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	 * Gets the recommendations within the current category.
 	 * 
 	 * @return		array		The array for recommendations belonging to the current category.
-	 * @todo		Order recommendations based on min value. C: should be done. See recommendation findAll method. Added a ASC there.
 	 */
 	function getRecommendations() {
 		if(!$this->_recommendations) {

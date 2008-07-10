@@ -108,13 +108,11 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	/**
 	 * Returns the weighted value of this answer.
 	 * @return		integer		The value of this answer after weighting.
-	 * @todo		What's the error return value of we don't get a question? C: i like returning 0.
 	 */
 	function getWeightedScore() {
 		$question = $this->getQuestion();
 		
 		if(is_a($question, "tx_wecassessment_question")) {
-			/* @todo  Does getWeight() have problems? C: just a simple getter, not sure what you mean*/
 			$weight = $question->getWeight();
 			$weightedValue = $weight * $this->getValue();
 		} else {
