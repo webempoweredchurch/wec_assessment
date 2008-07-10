@@ -31,7 +31,7 @@ plugin.tx_wecassessment_pi1 {
 			margin-top: 10px;
 		}
 		
-		div.scroller fieldset.question {
+		.tx-wecassessment-pi1 div.scroller fieldset.question {
 			height: 145px;
 			width: 475px;
 			overflow:hidden;
@@ -50,7 +50,7 @@ plugin.tx_wecassessment_pi1 {
 			background-position: right bottom;
 		}
 
-		div.scroller {
+		.tx-wecassessment-pi1 div.scroller {
 			height: 175px;
 			width: 500px;
 			overflow: hidden;
@@ -58,12 +58,12 @@ plugin.tx_wecassessment_pi1 {
 			padding: 0px;
 		}
 		
-		div.scroller div.content {
+		.tx-wecassessment-pi1 div.scroller div.content {
 			width: 10000px;
 		}
 		
 		/* put the left rounded edge on the track */
-		#track1-left {
+		.tx-wecassessment-pi1 #track1-left {
 			position: absolute;
 			width: 5px;
 			height: 10px;
@@ -71,25 +71,25 @@ plugin.tx_wecassessment_pi1 {
 		}
 
 		/* put the track and the right rounded edge on the track */
-		#track1 {
+		.tx-wecassessment-pi1 #track1 {
 			background: transparent url(/typo3conf/ext/wec_assessment/pi1/res/images/slider-bg.gif) repeat-x right bottom;
 			width: 497px;
 			height: 10px;
 			margin-bottom: 9px;
 		}
 		
-		div.controls {
+		.tx-wecassessment-pi1 div.controls {
 			padding-left: 2px;
 			padding-bottom: 5px;
 			width: 500px;
 		}
 
-		.controls div {
+		.tx-wecassessment-pi1 .controls div {
 			float: right;
 			width: 65px;
 		}
 		
-		.controls .previous {
+		.tx-wecassessment-pi1 .controls .previous {
 			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/prevarrow.gif);
 			background-repeat: no-repeat;
 			background-position: left top;
@@ -99,7 +99,7 @@ plugin.tx_wecassessment_pi1 {
 			float: left;
 		}
 
-		.controls .next {
+		.tx-wecassessment-pi1 .controls .next {
 			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/nextarrow.gif);
 			background-repeat: no-repeat;
 			background-position: left top;
@@ -108,44 +108,14 @@ plugin.tx_wecassessment_pi1 {
 			width: 30px;
 			float: right;
 		}
-		.controls .alt {
+		
+		.tx-wecassessment-pi1 .controls .alt {
 			text-indent: -99999px;
 			position: absolute;
 		}
-		.controlsclear {
-			clear: both;
-			height: 0px;
-		}
-		.controls a.previous:hover {
-			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/prevarrow-ovr.gif);
-			background-repeat: no-repeat;
-		}
-		.controls a.next:hover {
-			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
-			background-repeat: no-repeat;
-		}
 		
-		#handle1 {
-			margin: 0px;
-			padding: 0px;
-			width: 30px;
-			height: 20px;
-			cursor: move;
-			border-bottom: none;
-			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
-			background-repeat: no-repeat;
-		}
-		#handle1:hover {
-			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
-			background-repeat: no-repeat;
-		}
 		
-		.progress {
-			width: 500px;
-			text-align: right;
-		}
-		
-		#submit-answers {
+		.tx-wecassessment-pi1 .controls input#submit-answers {
 			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/submit.gif);
 			border: 0;
 			width: 90px;
@@ -157,9 +127,41 @@ plugin.tx_wecassessment_pi1 {
 			margin: 0px;
 		}
 		
-		#submit-answers:hover {
+		.tx-wecassessment-pi1 .controls #submit-answers:hover {
 			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/submit-ovr.gif);
 		}
-
+		
+		.tx-wecassessment-pi1 .controlsclear {
+			clear: both;
+			height: 0px;
+		}
+		.tx-wecassessment-pi1 .controls a.previous:hover {
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/prevarrow-ovr.gif);
+			background-repeat: no-repeat;
+		}
+		.tx-wecassessment-pi1 .controls a.next:hover {
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/nextarrow-ovr.gif);
+			background-repeat: no-repeat;
+		}
+		
+		.tx-wecassessment-pi1 #handle1 {
+			margin: 0px;
+			padding: 0px;
+			width: 30px;
+			height: 20px;
+			cursor: move;
+			border-bottom: none;
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle.gif);
+			background-repeat: no-repeat;
+		}
+		.tx-wecassessment-pi1 #handle1:hover {
+			background-image: url(/typo3conf/ext/wec_assessment/pi1/res/images/handle-ovr.gif);
+			background-repeat: no-repeat;
+		}
+		
+		.tx-wecassessment-pi1 .progress {
+			width: 500px;
+			text-align: right;
+		}
 	)
 }
