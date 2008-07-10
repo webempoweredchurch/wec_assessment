@@ -405,7 +405,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		integer		Gets the percent.
 	 */
 	function getPercentComplete() {
-		return floor(($this->getPageNumber() - 1) / $this->getTotalPages() * 100);
+		return floor(($this->getPageNumber()) / $this->getTotalPages() * 100);
 	}
 	
 	/**
