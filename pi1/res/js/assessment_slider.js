@@ -40,7 +40,7 @@ function checkAnswers(e) {
 		if(!hasAnswer(question)) {
 			allAnswered = false;
 			new Effect.Highlight(question);
-			//assessmentGlider.moveTo(question, assesmentGlider.scroller)
+			assessmentGlider.moveTo(question, $('scroller'), { duration: 0.5});
 		}
 	});
 	
