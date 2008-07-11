@@ -31,7 +31,7 @@
 			<label index="tx_wecassessment_result.assessment_id">Assessment</label>
 			<label index="tx_wecassessment_result.assessment_id">Answers</label>
 			
-			<label index="tx_wecassessment_recommendation">Assessment Recommendations</label>
+			<label index="tx_wecassessment_recommendation">Assessment Recommendation</label>
 			<label index="tx_wecassessment_recommendation.type">Type</label>
 			<label index="tx_wecassessment_recommendation.type.category">Recommendation for Category</label>
 			<label index="tx_wecassessment_recommendation.type.question">Recommendation for Question</label>
