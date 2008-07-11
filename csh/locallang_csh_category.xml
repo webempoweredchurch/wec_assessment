@@ -9,6 +9,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index=".description">A category acts as a grouping for a set of questions and recommendations.</label>
 			<label index="hidden.description">You can choose to hide this category to keep it and all associated questions and recommendations hidden from the Frontend.</label>
 			<label index="title.description">You must give the category a title. This field is required.</label>
 			<label index="description.description">Although the description field is optional, it gives your Frontend users an idea about what the category contains.</label>

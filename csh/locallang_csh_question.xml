@@ -9,6 +9,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index=".description">A question is displayed to the user and answered as part of the overall assessment.</label>
 			<label index="sorting.description">Determines the order in which the questions appear in the Frontend.</label>
 			<label index="hidden.description">Enabling the Hide field will prevent the assessment question (and any associated recommendations) from displaying in the Frontend.</label>
 			<label index="category_id.description">Select a category to associate the question with. All questions must be tied to a category.</label>

@@ -9,6 +9,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index=".description">A recommendation is the content that will be shown to the user once an assessment is completed.  The recommendation that is chosen is based on how the user answers the questions within the assessment.</label>
 			<label index="hidden.description">Enabling the Hide field will prevent the assessment recommendation from displaying in the Frontend.</label>
 			<label index="type.description">Select whether you want to associate this recommendation record with a category, a question, or the full assessment.</label>
 			<label index="min_value.description">The minimum score that will generate this recommendation.</label>
