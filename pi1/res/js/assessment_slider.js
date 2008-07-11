@@ -41,6 +41,20 @@ function checkAnswers(e) {
 			allAnswered = false;
 			new Effect.Highlight(question);
 			assessmentGlider.moveTo(question, $('scroller'), { duration: 0.5});
+			$("current_question").update(question._index+1);
+			currentSlide = question._index;
+			slider.setValue(currentSlide);
+			if(currentSlide == 0) {
+				$('assessment-previous-button').hide();
+				$('assessment-next-button').show();
+			} else if (currentSlide == totalQuestions-1){
+				$('assessment-next-button').show();
+				$('assessment-previous-button').hide();
+			} else {
+				$('assessment-next-button').show();
+				$('assessment-previous-button').show();
+			}
+			throw($break);
 		}
 	});
 	
