@@ -165,7 +165,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 
 		$GLOBALS['TSFE']->additionalHeaderData['prototype'] = '<script src="typo3/contrib/prototype/prototype.js" type="text/javascript"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
+		
+		if($this->conf['includeCSS']) {
+			$GLOBALS['TSFE']->additionalHeaderData['css_styles'] = '<link href="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/styles.css" media="screen" rel="stylesheet" type="text/css" />';			
+		}
 
+		
 		if($this->assessment->getDisplayMode() == SLIDER_DISPLAY) {
 			$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_slider'] = '<script src="typo3/contrib/scriptaculous/slider.js" type="text/javascript"></script>';
 			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_glider'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/glider.js" type="text/javascript"></script>';

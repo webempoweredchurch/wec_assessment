@@ -12,6 +12,8 @@ plugin.tx_wecassessment_pi1 {
 	
 	revertToSingleMode = 1
 	
+	includeCSS = 1
+	
 	# Label Configuration options
 	minimumValue = 0
 	maximumValue = 2

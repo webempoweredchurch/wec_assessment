@@ -170,6 +170,5 @@ t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_ass
 
 /* Add Static templates */
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/ts/", "WEC Assessment");
-t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/css/", "WEC Assessment CSS Styles");
 
 ?>
