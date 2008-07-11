@@ -215,6 +215,16 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			$markers['progress_bar'] = '';
 		}
 		
+		if($this->piVars['skipToUnansweredQuestions']) {
+			$this->assessment->setSkipToUnansweredQuestions(true);
+		}
+		
+		if($this->assessment->skipToUnansweredQuestions()) {
+			$markers['skip_to_unanswered_questions'] = '1';
+		} else {
+			$markers['skip_to_unanswered_questions'] = '0';
+		}
+		
 		$markers['total_questions'] = $totalQuestions;
 		$markers['post_url'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$markers['next_page_number'] = $this->assessment->getNextPageNumber();

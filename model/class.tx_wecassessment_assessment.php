@@ -53,6 +53,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	var $_categories;
 	var $_pageNumber;
 	var $_sorting;
+	var $_skipToUnansweredQuestions;
 	
 	var $_result;
 	var $_pid;
@@ -393,11 +394,45 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		integer		The next page number.
 	 */
 	function getNextPageNumber() {
-		if($this->getTotalPages() == $this->_pageNumber) {
-			return $this->_pageNumber;
+		
+		if($this->skipToUnansweredQuestions()) {
+			$nextPageNumber = $this->getFirstIncompletePage();
 		} else {
-			return $this->_pageNumber + 1;
+			if($this->getTotalPages() == $this->_pageNumber) {
+				$nextPageNumber = $this->_pageNumber;
+			} else {
+				$nextPageNumber = $this->_pageNumber + 1;
+			}
 		}
+
+		return $nextPageNumber;
+	}
+	
+	/**
+	 * Sets the skipToUnansweredQuestions value.  Generally based on piVars.
+	 * @param		boolean		The value.
+	 * @return		none
+	 */
+	function setSkipToUnansweredQuestions($value) {
+		$this->_skipToUnansweredQuestions = $value;
+	}
+
+	/**
+	 * Gets the skipToUnansweredQuestions property.
+	 *
+	 * @return		boolean
+	 */
+	function skipToUnansweredQuestions() {
+		if(!isset($this->_skipToUnansweredQuestions)) {
+			if(($this->getDisplayMode() == MULTI_PAGE_DISPLAY) &&
+			   ($this->getPageNumber() == $this->getTotalPages())) {
+				$this->_skipToUnansweredQuestions = true;
+			} else {
+				$this->_skipToUnansweredQuestions = false;
+			}
+		}
+	
+		return $this->_skipToUnansweredQuestions;
 	}
 	
 	/**
@@ -442,13 +477,19 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 *
 	 * @return int page number or 0 if none incomplete
 	 **/
-	function getFirstUncompletePage() {
+	function getFirstIncompletePage() {
 		$unansweredQuestions = $this->getResult()->getUnansweredQuestions($this->grouping, $this->getSorting(), $this->randomize);
 		
 		if(empty($unansweredQuestions)) {
 			return 0;
 		} else {
-			$pageNumber = floor($unansweredQuestions[0]->getUID()/$this->getQuestionsPerPage());
+			foreach($unansweredQuestions as $question) {
+				$pageNumber = ceil(($question->getIndex() + 1) / $this->getQuestionsPerPage());
+				if($pageNumber != $this->getPageNumber()) {
+					break;
+				}
+			}
+			
 			return $pageNumber;			
 		}
 	}

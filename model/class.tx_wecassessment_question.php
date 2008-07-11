@@ -62,9 +62,10 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	 * @param		integer		Weight of the question.  Score = Answer Value * Question Weight.
 	 * @return		none
 	 */
-	function tx_wecassessment_question($uid, $pid, $sorting, $text, $categoryUID, $weight) {
+	function tx_wecassessment_question($uid, $pid, $index, $sorting, $text, $categoryUID, $weight) {
 		$this->_uid = $uid;
 		$this->_pid = $pid;
+		$this->_index = $index;
 		$this->_sorting = $sorting;
 		$this->_text = $text;
 		$this->_categoryUID = $categoryUID;
@@ -77,7 +78,7 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	 * @return		array		Associative array representing the current question object.
 	 */
 	function toArray() {
-		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
+		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "index" => $this->getIndex(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
 	}
 	
 	/**
@@ -140,6 +141,14 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	 */
 	function setPID($pid) { 
 		$this->_pid = $pid; 
+	}
+	
+	function getIndex() {
+		return $this->_index;
+	}
+	
+	function setIndex($index) {
+		$this->_index = $index;
 	}
 	
 	/**
@@ -408,8 +417,11 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, $grouping, $sorting);
 		
+		$index = 0;
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			$row['index'] = $index;
 			$questions[] = tx_wecassessment_question::newFromArray($row);
+			$index++;
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
@@ -460,7 +472,7 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		$table = 'tx_wecassessment_question';
 		$row = tx_wecassessment_question::processRow($table, $row);
 		$questionClass = t3lib_div::makeInstanceClassName($table);
-		return new $questionClass($row['uid'], $row['pid'], $row['sorting'], $row['text'], $row['category_id'], $row['weight']);
+		return new $questionClass($row['uid'], $row['pid'], $row['index'], $row['sorting'], $row['text'], $row['category_id'], $row['weight']);
 	}	
 }
 
