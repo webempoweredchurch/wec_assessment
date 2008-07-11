@@ -14,6 +14,8 @@
 			<label index="title.description">You must give the category a title. This field is required.</label>
 			<label index="description.description">Although the description field is optional, it gives your Frontend users an idea about what the category contains.</label>
 			<label index="image.description">You can add a related image to the category. Options for the image's display can be adjusted through the CSS file.</label>
+			<label index="questions.description">You can add questions for the curent category.</label>
+			<label index="recommendations.description">You can add recommendations for the current category.</label>
 		</languageKey>
 	</data>
 </T3locallang>

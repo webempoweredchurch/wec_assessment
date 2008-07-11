@@ -166,6 +166,8 @@ if (TYPO3_MODE=='BE')	{
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_category','EXT:wec_assessment/csh/locallang_csh_category.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_question','EXT:wec_assessment/csh/locallang_csh_question.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_recommendation','EXT:wec_assessment/csh/locallang_csh_recommendation.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_result','EXT:wec_assessment/csh/locallang_csh_result.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecassessment_answer','EXT:wec_assessment/csh/locallang_csh_answer.xml');
 
 
 /* Add Static templates */

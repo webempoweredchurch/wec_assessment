@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH labels for the Result table of WEC Assessment</description>
+		<type>CSH</type>
+		<csh_table>tx_wecassessment_result</csh_table>
+		<fileId>EXT:wec_assessment/csh/locallang_csh_result.xml</fileId>
+		<labelContext type="array"></labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">A result is created when an anonymous visitor or frontend user creates an assessment.</label>
+			<label index="hidden.description">Enabling the Hide field will prevent the assessment result from being used in the frontend.</label>
+			<label index="type.description">Select whether this result is associated with an anonymous visitor or a logged-in frontend user.</label>
+			<label index="feuser_id.description">The frontend user who completed the assessment.</label>
+			<label index="answers.description">Questions and answers that were provided for the assessment.</label>
+		</languageKey>
+	</data>
+</T3locallang>

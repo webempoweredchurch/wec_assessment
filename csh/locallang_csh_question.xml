@@ -16,6 +16,7 @@
 			<label index="text.description">Put the question itself in this field.</label>
 			<label index="weight.description">You can weight the score of individual questions differently by changing the default (1) to another number. A weight of 2 means that when the question is scored, the answer receives twice as much emphasis as a question weighted as 1.</label>
 			<label index="average_score.description">As assessment questions are answered in the Frontend, the average score for the question will be displayed here. This allows for the gathering and analysis of significant statistics.</label>
+			<label index="recommendations.description">You can add recommendations for the current question.</label>
 		</languageKey>
 	</data>
 </T3locallang>
