@@ -29,7 +29,7 @@ $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['ge
 
 /* Register T3D Package */
 $GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_assessment'] = array(
-	'path' => 'EXT:wec_assessment/pi1/res/sample.t3d',
+	'path' => 'EXT:wec_assessment/t3d/spiritual_gifts.t3d',
 	'allowOnStandardPages' => true
 );
 ?>
