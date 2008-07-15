@@ -140,7 +140,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function saveToSession() {
 		/* Unset sessions since this info is elsewhere in the database */
 		unset($this->_questions);
-		tx_wecassessment_sessiondata::storeSessionData($this);
+		tx_wecassessment_sessiondata::storeSessionData($this, $this->getPID());
 	}
 	
 	
@@ -161,7 +161,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		if(TYPO3_MODE=="FE") {
 			
 			/* If we don't have anything in the session, make a new result */
-			if((!$result = tx_wecassessment_sessiondata::retrieveSessionData())) {
+			if((!$result = tx_wecassessment_sessiondata::retrieveSessionData($pid))) {
 				if ($GLOBALS['TSFE']->fe_user->user['uid']) {
 					$type = USER_ASSESSMENT;
  					$feuser_id = $GLOBALS['TSFE']->fe_user->user['uid'];

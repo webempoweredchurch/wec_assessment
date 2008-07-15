@@ -34,8 +34,8 @@ class tx_wecassessment_sessiondata {
 	 * @param		array		The array of session data to store.
 	 * @return		none
 	 */
-	function storeSessionData($sessionData) {
-		$GLOBALS["TSFE"]->fe_user->setKey("ses","tx_wecassessment_pi1", $sessionData);
+	function storeSessionData($sessionData, $pid) {
+		$GLOBALS["TSFE"]->fe_user->setKey("ses","tx_wecassessment_pi1:".$pid, $sessionData);
 		$GLOBALS["TSFE"]->fe_user->sesData_change = true;
 		$GLOBALS["TSFE"]->fe_user->storeSessionData();		
 	}
@@ -44,9 +44,9 @@ class tx_wecassessment_sessiondata {
 	 * Retrieves session data.
 	 * @return		array		The array of session data for the extension.
 	 */
-	function retrieveSessionData() {
+	function retrieveSessionData($pid) {
 		//return $GLOBALS["TSFE"]->fe_user->getKey("ses","tx_wecassessment_pi1");		
-		return tx_wecassessment_sessiondata::fetchSessionData('tx_wecassessment_pi1');
+		return tx_wecassessment_sessiondata::fetchSessionData('tx_wecassessment_pi1:'.$pid);
 	}
 	
 	/**
