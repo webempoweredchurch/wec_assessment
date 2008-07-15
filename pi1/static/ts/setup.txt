@@ -18,9 +18,9 @@ plugin.tx_wecassessment_pi1 {
 	minimumValue = 0
 	maximumValue = 2
 	answerLabels {
-		0 = Never, ever, ever.
-		1 = Every now and then.
-		2 = Every stinkin day.
+		0 = Rarely
+		1 = Sometimes.
+		2 = Often.
 	}
 	
 	# Template file
