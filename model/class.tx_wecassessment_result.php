@@ -128,7 +128,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		}
 		
 		/* Blow up session data */
-		tx_wecassessment_sessiondata::storeSessionData(null);
+		tx_wecassessment_sessiondata::storeSessionData(null, $this->getPID());
 		
 		return $this->_uid;
 	}
@@ -170,7 +170,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 					$feuser_id = $GLOBALS['TSFE']->fe_user->id;
 				}
 				
-				if(!$result = tx_wecassessment_result::findInDB($feuser_id)) {
+				if(!$result = tx_wecassessment_result::findInDB($feuser_id, $pid)) {
 					$uid = 0;			
 					$resultClass = t3lib_div::makeInstanceClassName('tx_wecassessment_result');
 					$result = new $resultClass($uid, $pid, $type, $feuser_id);	
@@ -184,9 +184,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	}
 	
 	
-	function findInDB($feUserUID) {
+	function findInDB($feUserUID, $pid) {
 		$table = 'tx_wecassessment_result';		
-		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'"');
+		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'" and pid='.$pid);
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'tstamp DESC');
 		if($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

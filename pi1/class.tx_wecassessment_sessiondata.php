@@ -45,7 +45,7 @@ class tx_wecassessment_sessiondata {
 	 * @return		array		The array of session data for the extension.
 	 */
 	function retrieveSessionData($pid) {
-		//return $GLOBALS["TSFE"]->fe_user->getKey("ses","tx_wecassessment_pi1");		
+		//return $GLOBALS["TSFE"]->fe_user->getKey("ses","tx_wecassessment_pi1");
 		return tx_wecassessment_sessiondata::fetchSessionData('tx_wecassessment_pi1:'.$pid);
 	}
 	
