@@ -59,8 +59,9 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	var $_pid;
 	var $_uid;
 	
-	var $_recommendationClass = 'tx_wecassessment_recommendation_assessment';
+	var $_ttcontentRow;
 	
+	var $_recommendationClass = 'tx_wecassessment_recommendation_assessment';
 	
 	/**
 	 * Default constructor.
@@ -81,7 +82,13 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 
 		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
 		
-		$this->_pid = $pid;
+		/* @todo  Makes sure we have a good PID that actually has an assessment Flexform.  What are the implications of changing the PID though? */
+		$this->_pid = $this->checkPID($pid);
+		
+		/* @todo  Are there times in the backend that we don't need TSFE? */
+		if(!$GLOBALS['TSFE']) {
+			$this->initializeFrontend($this->getPID());
+		}
 		
 		if($uid==0) {
 			$this->_uid = $this->lookupUID($this->_pid);
@@ -215,7 +222,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * Gets the label for the assessment.
 	 * @return		string		The assessment label.
 	 */
-	function getlabel() {
+	function getLabel() {
 		return $GLOBALS['LANG']->getLL('total_assessment');
 	}
 	
@@ -675,7 +682,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		require_once(PATH_t3lib.'class.t3lib_page.php');
 
 		$GLOBALS['TT'] = new t3lib_timeTrack;
-	
+
 		// ***********************************
 		// Creating a fake $TSFE object
 		// ***********************************
@@ -702,8 +709,6 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		array		Typoscript array.
 	 */
 	function getConf($pid) {
-		$this->initializeFrontend($pid);
-		
 		//we need to get the plugin setup to create correct source URLs
 		$template = t3lib_div::makeInstance('t3lib_tsparser_ext'); // Defined global here!
 		$template->tt_track = 0; 
@@ -724,12 +729,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		array		Array of flexform data.
 	 */
 	function getFlexform($pid) {
-		$fields = 'pi_flexform';
-		$tables = 'tt_content';
-		$where = 'tt_content.list_type="wec_assessment_pi1" AND tt_content.deleted=0 AND pid='.$pid;
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields,$tables,$where);
+		if(!isset($this->_ttcontentRow)) {
+			$this->checkPID($pid);
+		}
 		
-		return t3lib_div::xml2Array($row['pi_flexform']);
+		return t3lib_div::xml2Array($this->_ttcontentRow['pi_flexform']);
 	}
 	
 	/**
@@ -738,14 +742,40 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		integer		The UID.
 	 */
 	function lookupUID($pid) {
-		$fields = 'uid';
-		$tables = 'tt_content';
-		$where = 'tt_content.list_type="wec_assessment_pi1" AND tt_content.deleted=0 AND pid='.$pid;
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields,$tables,$where);
-		
-		return $row['uid'];
+		if(!isset($this->_ttcontentRow)) {
+			$this->checkPID($pid);
+		}
+		return $this->_ttcontentRow['uid'];
 	}
 	
+	/**
+	 * Checks to the make sure that the pid actually has an assesment plugin on the page.
+	 * If not, find  one to use.
+	 *
+	 * @param		integer		The PID to be used for TSFE initialization, etc.
+	 * @return		integer
+	 */
+	function checkPID($pid) {
+		$flexformPID = $pid;
+		
+		$fields = '*';
+		$table = 'tt_content';
+		$where = 'tt_content.list_type="wec_assessment_pi1" AND tt_content.deleted=0';
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
+		
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+				$flexformPID = $row['pid'];
+				$ttContentRow = $row;
+				
+				if($pid == $row['pid']) {
+					break;
+				}
+		}
+		
+		$this->_ttcontentRow = $ttContentRow;
+
+		return $flexformPID;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_assessment.php'])	{
