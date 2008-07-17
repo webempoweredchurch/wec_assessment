@@ -51,6 +51,14 @@ class tx_wecassessment_tcemain_processdatamap {
 		if($table == 'tx_wecassessment_category') {		
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
 		}
+		
+		/* If we're changing the type on an existing result record, unset the user ID */
+		if(($table == 'tx_wecassessment_result') && !strstr($id, 'NEW')) {
+			$result = tx_wecassessment_result::find($id);
+			if(is_object($result) && ($result->getType() != $incomingFieldArray['type'])) {
+				$incomingFieldArray['feuser_id'] = 0;
+			}
+		}
 	}
 	
 	/**

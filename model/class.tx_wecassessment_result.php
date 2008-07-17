@@ -301,10 +301,17 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	
 	function getUsername() {
 		if($this->getType() == 0) {
-			$row = $this->getRow('fe_users', $this->getFEUserUID());
-			$username = $row['username'];
+			if($this->getFEUserUID()) {
+				$row = $this->getRow('fe_users', $this->getFEUserUID());
+				$username = $row['username'];
+			} else {
+				$username = '[ No User Specified ]';
+			}
 		} else {
-			$username = "Anonymous Visitor: ".$this->getFEUserUID();
+			$username = "Anonymous Visitor";
+			if($this->getFEUserUID()) {
+				$username .= ": " . $this->getFEUserUID();
+			}
 		}
 		
 		return $username;
