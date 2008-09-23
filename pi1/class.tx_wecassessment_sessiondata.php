@@ -35,9 +35,9 @@ class tx_wecassessment_sessiondata {
 	 * @return		none
 	 */
 	function storeSessionData($sessionData, $pid) {
-		$GLOBALS["TSFE"]->fe_user->setKey("ses","tx_wecassessment_pi1:".$pid, $sessionData);
-		$GLOBALS["TSFE"]->fe_user->sesData_change = true;
-		$GLOBALS["TSFE"]->fe_user->storeSessionData();		
+		$GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_wecassessment_pi1:' . $pid, $sessionData);
+		$GLOBALS['TSFE']->fe_user->sesData_change = true;
+		$GLOBALS['TSFE']->fe_user->storeSessionData();		
 	}
 	
 	/*
@@ -45,8 +45,7 @@ class tx_wecassessment_sessiondata {
 	 * @return		array		The array of session data for the extension.
 	 */
 	function retrieveSessionData($pid) {
-		//return $GLOBALS["TSFE"]->fe_user->getKey("ses","tx_wecassessment_pi1");
-		return tx_wecassessment_sessiondata::fetchSessionData('tx_wecassessment_pi1:'.$pid);
+		return tx_wecassessment_sessiondata::fetchSessionData('tx_wecassessment_pi1:' . $pid);
 	}
 	
 	/**
@@ -58,10 +57,10 @@ class tx_wecassessment_sessiondata {
 	 *
 	 */
 	function fetchSessionData($key)	{
-		$id = $GLOBALS["TSFE"]->fe_user->id;		
+		$id = $GLOBALS['TSFE']->fe_user->id;		
 		// Gets SesData if any
 		if ($id)	{
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'fe_session_data'));
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'fe_session_data'));
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$sesData = unserialize($sesDataRow['content']);
 			}
@@ -69,7 +68,7 @@ class tx_wecassessment_sessiondata {
 		}
 			// delete old data:
 		if ((rand()%100) <= 1) {		// a possibility of 1 % for garbage collection.
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < '.intval(time()-3600*24));		// all data older than 24 hours are deleted.
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < ' . intval(time()-3600*24));		// all data older than 24 hours are deleted.
 		}
 		
 		return $sesData[$key];

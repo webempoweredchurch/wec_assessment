@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_assessment.php');
 
 class tx_wecassessment_flexform {
 	
@@ -78,10 +78,10 @@ class tx_wecassessment_flexform {
 		$labels = $this->assessment->getAnswerSet();
 		
 		$output = array();
-		/* For each possible value, build the form elements. */
+		// For each possible value, build the form elements.
 		for($i=$this->assessment->getMinimumValue(); $i<=$this->assessment->getMaximumValue(); $i++) {
-			$output[] = '<div style="margin-bottom: 3px"><label for="tx_wecassessment_label_'.$i.'" style="vertical-align: baseline;">'.$i.'</label>
-								<input name="data[tt_content]['.$this->assessment->getUID().'][pi_flexform][data][labels][lDEF][scale_label][vDEF]['.$i.']" id="tx_wec_assessment_label_'.$i.'" value="'.$labels[$i].'"/></div>';
+			$output[] = '<div style="margin-bottom: 3px"><label for="tx_wecassessment_label_' . $i . '" style="vertical-align: baseline;">' . $i . '</label>
+								<input name="data[tt_content][' . $this->assessment->getUID() . '][pi_flexform][data][labels][lDEF][scale_label][vDEF][' . $i . ']" id="tx_wec_assessment_label_' . $i . '" value="' . $labels[$i] . '"/></div>';
 		}			
 		return implode(chr(10), $output);
 	}

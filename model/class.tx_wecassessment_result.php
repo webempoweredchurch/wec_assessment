@@ -27,8 +27,8 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'pi1/class.tx_wecassessment_sessiondata.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'pi1/class.tx_wecassessment_sessiondata.php');
 
 define('USER_ASSESSMENT', 0);
 define('ANONYMOUS_ASSESSMENT', 1);
@@ -77,7 +77,11 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		array		Associative array representing the current result object.
 	 */
 	function toArray() {
-		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "type" => $this->getType(), "feuser_id" => $this->getFEUserUID());
+		return array(
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'type' => $this->getType(),
+			'feuser_id' => $this->getFEUserUID());
 	}
 	
 	function newFromArray($row) {
@@ -94,7 +98,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		none
 	 */
 	function save() {
-		/* If every question is answered, save to the db.  Otherwise, to session. */
+		// If every question is answered, save to the db.  Otherwise, to session.
 		if($this->isComplete()) {
 			$this->saveToRecord();
 		} else {
@@ -113,9 +117,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		$fields_values['crdate'] = mktime();
 		unset($fields_values['uid']);
 		
-		/* If we have a non-zero UID, update an existing record, otherwise create a new record */
+		// If we have a non-zero UID, update an existing record, otherwise create a new record
 		if($this->getUID()) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_result', 'uid='.$this->getUID(), $fields_values);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_result', 'uid=' . $this->getUID(), $fields_values);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_wecassessment_result', $fields_values);
 			$this->setUID($GLOBALS['TYPO3_DB']->sql_insert_id());			
@@ -127,7 +131,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 			$answer->save();
 		}
 		
-		/* Blow up session data */
+		// Blow up session data
 		tx_wecassessment_sessiondata::storeSessionData(null, $this->getPID());
 		
 		return $this->_uid;
@@ -138,7 +142,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 *
 	 */
 	function saveToSession() {
-		/* Unset sessions since this info is elsewhere in the database */
+		// Unset sessions since this info is elsewhere in the database
 		unset($this->_questions);
 		tx_wecassessment_sessiondata::storeSessionData($this, $this->getPID());
 	}
@@ -158,9 +162,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 		 * 3.  Make a new result.
 		 */
 		
-		if(TYPO3_MODE=="FE") {
+		if(TYPO3_MODE=='FE') {
 			
-			/* If we don't have anything in the session, make a new result */
+			// If we don't have anything in the session, make a new result
 			if((!$result = tx_wecassessment_sessiondata::retrieveSessionData($pid))) {
 				if ($GLOBALS['TSFE']->fe_user->user['uid']) {
 					$type = USER_ASSESSMENT;
@@ -186,7 +190,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	
 	function findInDB($feUserUID, $pid) {
 		$table = 'tx_wecassessment_result';		
-		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="'.$feUserUID.'" and pid='.$pid);
+		$where = tx_wecassessment_result::getWhere($table, 'feuser_id="' . $feUserUID . '" and pid=' . $pid);
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'tstamp DESC');
 		if($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -290,7 +294,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	}
 	
 	/**
-	 * Sets teh user id for the assessment.
+	 * Sets the user id for the assessment.
 	 *
 	 * @param		mixed		User ID.
 	 * @return		none
@@ -308,9 +312,9 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 				$username = '[ No User Specified ]';
 			}
 		} else {
-			$username = "Anonymous Visitor";
+			$username = 'Anonymous Visitor';
 			if($this->getFEUserUID()) {
-				$username .= ": " . $this->getFEUserUID();
+				$username .= ': ' . $this->getFEUserUID();
 			}
 		}
 		
@@ -324,7 +328,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 */	
 	function getQuestions($grouping='', $sorting='sorting', $randomize=0) {
 		if(!$this->_questions) {
-			$this->_questions = tx_wecassessment_question::findAll($this->getPID(), "", $grouping, $sorting, $randomize);
+			$this->_questions = tx_wecassessment_question::findAll($this->getPID(), '', $grouping, $sorting, $randomize);
 		} 
 
 		return $this->_questions;
@@ -369,7 +373,7 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	 * @return		array		Array of answers.
 	 */
 	function getAnswers($force=false) {
-		/* If we don't have answers and we know the assessment is complete, search the database */
+		// If we don't have answers and we know the assessment is complete, search the database
 		if((!$this->_answers and $this->isComplete()) or $force) {
 			$this->_answers = tx_wecassessment_answer::findInResult($this->getUID());
 		}
@@ -455,13 +459,14 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 	function addAnswersFromPost($postedAnswers) {
 		foreach((array) $postedAnswers as $questionUID => $value) {
 			$row = array(
-				"uid" => 0,
-				"pid" => $this->getPID(),
-				"value" => intval($value),
-				"question_id" => $questionUID,
-				"result_id" => $this->getUID(),
-				);
-			/* @todo	Figure out a better array index. */
+				'uid' => 0,
+				'pid'=> $this->getPID(),
+				'value' => intval($value),
+				'question_id' => $questionUID,
+				'result_id' => $this->getUID(),
+			);
+				
+			// @todo	Figure out a better array index.
 			$this->_answers[$questionUID] = tx_wecassessment_answer::newFromArray($row);
 		}
 	}
@@ -513,5 +518,4 @@ class tx_wecassessment_result extends tx_wecassessment_modelbase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_result.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_result.php']);
 }
-
 ?>

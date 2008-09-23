@@ -27,18 +27,18 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'pi1/class.tx_wecassessment_util.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+require_once(PATH_tslib . 'class.tslib_pibase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_answer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_result.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'pi1/class.tx_wecassessment_util.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_assessment.php');
 
 /**
  * Plugin 'WEC Assessment' for the 'wec_assessment' extension.
  *
- * @author	Web-Empowered Church Team <developer@webempoweredchurch.org>
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
  * @package	TYPO3
  * @subpackage	tx_wecassessment
  */
@@ -64,25 +64,25 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 
 		
 		if(count($this->conf) <= 3) {
-			$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">'.$this->pi_getLL('configurationError').'</div>';
+			$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">' . $this->pi_getLL('configurationError') . '</div>';
 		} else {
 			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 			$this->assessment = new $assessmentClass(0, $GLOBALS['TSFE']->id, $conf, $this->cObj->data['pi_flexform']);
 			
-			/* Check if cookies are enabled */
+			// Check if cookies are enabled
 			if(!$_COOKIE['fe_typo_user'] && $this->assessment->getDisplayMode() != SINGLE_DISPLAY) {
-				/* Check if we should fall back to single page mode */
+				// Check if we should fall back to single page mode
 				if($this->conf['revertToSingleMode']) {
 					$this->assessment->setDisplayMode('single');
 				} else {
-					$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">'.$this->pi_getLL('cookieError').'</div>';
+					$content = '<div style="padding: 10px; border: 1px solid; background-color: #ffff99;">' . $this->pi_getLL('cookieError') . '</div>';
 					return $this->pi_wrapInBaseClass($content);
 				}
 			}
 			
 			$this->result = &$this->assessment->getResult();
 		
-			/* If we're using paging, figure out the page number.  Otherwise, its always page 1 */
+			// If we're using paging, figure out the page number.  Otherwise, its always page 1
 			if($this->assessment->getDisplayMode() == MULTI_PAGE_DISPLAY) {
 				$this->assessment->setPageNumber(($this->piVars['nextPageNumber']) ? $this->piVars['nextPageNumber'] : 1);
 			} else {
@@ -90,11 +90,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			}
 		
 			if($this->piVars['answers']) {
-				/* Add the newly posted answers to the result and save */
+				// Add the newly posted answers to the result and save
 				$this->result->addAnswersFromPost($this->piVars['answers']);
 				$this->result->save();
 			} else {
-				/* If we need to restart, remove the answers and save */
+				// If we need to restart, remove the answers and save
 				if($this->piVars['restart']) {
 					$this->result->reset();
 				}
@@ -108,14 +108,14 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 				}
 			}	
 		
-			/* Ugly hack to make sure the result saves properly in the assessment object */
+			// Ugly hack to make sure the result saves properly in the assessment object
 			$this->assessment->setResult($this->result);
 
-			/* If the result is complete, show recommendations.  Otherwise, show questions. */
+			// If the result is complete, show recommendations.  Otherwise, show questions.
 			if($this->result->isComplete()) {
-				$view = "displayRecommendations";
+				$view = 'displayRecommendations';
 			} else {
-				$view = "displayQuestions";
+				$view = 'displayQuestions';
 			}
 		
 			$this->initTemplate($view);
@@ -161,32 +161,32 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$content = &$this->util->getTemplate();
 		
 		$totalQuestions = count($questions);
-		tx_wecassessment_util::devLog($totalQuestions.' questions on the page');
+		tx_wecassessment_util::devLog($totalQuestions . ' questions on the page');
 
 		$GLOBALS['TSFE']->additionalHeaderData['prototype'] = '<script src="typo3/contrib/prototype/prototype.js" type="text/javascript"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_effects'] = '<script src="typo3/contrib/scriptaculous/effects.js" type="text/javascript"></script>';
 		
 		if($this->conf['includeCSS']) {
-			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_styles'] = '<link href="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/styles.css" media="screen" rel="stylesheet" type="text/css" />';			
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_styles'] = '<link href="' . t3lib_extMgm::siteRelPath('wec_assessment') . 'pi1/res/styles.css" media="screen" rel="stylesheet" type="text/css" />';			
 		}
 
 		
 		if($this->assessment->getDisplayMode() == SLIDER_DISPLAY) {
 			$GLOBALS['TSFE']->additionalHeaderData['scriptaculous_slider'] = '<script src="typo3/contrib/scriptaculous/slider.js" type="text/javascript"></script>';
-			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_glider'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/glider.js" type="text/javascript"></script>';
-			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/assessment_slider.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_glider'] = '<script src="' . t3lib_extMgm::siteRelPath('wec_assessment') . 'pi1/res/js/glider.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="' . t3lib_extMgm::siteRelPath('wec_assessment') . 'pi1/res/js/assessment_slider.js" type="text/javascript"></script>';
 			
 			$valueArray = array();
 			for($i=0; $i < $totalQuestions; $i++) {
 				$valueArray[] = $i;
 			}
-			$valueString = '['.implode(',', $valueArray).']';
+			$valueString = '[' . implode(',', $valueArray) . ']';
 
 			$GLOBALS['TSFE']->additionalHeaderData[] = '<script type="text/javascript">
 				function createSlider() {
 					slider = new Control.Slider("handle1", "track1", {
-						range: $R(0,'.$totalQuestions.'),
-						values: '.$valueString.',
+						range: $R(0,' . $totalQuestions . '),
+						values: ' . $valueString . ',
 						sliderValue: 0,
 						startSpan: "span1",
 						onSlide: function(v) { updateSlider(v); },
@@ -195,12 +195,12 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 				}
 
 				function setTotalQuestions() {
-					totalQuestions = '.$totalQuestions.';
+					totalQuestions = ' . $totalQuestions . ';
 				}
 			</script>
 			';
 		} else {
-			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="'.t3lib_extMgm::siteRelPath('wec_assessment').'pi1/res/js/assessment.js" type="text/javascript"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['wec_assessment_pi1'] = '<script src="' . t3lib_extMgm::siteRelPath('wec_assessment') . 'pi1/res/js/assessment.js" type="text/javascript"></script>';
 		}
 		
 		/**
@@ -233,11 +233,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$markers['total_questions'] = $totalQuestions;
 		$markers['post_url'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$markers['next_page_number'] = $this->assessment->getNextPageNumber();
-		$markers['SUBMIT_ANSWERS'] = $this->pi_getLL("submit_answers");
+		$markers['SUBMIT_ANSWERS'] = $this->pi_getLL('submit_answers');
 		$markers['NEXT_QUESTION'] = $this->pi_getLL('next_question');
 		$markers['PREVIOUS_QUESTION'] = $this->pi_getLL('previous_question');
 
-		/* Display editing form for each question */
+		// Display editing form for each question
 		if(is_array($questions)) {
 			foreach((array)$questions as $question) {
 				$questionHTML[] = $this->displayQuestion($question);
@@ -295,11 +295,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 				$content = $this->util->getTemplateSubpart('scale');
 				$dataArray = array('uid' => $value, 'label' => $label, 'questionUID' => $question->getUID());
 				
-				/* Set the radio button with the existing answer */
+				// Set the radio button with the existing answer
 				if($answer && ($answer->getValue() == $value)) {
-					$dataArray["checked"] = 'checked="checked"';
+					$dataArray['checked'] = 'checked="checked"';
 				}
-				$markers['scale_item'] = $this->util->getOutputFromCObj($dataArray, $this->conf['questions.'], "scaleItem");
+				$markers['scale_item'] = $this->util->getOutputFromCObj($dataArray, $this->conf['questions.'], 'scaleItem');
 				$this->util->substituteMarkers($content, $markers);
 				
 				$scaleItems[] = $content;
@@ -353,25 +353,21 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 	}
 	
 	/**
-	 * Displays the "Welcome Back" message when a user comes back to the assessment
+	 * Displays the 'Welcome Back' message when a user comes back to the assessment
 	 * page and we have a stored, incomplete assessment result.
 	 *
-	 * @return		string		HTML for the "Welcome Back" message.
+	 * @return		string		HTML for the 'Welcome Back' message.
 	 */
 	function displayWelcomeBack() {
 		$content = array();
 		
-		$content[] = '<style type="text/css">
-
-		</style>';
-		
 		$content[] = '<div id="wec-assessment-alert">';
-		$content[] = '<h3>'.$this->pi_getLL('questionRestartTitle').'</h3>';
-		$content[] = '<p>'.$this->pi_getLL('questionRestartMessage').'</p>';
+		$content[] = '<h3>' . $this->pi_getLL('questionRestartTitle') . '</h3>';
+		$content[] = '<p>' . $this->pi_getLL('questionRestartMessage') . '</p>';
 					
-		$content[] = '<form action="'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'" method="post">';
+		$content[] = '<form action="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') . '" method="post">';
 		$content[] = '<input type="hidden" name="tx_wecassessment_pi1[restart]" value="1" />';
-		$content[] = '<input type="submit" value="'.$this->pi_getLL('restartButton').'" />';
+		$content[] = '<input type="submit" value="' . $this->pi_getLL('restartButton') . '" />';
 		$content[] = '</form>';
 		$content[] = '</div>';
 		
@@ -382,11 +378,11 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		$content = array();
 		
 		$content[] = '<div id="wec-assessment-alert">';
-		$content[] = '<p>'.$this->pi_getLL('recommendationRestartMessage').'</p>';
+		$content[] = '<p>' . $this->pi_getLL('recommendationRestartMessage') . '</p>';
 					
-		$content[] = '<form action="'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'" method="post">';
+		$content[] = '<form action="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') . '" method="post">';
 		$content[] = '<input type="hidden" name="tx_wecassessment_pi1[restart]" value="1" />';
-		$content[] = '<input type="submit" value="'.$this->pi_getLL('restartButton').'" />';
+		$content[] = '<input type="submit" value="' . $this->pi_getLL('restartButton') . '" />';
 		$content[] = '</form>';
 		$content[] = '</div>';
 		
@@ -427,5 +423,4 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_pi1.php']);
 }
-
 ?>

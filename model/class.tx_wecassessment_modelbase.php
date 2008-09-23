@@ -60,7 +60,7 @@ class tx_wecassessment_modelbase {
 		$enableFields = tx_wecassessment_modelbase::getEnableFields($table, $showHidden);
 
 		if($enableFields and $where) {
-			$returnWhere = $enableFields." AND ".$where;
+			$returnWhere = $enableFields . ' AND ' . $where;
 		} else {
 			$returnWhere = $enableFields.$where;
 		}
@@ -76,7 +76,7 @@ class tx_wecassessment_modelbase {
 	 */
 	function combineWhere($where1, $where2, $separator='AND') {
 		if ($where1 and $where2) {
-			$where = $where1.' '.$separator.' '.$where2;
+			$where = $where1 . ' ' . $separator . ' ' . $where2;
 		} else {
 			$where = $where1.$where2;
 		}
@@ -112,7 +112,7 @@ class tx_wecassessment_modelbase {
 			$enableFields = $showHidden ? '' : t3lib_BEfunc::BEenableFields($table).t3lib_BEfunc::deleteClause($table);
 		}
 		
-		/* Trim off the opening "AND " */
+		// Trim off the opening 'AND '
 		$enableFields = substr($enableFields, 5, strlen($enableFields));
 		
 		return $enableFields;
@@ -129,9 +129,9 @@ class tx_wecassessment_modelbase {
 	 */
 	function getRow($table, $uid, $where='', $showHidden=false) {
 		if($where) {
-			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid.' AND '.$where, $showHidden);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid=' . $uid . ' AND ' . $where, $showHidden);
 		} else {
-			$where = tx_wecassessment_modelbase::getWhere($table, 'uid='.$uid, $showHidden);
+			$where = tx_wecassessment_modelbase::getWhere($table, 'uid=' . $uid, $showHidden);
 		}
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		
@@ -153,8 +153,8 @@ class tx_wecassessment_modelbase {
 		if(TYPO3_MODE == 'BE') {
 			$label = t3lib_befunc::getRecordTitle($this->getTableName(), $this->toArray());
 		} else {
-			/* @todo 	What do we do in frontend mode? */
-			die("Not in backend mode.");
+			// @todo 	What do we do in frontend mode?
+			die('Not in backend mode.');
 		}
 		
 		return $label;

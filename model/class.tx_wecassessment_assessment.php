@@ -27,10 +27,10 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_assessment.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendationcontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_result.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
 
 define(SINGLE_PAGE_DISPLAY, 0);
 define(MULTI_PAGE_DISPLAY, 1);
@@ -43,7 +43,7 @@ define(SLIDER_DISPLAY, 2);
  * @package TYPO3
  * @subpackage tx_wecassessment
  */
-class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontainer {
+class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontainer {
 	
 	var $_minimumValue;
 	var $_maximumValue;
@@ -70,7 +70,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	function tx_wecassessment_assessment($uid=0, $pid=0, $conf=null, $flexform=null) {
 
 		if(!is_object($GLOBALS['LANG'])) {
-			require_once(t3lib_extMgm::extPath('lang').'lang.php');
+			require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			
 			if(TYPO3_MODE == 'BE') {
@@ -82,10 +82,10 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 
 		$GLOBALS['LANG']->includeLLFile('EXT:wec_assessment/locallang.xml');
 		
-		/* @todo  Makes sure we have a good PID that actually has an assessment Flexform.  What are the implications of changing the PID though? */
+		// @todo  Makes sure we have a good PID that actually has an assessment Flexform.  What are the implications of changing the PID though?
 		$this->_pid = $this->checkPID($pid);
 		
-		/* @todo  Are there times in the backend that we don't need TSFE? */
+		// @todo  Are there times in the backend that we don't need TSFE?
 		if(!$GLOBALS['TSFE']) {
 			$this->initializeFrontend($this->getPID());
 		}
@@ -266,7 +266,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @return		array		Array of answer objects.
 	 */
 	function getAnswerSet() {
-		/* Clean up the answerSet if we have bad values */
+		// Clean up the answerSet if we have bad values
 		if(count($this->_answerSet) > $this->getAnswerCount) {
 			foreach((array) $this->_answerSet as $value => $label) {
 				if($value < $this->getMinimumValue() || $value > $this->getMaximumValue()) {
@@ -473,7 +473,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 */
 	function getResult() {
 		if(!$this->_result) {			
-			/* Get the result, either from the DB or the session */
+			// Get the result, either from the DB or the session
 			$this->_result = tx_wecassessment_result::findCurrent($this->_pid);
 		}
 		return $this->_result;
@@ -525,7 +525,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		$result = $this->getResult();
 		$answers = $result->getAnswers();
 		
-		/* Build the category array */
+		// Build the category array
 		$categoryArray = array();
 		foreach((array) $answers as $answer) {
 			$category = tx_wecassessment_category::find($answer->getCategoryUID());
@@ -546,19 +546,19 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 		
 		ksort($categoryArray);
 
-		/* Hack to include perfect score */
+		// Hack to include perfect score
 		if($maxAssessmentScore == $totalAssessmentScore) {
 			$totalAssessmentScore -= .0001;
 		}
 		
-		/* Total Assessment Recommendations */
+		// Total Assessment Recommendations
 		if($weightedAnswerCount == 0) {
 			$score = 0;
 		} else {
 			$score = $totalAssessmentScore / $weightedAnswerCount;
 		}
 		
-		/* Don't allow a score below the minimum (due to negative weighting) */
+		// Don't allow a score below the minimum (due to negative weighting)
 		if($score < $minValue) {
 			$score = $minValue;
 		}
@@ -569,11 +569,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 			$recommendations[0] = $recommendation;
 		}
 		
-		/* Category Recommendations */
+		// Category Recommendations
 		foreach((array) $categoryArray as $sorting => $children) {
 			$category = tx_wecassessment_category::find($children['uid']);
 			
-			/* Hack to include perfect score */
+			// Hack to include perfect score
 			if($children['maxScore'] == $children['totalScore']) {
 				$children['totalScore'] -= .0001;
 			}			
@@ -584,7 +584,7 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$categoryScore = $children['totalScore'] / ($children['weightedAnswerCount']);
 			}
 			
-			/* Don't allow a score below the minimum (due to negative weighting) */
+			// Don't allow a score below the minimum (due to negative weighting)
 			if($categoryscore < $minValue) {
 				$categoryScore = $minValue;
 			}
@@ -600,17 +600,17 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$question = $answer->getQuestion();
 				$questionScore = $answer->getScore();
 				
-				/* Hack to include perfect score */
+				// Hack to include perfect score
 				if($questionScore == $this->getMaximumValue()) {
 					$questionScore -= .0001;
 				}
 				
-				/* Don't allow a score below the minimum (due to negative weighting) */
+				// Don't allow a score below the minimum (due to negative weighting)
 				if($questionScore < $minValue) {
 					$questionScore = $minValue;
 				}
 				
-				$recommendation = $question->calculateRecommendation($questionScore);			
+				$recommendation = $question->calculateRecommendation($questionScore);
 				if(is_object($recommendation)) {
 					$recommendation->setMaxScore($this->getMaximumValue());
 					$recommendations[] = $recommendation;
@@ -674,7 +674,6 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 					$c=0;
 					foreach((array) $tempArr as $values)	{
 						if ($c==$v)	{
-							#debug($values);
 							$tempArr=$values;
 							break;
 						}
@@ -694,15 +693,15 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 	 * @param		object		The frontend user object.
 	 */
 	function initializeFrontend($pid, $feUserObj=''){
-		define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
-		require_once (PATH_tslib.'/class.tslib_content.php');
-		require_once(t3lib_extMgm::extPath('wec_assessment').'backend/class.tx_wecassessment_tsfe.php');
-		require_once(PATH_t3lib.'class.t3lib_userauth.php');
-		require_once(PATH_tslib.'class.tslib_feuserauth.php');
-		require_once(PATH_t3lib.'class.t3lib_befunc.php');
-		require_once(PATH_t3lib.'class.t3lib_timetrack.php');
-		require_once(PATH_t3lib.'class.t3lib_tsparser_ext.php');
-		require_once(PATH_t3lib.'class.t3lib_page.php');
+		define('PATH_tslib', PATH_site . 'typo3/sysext/cms/tslib/');
+		require_once (PATH_tslib . '/class.tslib_content.php');
+		require_once(t3lib_extMgm::extPath('wec_assessment') . 'backend/class.tx_wecassessment_tsfe.php');
+		require_once(PATH_t3lib . 'class.t3lib_userauth.php');
+		require_once(PATH_tslib . 'class.tslib_feuserauth.php');
+		require_once(PATH_t3lib . 'class.t3lib_befunc.php');
+		require_once(PATH_t3lib . 'class.t3lib_timetrack.php');
+		require_once(PATH_t3lib . 'class.t3lib_tsparser_ext.php');
+		require_once(PATH_t3lib . 'class.t3lib_page.php');
 
 		$GLOBALS['TT'] = new t3lib_timeTrack;
 

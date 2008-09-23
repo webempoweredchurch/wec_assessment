@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
 
 /**
  * Class for pre and post processing TCE Main configuration.
@@ -47,12 +47,12 @@ class tx_wecassessment_tcemain_processdatamap {
 	 * @return		none
 	 */
 	function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, &$pObj) {
-		/* If we're saving a question from within a category, don't resort */
+		// If we're saving a question from within a category, don't resort
 		if($table == 'tx_wecassessment_category') {		
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
 		}
 		
-		/* If we're changing the type on an existing result record, unset the user ID */
+		// If we're changing the type on an existing result record, unset the user ID
 		if(($table == 'tx_wecassessment_result') && !strstr($id, 'NEW')) {
 			$result = tx_wecassessment_result::find($id);
 			if(is_object($result) && ($result->getType() != $incomingFieldArray['type'])) {
@@ -77,14 +77,14 @@ class tx_wecassessment_tcemain_processdatamap {
 				switch($fieldArray['type']) {
 					case TX_WECASSESSMENT_RECOMMENDATION_CATEGORY:
 						$fieldArray['question_id'] = 0;
-					break;
+						break;
 					case TX_WECASSESSMENT_RECOMMENDATION_QUESTION:
 						$fieldArray['category_id'] = 0;
-					break;
+						break;
 					case TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT:
 						$fieldArray['question_id'] = 0;
 						$fieldArray['category_id'] = 0;
-					break;
+						break;
 				}
 			}
 		}		

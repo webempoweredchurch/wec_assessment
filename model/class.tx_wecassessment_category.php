@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendationcontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation_category.php');
 
 /**
  * Data model for Assessment Categories.
@@ -38,7 +38,7 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
  * @package TYPO3
  * @subpackage tx_wecassessment
  */
-class tx_wecassessment_category extends tx_wecasssessment_recommendationcontainer {
+class tx_wecassessment_category extends tx_wecassessment_recommendationcontainer {
 	
 	var $_uid;
 	var $_pid;
@@ -77,12 +77,12 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	 */
 	function toArray() {
 		return array(
-			"uid" => $this->getUID(), 
-			"pid" => $this->getPID(),
-			"sorting" => $this->getSorting(),
-			"title" => $this->getTitle(), 
-			"description" => $this->getDescription(), 
-			"image" => $this->getImage(), 
+			'uid' => $this->getUID(), 
+			'pid' => $this->getPID(),
+			'sorting' => $this->getSorting(),
+			'title' => $this->getTitle(), 
+			'description' => $this->getDescription(), 
+			'image' => $this->getImage(), 
 		);
 	}
 	
@@ -255,7 +255,7 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 		$categories = array();
 		$table = 'tx_wecassessment_category';
 		
-		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid='.$pid);
+		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid=' . $pid);
 		$where = tx_wecassessment_category::getWhere($table, $where);
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);		
 		
@@ -282,7 +282,7 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 	}
 
 	function findQuestions($recur = false) {
-		$where = 'category_id='.$this->getUID();
+		$where = 'category_id=' . $this->getUID();
 		return tx_wecassessment_question::findAll($this->getPID(), $where);
 	}
 	
@@ -291,5 +291,4 @@ class tx_wecassessment_category extends tx_wecasssessment_recommendationcontaine
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_category.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_category.php']);
 }
-
 ?>

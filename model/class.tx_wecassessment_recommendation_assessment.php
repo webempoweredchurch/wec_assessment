@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
 
 class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recommendation {
 	
@@ -72,16 +72,16 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 */
 	function toArray() {
 		return array(
-			"uid" => $this->getUID(),
-			"pid" => $this->getPID(),
-			"text" => $this->getText(),
-			"min_value" => $this->getMinValue(),
-			"max_value" => $this->getMaxValue(),
-			"score" => round($this->getScore(), 2),
-			"maxScore" => $this->getMaxScore(),
-			"parentTitle" => "Overall Score",
-			"parentText" => "",
-			"type" => 'assessment'
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'text' => $this->getText(),
+			'min_value' => $this->getMinValue(),
+			'max_value' => $this->getMaxValue(),
+			'score' => round($this->getScore(), 2),
+			'maxScore' => $this->getMaxScore(),
+			'parentTitle' => 'Overall Score',
+			'parentText' => '',
+			'type' => 'assessment'
 		);
 	}
 	
@@ -91,7 +91,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 */
 	function getLabel() {
 		$title = $GLOBALS['LANG']->getLL('total_assessment');
-		return $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
+		return $this->getMinValue() . '-' . $this->getMaxValue() . ' : ' . $title;
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	 * Placeholder function
 	 */
 	function setParentUID($uid) {
-		/* Do nothing */
+		// Do nothing
 	}
 	
 	/*************************************************************************
@@ -138,16 +138,16 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 	}
 	
 	
-	function findAll($pid, $additionalWhere="") {
+	function findAll($pid, $additionalWhere='') {
 		$recommendations = tx_wecassessment_recommendation_assessment::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RECOMMENDATION_ASSESSMENT);
 		return $recommendations;
 	}
 	
-	function findAllInAssessment($pid, $additionalWhere="") {
+	function findAllInAssessment($pid, $additionalWhere='') {
 		return tx_wecassessment_recommendation_assessment::findAll($pid, $additionalWhere);
 	}
 	
-	function findAllInParent($pid, $parentID=0, $additionalWhere="") {
+	function findAllInParent($pid, $parentID=0, $additionalWhere='') {
 		return tx_wecassessment_recommendation_assessment::findAll($pid, $additionalWhere);
 	}
 	
@@ -180,14 +180,13 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 			$highTotal += $question->getWeight() * $maxValue;
 		}
 				
-		/* @todo		How to deal with weights of 0? */
 		if ($weightTotal==0) {
-			$weightTotal = 1;
+			$value = 0;
+		} else {
+			$value = $answerTotal / $weightTotal;
 		}
 		
-		$value = $answerTotal / $weightTotal;
-		
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
+		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
 		if($value == $maxValue) {
 			$recommendation = tx_wecassessment_recommendation_assessment::findByValue($value-0.01);
 		} else {

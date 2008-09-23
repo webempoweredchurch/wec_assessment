@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_assessment.php');
 
 /**
  * Class for pre and post processing TCE Form configuration.
@@ -45,7 +45,7 @@ class tx_wecassessment_tceforms_getmainfields {
 	 * @param		object		TCE Form object.
 	 */
 	function getMainFields_preProcess($table,&$row, $tceform) {
-		/* If the assessment plugin is being rendered, validate all data */
+		// If the assessment plugin is being rendered, validate all data
 		if($row['CType'] == 'list' && $row['list_type'] == 'wec_assessment_pi1') {
 			$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 			$assessment = new $assessmentClass($row['uid'], $row['pid'], '', t3lib_div::xml2array($row['pi_flexform']));
@@ -54,19 +54,19 @@ class tx_wecassessment_tceforms_getmainfields {
 			$minValue = $assessment->getMinimumValue();
 			$maxValue = $assessment->getMaximumValue();
 
-			/* Check the validity of the total recommendation */
+			// Check the validity of the total recommendation
 			if(!$assessment->valid($minValue, $maxValue)) {
 				$content[] = $this->displayContainerErrors('', $assessment);
 			}
 
-			/* Check all categories */
+			// Check all categories
 			$categories = tx_wecassessment_category::findAll($assessment->getPID());
 			foreach((array) $categories as $category) {
 				if(!$category->valid($minValue, $maxValue)) {
 					$content[] = $this->displayContainerErrors('', $category);
 				}
 
-				/* Check the validity of each question */
+				// Check the validity of each question
 				$questions = $category->findQuestions();
 				foreach((array) $questions as $question) {
 					if(!$question->valid($minValue, $maxValue)) {
@@ -76,24 +76,24 @@ class tx_wecassessment_tceforms_getmainfields {
 			}
 			
 			if(count($content) > 0) {
-				$tceform->extraFormHeaders[] = '<div style="width:93%"><div style="background-color: #FFFF99; border: 2px solid black; padding:10px; margin-bottom: 10px;">'.implode(chr(10), $content).'</div></div>';
+				$tceform->extraFormHeaders[] = '<div style="width:93%"><div style="background-color: #FFFF99; border: 2px solid black; padding:10px; margin-bottom: 10px;">' . implode(chr(10), $content) . '</div></div>';
 			}
 		}
 		
-		/* If we're looking at a question or category, tweak the sorting */
+		// If we're looking at a question or category, tweak the sorting
 		if($table == 'tx_wecassessment_question' or $table == 'tx_wecassessment_category') {
-			/* If we're in a question or a category, turn off sorting for questions */
+			// If we're in a question or a category, turn off sorting for questions
 			unset($GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['sortby']);
 			$GLOBALS['TCA']['tx_wecassessment_question']['ctrl']['default_sortby'] = "ORDER BY uid";
 		}
 		
-		/* If we're looking at a recommendation, preset some values and check for IRRE */
+		// If we're looking at a recommendation, preset some values and check for IRRE
 		if($table == 'tx_wecassessment_recommendation') {
-			/* If we have posted data and a new record, preset values to what they were on the previous record */
+			// If we have posted data and a new record, preset values to what they were on the previous record
 			if(is_array($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']) && strstr($row['uid'], 'NEW')) {
 				$postData = array_pop($GLOBALS['HTTP_POST_VARS']['data']['tx_wecassessment_recommendation']);
 
-				/* @todo 	popViewId isn't always right. May be a storage folder, etc! */
+				// @todo 	popViewId isn't always right. May be a storage folder, etc!
 				$pid = $GLOBALS['HTTP_POST_VARS']['popViewId'];
 				$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
 				$assessment = new $assessmentClass(0, $pid);
@@ -118,7 +118,7 @@ class tx_wecassessment_tceforms_getmainfields {
 			}
 			
 			
-			/* Sniff for the parent table of the current IRRE child, set the type, and hide it */
+			// Sniff for the parent table of the current IRRE child, set the type, and hide it
 			if(is_array($tceform->inline->inlineStructure['stable'])) {
 				foreach((array) $tceform->inline->inlineStructure['stable'] as $inlineStructure) {
 					if($inlineStructure['field'] == 'recommendations') {
@@ -152,11 +152,11 @@ class tx_wecassessment_tceforms_getmainfields {
 		$content = array();
 		
 		if($parentTitle) {		
-			$title = $parentTitle.' : '.$this->crop($container->getLabel());
+			$title = $parentTitle . ' : ' . $this->crop($container->getLabel());
 		} else {
 			$title = $this->crop($container->getLabel());
 		}
-		$content[] = '<h3 style="background-color:#FFFF99;">'.$title.'</h3>';
+		$content[] = '<h3 style="background-color:#FFFF99;">' . $title . '</h3>';
 
 		$errors = $container->getValidationErrors();
 		
@@ -164,7 +164,7 @@ class tx_wecassessment_tceforms_getmainfields {
 			$content[] = '<ul>';
 			foreach((array) $errors as $error) {
 				$errorString = tx_wecassessment_tceforms_getmainfields::errorToString($error);
-				$content[] = '<li style="margin-bottom: 3px">'.$errorString.'</li>';
+				$content[] = '<li style="margin-bottom: 3px">' . $errorString . '</li>';
 			}
 			$content[] = '</ul>';
 		}
@@ -181,18 +181,18 @@ class tx_wecassessment_tceforms_getmainfields {
 		$uid1 = $errorArray['uid1'];
 		$uid2 = $errorArray['uid2'];
 		$message = $errorArray['message'];
-		$return = $message.'<br />';
+		$return = $message . '<br />';
 		
 		if($uid1) {
 			$recommendation1 = tx_wecassessment_recommendation::find($uid1);
 			$uid1Link = tx_wecassessment_tceforms_getmainfields::returnEditLink($uid1, $this->crop($recommendation1->getLabel()), $recommendation1->getTableName());
-			$return .= $uid1Link.'<br />';
+			$return .= $uid1Link . '<br />';
 		}
 		
 		if($uid2) {
 			$recommendation2 = tx_wecassessment_recommendation::find($uid2);
 			$uid2Link = tx_wecassessment_tceforms_getmainfields::returnEditLink($uid2, $this->crop($recommendation2->getLabel()), $recommendation2->getTableName());
-			$return .= $uid2Link.'<br />';
+			$return .= $uid2Link . '<br />';
 		}
 		
 		return $return;
@@ -206,16 +206,13 @@ class tx_wecassessment_tceforms_getmainfields {
 	 */
 	function returnNewLink($title,$tablename = false) {
 		if (empty($tablename)) $tablename = $this->tconf['name'];
-		$params = '&edit['.$tablename.']['.$this->spid.']=new';
+		$params = '&edit[' . $tablename . '][' . $this->spid . ']=new';
 
-		$out .=	'<a href="#" onclick="'.
-		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
-		'">';
-		$out .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_record.gif','width="11" height="12"').' title="Edit me" border="0" alt="" /></a>';
-		$out .=	' <a href="#" onclick="'.
-		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
-		'">';
-		$out .= $title.'</a>';
+		$out .= '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']) . '">';
+		$out .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_record.gif','width="11" height="12"') . ' title="Edit me" border="0" alt="" /></a>';
+		$out .= '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']) . '">';
+		$out .= $title . '</a>';
+		
 		return $out;
 	}
 
@@ -228,12 +225,10 @@ class tx_wecassessment_tceforms_getmainfields {
 	 */
 	function returnEditLink($uid,$title,$tablename = false) {
 		if (empty($tablename)) $tablename = $this->tconf['name'];
-		$params = '&edit['.$tablename.']['.$uid.']=edit';
-		$out .=	'<a href="#" onclick="'.
-		t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']).
-		'">';
+		$params = '&edit[' . $tablename . '][' . $uid . ']=edit';
+		$out .= '<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']) . '">';
 		$out .= $title;
-		$out .= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit me" border="0" alt="" />';
+		$out .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"') . ' title="Edit me" border="0" alt="" />';
 		$out .= '</a>';
 		return $out;
 	}

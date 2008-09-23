@@ -27,8 +27,8 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_answer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
 
 /**
  * General purpose class for displaying assessment results, averages, etc.
@@ -49,7 +49,7 @@ class tx_wecassessment_results {
 		$name = $PA['itemFormElName'];
 		$value = $PA['itemFormElValue'];
 		
-		return '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
+		return '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
 	}
 	
 	/**
@@ -62,7 +62,7 @@ class tx_wecassessment_results {
 		$pid = intval($PA['row']['pid']);
 		$table = $PA['table'];
 		if ($pid < 0)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid='.abs($pid));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . abs($pid));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 			$pid = intval($row['pid']);
@@ -92,40 +92,12 @@ class tx_wecassessment_results {
 		
 		$output = array();
 		$output[] = '<div style="margin-top: 5px; border: 1px solid black; width:100px;">';
-		$output[] = '	<div style="background-color:#888; width:'.$percentScore.'%;">&nbsp;</div>';
+		$output[] = '	<div style="background-color:#888; width:' . $percentScore . '%;">&nbsp;</div>';
 		$output[] = '</div>';
 		
-		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' completed assessments)';
+		$output[] = '<p style="margin-top:5px;">' . $averageScore . ' / ' . $maximumScore . ' (based on ' . $totalAssessments . ' completed assessments)';
 		
 		return implode(chr(10), $output);
-	}
-	
-	/**
-	 * Calculates the average answer for a category and returns it.
-	 * @param		array		Parent array.
-	 * @param		object		TCE Forms object.
-	 * @return		string		HTML for the average answer.
-	 */
-	function displayAverageForCategory($PA, $fobj) {
-		/*
-		$assessmentClass = t3lib_div::makeInstanceClassName('tx_wecassessment_assessment');
-		debug($config, "config");
-		$assessment = new $assessmentClass(0, $config['row']['pid']);
-		
-		$uid = $PA['row']['uid'];
-		$category = &tx_wecassessment_category::find($uid);
-		
-		$averageScore = $category->getAverageAnswer();
-		$maximumScore = $assessment->getMaximumValue();
-		$totalAssessments = $category->getTotal();
-		$percentScore = round(($averageScore / $maximumScore) * 100);
-		
-		$output = array();
-		$output[] = '<div style="margin-top: 5px; border: 1px solid black; width:100px;">';
-		$output[] = '	<div style="background-color:#888; width:'.$percentScore.'%;">&nbsp;</div>';
-		$output[] = '</div>';
-		$output[] = '<p style="margin-top:5px;">'.$averageScore.' / '.$maximumScore.' (based on '.$totalAssessments.' assessments)';
-		*/
 	}
 }
 

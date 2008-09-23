@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-if (!defined('PATH_tslib')) define('PATH_tslib', t3lib_extMgm::extPath('cms').'tslib/');
+if (!defined('PATH_tslib')) define('PATH_tslib', t3lib_extMgm::extPath('cms') . 'tslib/');
 
-require_once (PATH_tslib.'class.tslib_fe.php');
+require_once (PATH_tslib . 'class.tslib_fe.php');
 
 /**
  * Helper class that extends TSFE to disable page not found handling when creating a fake frontend instance.
@@ -61,5 +61,7 @@ class tx_wecassessment_tsfe extends tslib_fe {
 		// do nothing
 	}
 }
-
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_tsfe.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_tsfe.php']);
+}
 ?>

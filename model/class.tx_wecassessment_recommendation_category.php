@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
 
 class tx_wecassessment_recommendation_category extends tx_wecassessment_recommendation {
 	var $_categoryUID;
@@ -65,17 +65,17 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	function toArray() {
 		$category = $this->getCategory();
 		return array(
-			"uid" => $this->getUID(),
-			"pid" => $this->getPID(),
-			"text" => $this->getText(),
-			"min_value" => $this->getMinValue(),
-			"max_value" => $this->getMaxValue(),
-			"score" => round($this->getScore(), 2),
-			"maxScore" => $this->getMaxScore(),
-			"parentTitle" => $category->getTitle(),
-			"parentText" => $category->getDescription(),
-			"parentImage" => $category->getImage(),
-			"type" => 'category'
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'text' => $this->getText(),
+			'min_value' => $this->getMinValue(),
+			'max_value' => $this->getMaxValue(),
+			'score' => round($this->getScore(), 2),
+			'maxScore' => $this->getMaxScore(),
+			'parentTitle' => $category->getTitle(),
+			'parentText' => $category->getDescription(),
+			'parentImage' => $category->getImage(),
+			'type' => 'category'
 		);
 		
 		return $recommendationArray;
@@ -84,7 +84,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	
 	function getLabel($isInline=false) {
 		if($isInline) {
-			$label = $this->getMinValue().'-'.$this->getMaxValue();
+			$label = $this->getMinValue() . '-' . $this->getMaxValue();
 		} else {
 			$category = &$this->getCategory();
 			if(is_object($category)) {
@@ -92,7 +92,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 			} else {
 				$title = '[ No Category ]';
 			}
-			$label = $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
+			$label = $this->getMinValue() . '-' . $this->getMaxValue() . ' : ' . $title;
 		}
 		
 		return $label;
@@ -168,7 +168,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	 ************************************************************************/
 	function findByScore($score, $categoryID) {
 		$table = 'tx_wecassessment_recommendation';
-		$where = tx_wecassessment_recommendation_category::getWhere($table, 'min_value <= '.$score.' AND max_value > '.$score.' AND category_id='.$categoryID.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_CATEGORY);
+		$where = tx_wecassessment_recommendation_category::getWhere($table, 'min_value <= ' . $score . ' AND max_value > ' . $score . ' AND category_id=' . $categoryID . ' AND type=' . TX_WECASSESSMENT_RECOMMENDATION_CATEGORY);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -185,19 +185,19 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	}
 	
 	
-	function findAll($pid, $additionalWhere="") {
+	function findAll($pid, $additionalWhere='') {
 		$recommendations = tx_wecassessment_recommendation_category::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RECOMMENDATION_CATEGORY);
 		return $recommendations;
 	}
 	
-	function findAllInCategory($pid, $category_id, $additionalWhere="") {
-		$where = tx_wecassessment_recommendation_category::combineWhere($additionalWhere, 'pid='.$pid.' AND category_id='.$category_id);
+	function findAllInCategory($pid, $category_id, $additionalWhere='') {
+		$where = tx_wecassessment_recommendation_category::combineWhere($additionalWhere, 'pid=' . $pid . ' AND category_id=' . $category_id);
 		$recommendations = tx_wecassessment_recommendation_category::findAll($pid, $where);
 		
 		return $recommendations;
 	}
 	
-	function findAllInParent($pid, $parentUID, $additionalWhere="") {
+	function findAllInParent($pid, $parentUID, $additionalWhere='') {
 		return tx_wecassessment_recommendation_category::findAllInCategory($pid, $parentUID, $additionalWhere);
 	} 
 	
@@ -216,7 +216,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 	
 	/* @todo 		Where should this live? */
 	function calculate($score) {
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
+		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
 		if($value == $maxValue) {
 			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $category->getUID());
 		} else {

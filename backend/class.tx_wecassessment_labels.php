@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_assessment.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_answer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_assessment.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_answer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
 
 /**
  * General purpose class for providing record labels.
@@ -56,7 +56,7 @@ class tx_wecassessment_labels {
 	 **/
 	function __construct() {
 		if(!is_object($GLOBALS['LANG'])) {
-			require_once(t3lib_extMgm::extPath('lang').'lang.php');
+			require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			
 			if(TYPO3_MODE == 'BE') {
@@ -187,5 +187,4 @@ class tx_wecassessment_labels {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_labels.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_labels.php']);
 }
-
 ?>

@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_result.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_result.php');
 
 /**
  * Data model for Assessment Answers.
@@ -90,7 +90,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		// set tstamp db field for both update and insert
 		$fields_values['tstamp'] = time();
 		
-		/* If we have a uid, update an db existing record.  If not, create a new db record. */
+		// If we have a uid, update an db existing record.  If not, create a new db record.
 		if($this->getUID()) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_wecassessment_answer', 'uid='.$this->getUID(), $fields_values);
 		} else {
@@ -344,8 +344,8 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$answers = array();
 		$table = 'tx_wecassessment_answer';
 		
-		$where = tx_wecassessment_answer::getWhere($table, $additionalWhere.' AND pid='.$pid);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);		
+		$where = tx_wecassessment_answer::getWhere($table, $additionalWhere . ' AND pid='.$pid);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			if($questionAsKey) {
@@ -370,7 +370,7 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		$answers = array();
 		$table = 'tx_wecassessment_answer';
 
-		$where = tx_wecassessment_answer::getWhere($table, 'result_id='.$resultUID);
+		$where = tx_wecassessment_answer::getWhere($table, 'result_id=' . $resultUID);
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 				
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
@@ -413,6 +413,4 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_answer.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_answer.php']);
 }
-
-
 ?>

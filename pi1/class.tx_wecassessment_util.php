@@ -63,7 +63,7 @@ class tx_wecassessment_util {
 	function getOutputFromCObj($dataArray, $parent, $key) {
 		$local_cObj = t3lib_div::makeInstance('tslib_cObj');
 		$local_cObj->start($dataArray);
-		$content[] = $local_cObj->cObjGetSingle($parent[$key], $parent[$key.'.']);
+		$content[] = $local_cObj->cObjGetSingle($parent[$key], $parent[$key . '.']);
 
 		return implode(chr(10), $content);
 		
@@ -109,7 +109,7 @@ class tx_wecassessment_util {
 			$template = $this->template;
 		}
 		
-		return $this->cObj->getSubpart($template, "###".strtoupper($subpart)."###");
+		return $this->cObj->getSubpart($template, '###' . strtoupper($subpart) . '###');
 	}
 	
 	/*
@@ -126,7 +126,7 @@ class tx_wecassessment_util {
 	function substituteSubparts(&$template, $subparts) {
 		foreach((array) $subparts as $label => $content) {
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
-			$template = $cObj->substituteSubpart($template, '###'.strtoupper($label).'###', $content);
+			$template = $cObj->substituteSubpart($template, '###' .strtoupper($label) . '###', $content);
 		}
 	}
 	
@@ -140,7 +140,6 @@ class tx_wecassessment_util {
 	function getMarkers($template='') {
 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $this->template, $match);
 		$subparts = array_unique($match[1]);
-		debug($subparts, "subparts");
 		
 		foreach ($subparts as $subpart) {
 		}
@@ -148,7 +147,6 @@ class tx_wecassessment_util {
 		preg_match_all('!\###([A-Z0-9_-|]*)\###!is', $this->template, $match);
 		$markers = array_unique($match[1]);
 		$markers = array_diff($markers, $subparts);
-		debug($markers, "markers");
 		
 		foreach ($markers as $marker) {
 		}
@@ -167,5 +165,4 @@ class tx_wecassessment_util {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_util.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_util.php']);
 }
-
 ?>

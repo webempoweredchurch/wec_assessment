@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendationcontainer.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation_question.php');
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_category.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendationcontainer.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation_question.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_category.php');
 
 /**
  * Data models for Assessment Questions.
@@ -38,7 +38,7 @@ require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessme
  * @package TYPO3
  * @subpackage tx_wecassessment
  */
-class tx_wecassessment_question extends tx_wecasssessment_recommendationcontainer {
+class tx_wecassessment_question extends tx_wecassessment_recommendationcontainer {
 
 	var $_uid;
 	var $_pid;
@@ -78,7 +78,15 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 	 * @return		array		Associative array representing the current question object.
 	 */
 	function toArray() {
-		return array("uid" => $this->getUID(), "pid" => $this->getPID(), "index" => $this->getIndex(), "sorting" => $this->getSorting(), "text" => $this->getText(), "category_id" => $this->getCategoryUID(), "weight" => $this->getWeight());
+		return array(
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'index' => $this->getIndex(),
+			'sorting' => $this->getSorting(),
+			'text' => $this->getText(),
+			'category_id' => $this->getCategoryUID(),
+			'weight' => $this->getWeight()
+		);
 	}
 	
 	/**
@@ -447,14 +455,14 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 		
 		$where = tx_wecassessment_category::combineWhere($additionalWhere, 'pid='.$pid);
 		$where = tx_wecassessment_question::getWhere($table, $where);
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, $grouping, $sorting, $startQuestion.','.$questionsPerPage);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, $grouping, $sorting, $startQuestion . ',' . $questionsPerPage);
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$questions[] = tx_wecassessment_question::newFromArray($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		
-		/* @todo 	Not a true randomize.  We're only shuffling questions on the current page. */
+		// @todo 	Not a true randomize.  We're only shuffling questions on the current page.
 		if($randomize) {
 			shuffle($questions);
 		}
@@ -479,5 +487,4 @@ class tx_wecassessment_question extends tx_wecasssessment_recommendationcontaine
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_question.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_question.php']);
 }
-
 ?>

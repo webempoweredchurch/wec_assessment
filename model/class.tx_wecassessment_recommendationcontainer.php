@@ -27,9 +27,9 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_modelbase.php');
 
-class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelbase {
+class tx_wecassessment_recommendationcontainer extends tx_wecassessment_modelbase {
 	
 	var $_validationErrors;
 	var $_recommendations;
@@ -40,7 +40,7 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 	 * @return		none
 	 */	
 	function setRecommendations($recommendations) {
-		/* @todo 	Unset recommendations first */
+		// @todo 	Unset recommendations first
 		foreach((array) $recommendations as $recommendation) {
 			$this->addRecommendation($recommendation);
 		}
@@ -126,14 +126,14 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 			foreach((array) $recommendations as $recommendation) {
 				$hasErrors = false;
 				
-				/* If we're on the first recommendation, check the lower bound */
+				// If we're on the first recommendation, check the lower bound
 				if(is_null($previousRecommendation)) {
 					if(!$recommendation->againstLowerBound($min)) {
 						$recommendationHasErrors = true;
 					}
 				}
 				
-				/* If we're on the last recommendation, check the upper bound */
+				// If we're on the last recommendation, check the upper bound
 				if($recommendation->getUID() == $lastUID) {
 					if(!$recommendation->againstUpperBound($max)) {
 						$recommendationHasErrors = true;
@@ -158,11 +158,10 @@ class tx_wecasssessment_recommendationcontainer extends tx_wecassessment_modelba
 		}
 		
 		return $containerIsValid;
-
 	}
-	
-	
 }
 
-
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendationcontainer.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendationcontainer.php']);
+}
 ?>

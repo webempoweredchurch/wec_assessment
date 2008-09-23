@@ -30,7 +30,7 @@
 /**
  * Class that adds the wizard icon.
  *
- * @author	Web-Empowered Church Team <developer@webempoweredchurch.org>
+ * @author	Web-Empowered Church Team <assessment@webempoweredchurch.org>
  * @package	TYPO3
  * @subpackage	tx_wecassessment
  */
@@ -47,10 +47,10 @@ class tx_wecassessment_pi1_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_wecassessment_pi1'] = array(
-			'icon'=>t3lib_extMgm::extRelPath('wec_assessment').'pi1/ce_wiz.gif',
-			'title'=>$LANG->getLLL('pi1_title',$LL),
-			'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
-			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=wec_assessment_pi1'
+			'icon' => t3lib_extMgm::extRelPath('wec_assessment') . 'pi1/ce_wiz.gif',
+			'title' => $LANG->getLLL('pi1_title',$LL),
+			'description' => $LANG->getLLL('pi1_plus_wiz_description',$LL),
+			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=wec_assessment_pi1'
 		);
 
 		return $wizardItems;
@@ -62,7 +62,7 @@ class tx_wecassessment_pi1_wizicon {
 	 * @return	The array with language labels
 	 */
 	function includeLocalLang()	{
-		$llFile = t3lib_extMgm::extPath('wec_assessment').'locallang.xml';
+		$llFile = t3lib_extMgm::extPath('wec_assessment') . 'locallang.xml';
 		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		
 		return $LOCAL_LANG;
@@ -74,5 +74,4 @@ class tx_wecassessment_pi1_wizicon {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_pi1_wizicon.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/pi1/class.tx_wecassessment_pi1_wizicon.php']);
 }
-
 ?>

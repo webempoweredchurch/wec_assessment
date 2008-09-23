@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_modelbase.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_modelbase.php');
 
 define('TX_WECASSESSMENT_RECOMMENDATION_CATEGORY', 0);
 define('TX_WECASSESSMENT_RECOMMENDATION_QUESTION', 1);
@@ -77,13 +77,13 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 */
 	function toArray() {
 		return array(
-			"uid" => $this->getUID(),
-			"pid" => $this->getPID(),
-			"text" => $this->getText(),
-			"min_value" => $this->getMinValue(),
-			"max_value" => $this->getMaxValue(),
-			"score" => round($this->getScore(), 2),
-			"maxScore" => $this->getMaxScore(),
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'text' => $this->getText(),
+			'min_value' => $this->getMinValue(),
+			'max_value' => $this->getMaxValue(),
+			'score' => round($this->getScore(), 2),
+			'maxScore' => $this->getMaxScore(),
 		);
 	}
 	
@@ -250,11 +250,11 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 * @param		string		Custom WHERE clause.
 	 * @return		array		Array of recommendation objects.
 	 */
-	function findAll($pid, $additionalWhere="") {
+	function findAll($pid, $additionalWhere='') {
 		$recommendations = array();
 		$table = 'tx_wecassessment_recommendation';
 		
-		$where = tx_wecassessment_recommendation::getWhere($table, $additionalWhere.' AND pid='.$pid);	
+		$where = tx_wecassessment_recommendation::getWhere($table, $additionalWhere . ' AND pid=' . $pid);	
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where, '', 'min_value ASC');
 		
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
@@ -271,7 +271,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 * @param		string		Recommendation type.
 	 * @return		array		Array of recommendation objects.
 	 */
-	function findAllWithType($pid, $additionalWhere="1=1", $type) {
+	function findAllWithType($pid, $additionalWhere='1=1', $type) {
 		$where = tx_wecassessment_recommendation::combineWhere($additionalWhere, 'type='.$type);
 		$recommendations = tx_wecassessment_recommendation::findAll($pid, $where);
 		return $recommendations;
@@ -285,7 +285,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 */
 	function findByValue($value, $where='1=1') {
 		$table = 'tx_wecassessment_recommendation';
-		$where = tx_wecassessment_recommendation::getWhere($table, ' AND min_value<='.$value.' AND max_value>'.$value);
+		$where = tx_wecassessment_recommendation::getWhere($table, ' AND min_value<='.$value . ' AND max_value>'.$value);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -315,14 +315,13 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 			$weightTotal += $question->getWeight();
 		}
 				
-		/* @todo		How to deal with weights of 0? */
 		if ($weightTotal==0) {
-			$weightTotal = 1;
+			$value = 0;
+		} else {
+			$value = $answerTotal / $weightTotal;
 		}
 		
-		$value = $answerTotal / $weightTotal;
-		
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
+		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
 		if($value == $maxValue) {
 			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $category->getUID());
 		} else {
@@ -389,17 +388,17 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		$valid = true;
 		
 		if (!$this->checkRange()) {
-			$this->addError("Maximum recommendation value (".$this->getMaxValue().") is less than minimum recommendation value (".$this->getMinValue().").", $this->getUID());
+			$this->addError('Maximum recommendation value (' . $this->getMaxValue() . ') is less than minimum recommendation value (' . $this->getMinValue() . ').', $this->getUID());
 			$valid = false;
 		}
 		
 		if (!$this->withinLowerBound($min)) {
-			$this->addError("Recommendation value is less than the minimum allowed (".$min.").", $this->getUID());
+			$this->addError('Recommendation value is less than the minimum allowed ('. $min .').', $this->getUID());
 			$valid = false;
 		}
 		
 		if (!$this->withinUpperBound($max)) {
-			$this->addError("Recommendation value is greater than the maximum allowed (".$max.").", $this->getUID());
+			$this->addError('Recommendation value is greater than the maximum allowed ('. $max . ').', $this->getUID());
 			$valid = false;
 		}
 		
@@ -470,7 +469,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		}
 		
 		if(!$validLowerBound) {
-			$message = "Lowest recommendation has a minimum value of " . $this->getMinValue() . " but overall assessment has a minimum value of " . $lowerBound . '.';
+			$message = 'Lowest recommendation has a minimum value of ' . $this->getMinValue() . ' but overall assessment has a minimum value of ' . $lowerBound . '.';
 			$this->addError($message, $this->getUID());
 		}
 		
@@ -492,7 +491,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		}
 		
 		if(!$validUpperBound) {
-			$message = "Highest recommendation has a maximum value of " . $this->getMaxValue() . " but overall assessment has a maximum value of " . $upperBound . '.';
+			$message = 'Highest recommendation has a maximum value of ' . $this->getMaxValue() . ' but overall assessment has a maximum value of ' . $upperBound . '.';
 			$this->addError($message, $this->getUID());
 		}
 		
@@ -506,7 +505,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 * @return		boolean
 	 */
 	function validRelativeTo($previousRecommendation) {
-		/* @todo 	What should gap tolerance be set to and where should it be defined? */
+		// @todo 	What should gap tolerance be set to and where should it be defined?
 		$gapTolerance = .01;
 		
 		$valid = true;
@@ -517,12 +516,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		$currentMin = $this->getMinValue();
 
 		if($previousMax > $currentMin) {
-			$this->addError("Recommendation values overlap.", $previousUID, $currentUID);
+			$this->addError('Recommendation values overlap.', $previousUID, $currentUID);
 			$valid = false;
 		} else {
 			$gap = $currentMin - $previousMax;
 			if($gap > $gapTolerance) {
-				$this->addError("A gap exists between recommendation values.", $previousUID, $currentUID);
+				$this->addError('A gap exists between recommendation values.', $previousUID, $currentUID);
 				$valid = false;
 			}
 		}
@@ -530,8 +529,12 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 		return $valid;
 	}
 	
-	function addError($message, $uid1="", $uid2="") {
-		$this->_validationErrors[] =  array("message" => $message, "uid1" => $uid1, "uid2" => $uid2);
+	function addError($message, $uid1='', $uid2='') {
+		$this->_validationErrors[] =  array(
+			'message' => $message,
+			'uid1' => $uid1,
+			'uid2' => $uid2
+		);
 	}
 	
 	function getValidationErrors() {

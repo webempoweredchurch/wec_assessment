@@ -27,7 +27,7 @@
 * This copyright notice MUST APPEAR in all copies of the file!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('wec_assessment').'model/class.tx_wecassessment_recommendation.php');
+require_once(t3lib_extMgm::extPath('wec_assessment') . 'model/class.tx_wecassessment_recommendation.php');
 
 class tx_wecassessment_recommendation_question extends tx_wecassessment_recommendation {
 	var $_questionUID;
@@ -66,16 +66,16 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 		$question = $this->getQuestion();
 		
 		return array(
-			"uid" => $this->getUID(),
-			"pid" => $this->getPID(),
-			"text" => $this->getText(),
-			"min_value" => $this->getMinValue(),
-			"max_value" => $this->getMaxValue(),
-			"score" => round($this->getScore(), 2),
-			"maxScore" => $this->getMaxScore(),
-			"parentTitle" => "",
-			"parentText" => $question->getText(),
-			"type" => 'question'
+			'uid' => $this->getUID(),
+			'pid' => $this->getPID(),
+			'text' => $this->getText(),
+			'min_value' => $this->getMinValue(),
+			'max_value' => $this->getMaxValue(),
+			'score' => round($this->getScore(), 2),
+			'maxScore' => $this->getMaxScore(),
+			'parentTitle' => '',
+			'parentText' => $question->getText(),
+			'type' => 'question'
 		);
 		
 		return $recommendationArray;
@@ -83,7 +83,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 	
 	function getLabel($isInline=false) {
 		if($isInline) {
-			$label = $this->getMinValue().'-'.$this->getMaxValue();
+			$label = $this->getMinValue() . '-' . $this->getMaxValue();
 		} else {
 			$question = &$this->getQuestion();
 			if(is_object($question)) {
@@ -91,7 +91,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			} else {
 				$title = '[ No Question ]';
 			}
-			$label = $this->getMinValue().'-'.$this->getMaxValue().' : '.$title;
+			$label = $this->getMinValue() . '-' . $this->getMaxValue() . ' : ' . $title;
 		}
 		
 		return $label;
@@ -167,7 +167,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 	 ************************************************************************/
 	function findByScore($score, $questionID) {
 		$table = 'tx_wecassessment_recommendation';
-		$where = tx_wecassessment_recommendation_question::getWhere($table, 'min_value <= '.$score.' AND max_value > '.$score.' AND question_id='.$questionID.' AND type='.TX_WECASSESSMENT_RECOMMENDATION_QUESTION);
+		$where = tx_wecassessment_recommendation_question::getWhere($table, 'min_value <= ' . $score . ' AND max_value > ' . $score . ' AND question_id=' . $questionID . ' AND type=' . TX_WECASSESSMENT_RECOMMENDATION_QUESTION);
 		
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, $where);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -184,19 +184,19 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 	}
 	
 	
-	function findAll($pid, $additionalWhere="") {
+	function findAll($pid, $additionalWhere='') {
 		$recommendations = tx_wecassessment_recommendation_question::findAllWithType($pid, $additionalWhere, TX_WECASSESSMENT_RECOMMENDATION_QUESTION);
 		return $recommendations;
 	}
 	
-	function findAllInQuestion($pid, $question_id, $additionalWhere="") {
-		$where = tx_wecassessment_recommendation_question::combineWhere($additionalWhere, 'pid='.$pid.' AND question_id='.$question_id);
+	function findAllInQuestion($pid, $question_id, $additionalWhere='') {
+		$where = tx_wecassessment_recommendation_question::combineWhere($additionalWhere, 'pid=' . $pid . ' AND question_id=' . $question_id);
 		$recommendations = tx_wecassessment_recommendation_question::findAll($pid, $where);
 		
 		return $recommendations;
 	}
 	
-	function findAllInParent($pid, $parent_id, $additionalWhere="") {
+	function findAllInParent($pid, $parent_id, $additionalWhere='') {
 		return tx_wecassessment_recommendation_question::findAllInQuestion($pid, $parent_id, $additionalWhere);
 	} 
 
@@ -228,15 +228,14 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			$lowTotal += $question->getWeight() * $minValue;
 			$highTotal += $question->getWeight() * $maxValue;
 		}
-				
-		/* @todo		How to deal with weights of 0? */
+
 		if ($weightTotal==0) {
-			$weightTotal = 1;
+			$value = 0;
+		} else {
+			$value = $answerTotal / $weightTotal;
 		}
 		
-		$value = $answerTotal / $weightTotal;
-		
-		/* @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation */
+		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
 		if($value == $maxValue) {
 			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $question->getUID());
 		} else {

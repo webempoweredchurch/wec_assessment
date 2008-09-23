@@ -47,11 +47,11 @@ class tx_wecassessment_itemsProcFunc {
 			$config = array();
 		}
 		
-		$config['items'][] = Array($GLOBALS['LANG']->getLL('random'), 'random');
+		$config['items'][] = array($GLOBALS['LANG']->getLL('random'), 'random');
 		
 		$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_assessment']);
 		if($confArr['manualQuestionSorting']) {
-			$config['items'][] = Array($GLOBALS['LANG']->getLL('backend'), 'backend');
+			$config['items'][] = array($GLOBALS['LANG']->getLL('backend'), 'backend');
 		}
 		
 		return $config;
@@ -74,7 +74,7 @@ class tx_wecassessment_itemsProcFunc {
 		$answerSet = &$assessment->getAnswerSet();
 		
 		foreach((array) $answerSet as $value => $label) {
-			$config['items'][] = Array($label, $value);
+			$config['items'][] = array($label, $value);
 		}
 		
 		return $config;
@@ -83,6 +83,6 @@ class tx_wecassessment_itemsProcFunc {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_itemsProcFunc.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/class.tx_wecassessment_itemsProcFunc.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_itemsProcFunc.php']);
 }
 ?>
