@@ -536,25 +536,33 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				$categoryArray[$sorting]['answers'][$answer->getQuestionUID()] = $answer;
 				$categoryArray[$sorting]['totalScore'] += $answer->getWeightedScore();
 				$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
-			
+				$categoryArray[$sorting]['weightedAnswerCount']  += $answer->getWeight();
+				
 				$totalAssessmentScore += $answer->getWeightedScore();
-				$maxAssessmentScore +- $answer->getWeight() * $this->getMaximumValue();
+				$maxAssessmentScore += $answer->getWeight() * $this->getMaximumValue();
+				$weightedAnswerCount += $answer->getWeight();
 			}
 		}
 		
 		ksort($categoryArray);
-		
+
 		/* Hack to include perfect score */
 		if($maxAssessmentScore == $totalAssessmentScore) {
 			$totalAssessmentScore -= .0001;
 		}
 		
 		/* Total Assessment Recommendations */
-		if(count($answers) == 0) {
+		if($weightedAnswerCount == 0) {
 			$score = 0;
 		} else {
-			$score = $totalAssessmentScore / count($answers);
+			$score = $totalAssessmentScore / $weightedAnswerCount;
 		}
+		
+		/* Don't allow a score below the minimum (due to negative weighting) */
+		if($score < $minValue) {
+			$score = $minValue;
+		}
+		
 		$recommendation = &$this->calculateRecommendation($score);
 		if(is_object($recommendation)) {
 			$recommendation->setMaxScore($this->getMaximumValue());
@@ -569,8 +577,18 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 			if($children['maxScore'] == $children['totalScore']) {
 				$children['totalScore'] -= .0001;
 			}			
-
-			$categoryScore = $children['totalScore'] / count($children['answers']);
+			
+			if($children['weightedAnswerCount'] == 0) {
+				$categoryScore = 0;
+			} else {
+				$categoryScore = $children['totalScore'] / ($children['weightedAnswerCount']);
+			}
+			
+			/* Don't allow a score below the minimum (due to negative weighting) */
+			if($categoryscore < $minValue) {
+				$categoryScore = $minValue;
+			}
+			
 			$recommendation = &$category->calculateRecommendation($categoryScore);
 			
 			if(is_object($recommendation)) {
@@ -585,6 +603,11 @@ class tx_wecassessment_assessment extends tx_wecasssessment_recommendationcontai
 				/* Hack to include perfect score */
 				if($questionScore == $this->getMaximumValue()) {
 					$questionScore -= .0001;
+				}
+				
+				/* Don't allow a score below the minimum (due to negative weighting) */
+				if($questionScore < $minValue) {
+					$questionScore = $minValue;
 				}
 				
 				$recommendation = $question->calculateRecommendation($questionScore);			
