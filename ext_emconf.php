@@ -33,6 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '4.2.0-4.3.99',
+			'wec_api' => '1.0.0-'
 		),
 		'conflicts' => array(
 		),
