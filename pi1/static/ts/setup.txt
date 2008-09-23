@@ -4,33 +4,44 @@ plugin.tx_wecassessment_pi1 = USER_INT
 plugin.tx_wecassessment_pi1 {
 	userFunc = tx_wecassessment_pi1->main
 	
-	# General Configuration options
-	questionsPerPage = 5
-	allowAnonymous = 1
-	
+	# Overall display mode
+	# Single: Show all questions on one page.
+	# Multi: Split the questions across multiple pages.
+	# Slider: Show one question at a time with a sliding user interface.
 	displayMode = single
 	
+	# Number of questions that appear per page when displayMode is set to multi.
+	questionsPerPage = 5
+	
+	# Allow non-registered users to create an assessment.
+	allowAnonymous = 1
+	
+	# Multipage mode requires that cookies are enabled.  If cookies are disabled, revert to single page mode.
 	revertToSingleMode = 1
 	
+	# Include the default CSs file.
 	includeCSS = 1
 	
-	# Label Configuration options
+	# Minimum value for answers.
 	minimumValue = 0
+	
+	# Maximum value for answers.
 	maximumValue = 2
+	
+	# Labels for answers.
 	answerLabels {
 		0 = Rarely
 		1 = Sometimes.
 		2 = Often.
 	}
 	
-	# Template file
+	# Normal template file
 	templateFile = EXT:wec_assessment/pi1/res/assessment.tmpl
 	
-	# Slider Template file
+	# Slider template file
 	sliderTemplateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
 	
 	# The progress bar.
-	# @todo 	Should the progress bar be moved inside of questions?
 	progress = COA
 	progress {
 		10 = TEXT
