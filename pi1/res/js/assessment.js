@@ -29,3 +29,7 @@ function hasAnswer(question) {
 		return false;
 	}
 }
+
+function nextQuestion() {
+	// Placeholder function. Only used in slide interface.
+}
