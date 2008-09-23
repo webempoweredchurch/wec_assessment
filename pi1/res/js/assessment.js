@@ -12,7 +12,8 @@ function checkAnswers(e) {
 	questions.each(function (question) {
 		if(!hasAnswer(question)) {
 			allAnswered = false;
-			new Effect.Highlight(question);
+			// Abusing Effect.Highlight to fade the color in but not back out.  Effect.Tween would be a better long term option.
+			new Effect.Highlight(question, {startcolor: '#ffff99', endcolor: '#ffff99', restorecolor: '#ffff99'});
 		}
 	});
 	

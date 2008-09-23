@@ -7,9 +7,6 @@ Event.observe(window, 'load', function() {
 	$('assessment-previous-button').hide();
 	Event.observe('assessment', 'submit', checkAnswers);
 	
-	//$('assessment').getElementsBySelector('input[type="radio"]').each( function(item) {
-	//	Event.observe(item, 'click', onQuestionAnswer.bindAsEventListener(this));
-	//});
 	assessmentGlider = new Glider('assessment-glider', {duration:0.5});
 	var answeredQuestions = new Array();
 
@@ -39,7 +36,10 @@ function checkAnswers(e) {
 	questions.each(function (question) {
 		if(!hasAnswer(question)) {
 			allAnswered = false;
-			new Effect.Highlight(question);
+			
+			// Abusing Effect.Highlight to fade the color in but not back out.  Effect.Tween would be a better long term option.
+			new Effect.Highlight(question, {startcolor: '#ffff99', endcolor: '#ffff99', restorecolor: '#ffff99'});
+			
 			assessmentGlider.moveTo(question, $('scroller'), { duration: 0.5});
 			$("current_question").update(question._index+1);
 			currentSlide = question._index;
