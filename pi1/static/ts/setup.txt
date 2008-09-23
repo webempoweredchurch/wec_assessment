@@ -5,10 +5,17 @@ plugin.tx_wecassessment_pi1 {
 	userFunc = tx_wecassessment_pi1->main
 	
 	# Overall display mode
-	# Single: Show all questions on one page.
-	# Multi: Split the questions across multiple pages.
-	# Slider: Show one question at a time with a sliding user interface.
+	# single: Show all questions on one page.
+	# multi: Split the questions across multiple pages.
+	# slider: Show one question at a time with a sliding user interface.
 	displayMode = single
+	
+	
+	# Normal template file
+	templateFile = EXT:wec_assessment/pi1/res/assessment.tmpl
+	
+	# Slider template file
+	sliderTemplateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
 	
 	# Number of questions that appear per page when displayMode is set to multi.
 	questionsPerPage = 5
@@ -19,7 +26,7 @@ plugin.tx_wecassessment_pi1 {
 	# Multipage mode requires that cookies are enabled.  If cookies are disabled, revert to single page mode.
 	revertToSingleMode = 1
 	
-	# Include the default CSs file.
+	# Include the default CSS file.
 	includeCSS = 1
 	
 	# Minimum value for answers.
@@ -34,12 +41,6 @@ plugin.tx_wecassessment_pi1 {
 		1 = Sometimes.
 		2 = Often.
 	}
-	
-	# Normal template file
-	templateFile = EXT:wec_assessment/pi1/res/assessment.tmpl
-	
-	# Slider template file
-	sliderTemplateFile = EXT:wec_assessment/pi1/res/assessment_slider.tmpl
 	
 	# The progress bar.
 	progress = COA
