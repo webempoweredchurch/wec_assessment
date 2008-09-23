@@ -27,9 +27,15 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_wecassessment_pi1.php','_pi1','
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:wec_assessment/backend/class.tx_wecassessment_tcemain_processdatamap.php:tx_wecassessment_tcemain_processdatamap';
 $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'][] = 'EXT:wec_assessment/backend/class.tx_wecassessment_tceforms_getmainfields.php:tx_wecassessment_tceforms_getmainfields';
 
-/* Register T3D Package */
-$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_assessment'] = array(
+/* Register T3D Packages */
+$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_assessment_spiritual_gifts'] = array(
 	'path' => 'EXT:wec_assessment/t3d/spiritual_gifts.t3d',
 	'allowOnStandardPages' => true
 );
+/*
+$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_assessment_self_assessment'] = array(
+	'path' => 'EXT:wec_assessment/t3d/self_assessment.t3d',
+	'allowOnStandardPages' => true
+);
+*/
 ?>
