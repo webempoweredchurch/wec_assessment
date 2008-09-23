@@ -77,6 +77,7 @@ class tx_wecassessment_flexform {
 		$this->init($PA, $fobj);
 		$labels = $this->assessment->getAnswerSet();
 		
+		$output = array();
 		/* For each possible value, build the form elements. */
 		for($i=$this->assessment->getMinimumValue(); $i<=$this->assessment->getMaximumValue(); $i++) {
 			$output[] = '<div style="margin-bottom: 3px"><label for="tx_wecassessment_label_'.$i.'" style="vertical-align: baseline;">'.$i.'</label>
@@ -89,6 +90,4 @@ class tx_wecassessment_flexform {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_flexform.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/backend/class.tx_wecassessment_flexform.php']);
 }
-
-
 ?>
