@@ -130,16 +130,25 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 			}
 			
 			$minimumValue = $this->pi_getFFvalue($flexform, 'minRange', 'general');
-			if(isset($minimumValue)) {
+			if($minimumValue != '') {
 				$this->_minimumValue = $minimumValue;
 			}
 			
 			$maximumValue = $this->pi_getFFvalue($flexform, 'maxRange', 'general');
-			if(isset($maximumValue)) {
+			if($maximumValue !='') {
 				$this->_maximumValue = $maximumValue;
 			}
 			
-			if($answerSet = $this->pi_getFFValue($flexform, 'scale_label', 'labels')) {
+			$hasAnswers = false;
+			$answerSet = $this->pi_getFFValue($flexform, 'scale_label', 'labels');
+			foreach((array) $answerSet as $value => $label) {
+				if($label != '') {
+					$hasAnswers = true;
+					break;
+				}
+			}
+			
+			if($hasAnswers) {
 				$this->_answerSet = $answerSet;
 			}
 		}
