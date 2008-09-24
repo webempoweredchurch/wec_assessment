@@ -39,7 +39,7 @@ plugin.tx_wecassessment_pi1 {
 	answerLabels {
 		0 = Rarely
 		1 = Sometimes.
-		2 = Often.
+		2 = Often
 	}
 	
 	# The progress bar.
