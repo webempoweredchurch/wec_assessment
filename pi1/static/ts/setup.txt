@@ -115,6 +115,10 @@ plugin.tx_wecassessment_pi1 {
 			20.wrap = <p>Score:&nbsp;|&nbsp;/&nbsp;{field:maxScore}</p>
 			20.insertData = true
 			
+			# Alternative score display uses percentages instead of max score.
+			# 20.field = percent_score
+			# 20.wrap = <p>Score:&nbsp;|%</p>
+			
 			30 = TEXT
 			30.field = text
 			30.wrap = <p>|</p>
