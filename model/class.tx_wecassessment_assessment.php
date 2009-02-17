@@ -599,7 +599,7 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 			}
 			
 			// Don't allow a score below the minimum (due to negative weighting)
-			if($categoryscore < $minValue) {
+			if($categoryScore < $minValue) {
 				$categoryScore = $minValue;
 			}
 			
