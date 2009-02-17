@@ -538,18 +538,23 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 		$categoryArray = array();
 		foreach((array) $answers as $answer) {
 			$category = tx_wecassessment_category::find($answer->getCategoryUID());
-			$sorting = $category->getSorting();
-			
 			if(is_object($category)) {
+				$sorting = $category->getSorting();
 				$categoryArray[$sorting]['uid'] = $category->getUID();
 				$categoryArray[$sorting]['answers'][$answer->getQuestionUID()] = $answer;
 				$categoryArray[$sorting]['totalScore'] += $answer->getWeightedScore();
-				$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
-				$categoryArray[$sorting]['weightedAnswerCount']  += $answer->getWeight();
+				
+				// @todo	This only makes sense when minimumValue = 0.  Not sure what to do otherwise.
+				if ($answer->getWeight() > 0) {
+					$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
+					$categoryArray[$sorting]['weightedAnswerCount']  += $answer->getWeight();
+					$weightedAnswerCount += $answer->getWeight();
+				} else {
+					$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMinimumValue();
+				}
 				
 				$totalAssessmentScore += $answer->getWeightedScore();
 				$maxAssessmentScore += $answer->getWeight() * $this->getMaximumValue();
-				$weightedAnswerCount += $answer->getWeight();
 			}
 		}
 		
