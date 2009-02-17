@@ -84,6 +84,7 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 			'max_value' => $this->getMaxValue(),
 			'score' => round($this->getScore(), 2),
 			'maxScore' => $this->getMaxScore(),
+			'percent_score' => $this->getPercentScore()
 		);
 	}
 	
@@ -195,6 +196,20 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	 */
 	function getScore() {
 		return $this->_score;
+	}
+	
+	/**
+	 * Gets the percentage-based score for the recommendation.
+	 * @return		integer		The score (without a % sign)
+	 */
+	function getPercentScore() {
+		if ($this->getMaxScore() > 0) {
+			$percentScore = round(($this->getScore() / $this->getMaxScore()) * 100);
+		} else {
+			$percentScore = 0;
+		}
+		
+		return $percentScore;
 	}
 	
 	/**
