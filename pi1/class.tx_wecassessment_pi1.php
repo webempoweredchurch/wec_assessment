@@ -117,7 +117,7 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 				
 					// Hook for completed assessment.
 				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['assessmentIsCompleteHook'])) {
-					$hooks =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecmap_api']['assessmentIsCompleteHook'];
+					$hooks =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['assessmentIsCompleteHook'];
 					$hookParameters = array('assessmentObject' => $this->assessment);
 					foreach ($hooks as $hookFunction)	{
 						t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
