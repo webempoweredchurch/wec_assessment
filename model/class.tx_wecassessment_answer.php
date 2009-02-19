@@ -70,12 +70,14 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	 * @return		array		Associate array representing current answer.
 	 */
 	function toArray() {
-		return array(
+		$dataArray = array(
 			"uid" => $this->getUID(), 
 			"pid" => $this->getPID(), 
 			"value" => $this->getValue(), 
 			"question_id" => $this->getQuestionUID(), 
 			"result_id" => $this->getResultUID());
+			
+		return $dataArray;
 	}
 	
 	

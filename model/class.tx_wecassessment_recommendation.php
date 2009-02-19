@@ -329,7 +329,10 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 			$answerTotal += $answer->getWeightedScore();
 			$weightTotal += $question->getWeight();
 		}
-				
+
+		debug($answerTotal, "answerTotal");
+		debug($weightTotal, "weightTotal");
+
 		if ($weightTotal==0) {
 			$value = 0;
 		} else {
