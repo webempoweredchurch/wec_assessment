@@ -229,9 +229,6 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			$highTotal += $question->getWeight() * $maxValue;
 		}
 
-		debug($answerTotal, "answerTotal");
-		debug($weightTotal, "weightTotal");
-		
 		if ($weightTotal==0) {
 			$value = 0;
 		} else {

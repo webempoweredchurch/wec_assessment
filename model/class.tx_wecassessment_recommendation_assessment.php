@@ -179,10 +179,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 			$lowTotal += $question->getWeight() * $minValue;
 			$highTotal += $question->getWeight() * $maxValue;
 		}
-		
-		debug($answerTotal, "answerTotal");
-		debug($weightTotal, "weightTotal");
-
+				
 		if ($weightTotal==0) {
 			$value = 0;
 		} else {
