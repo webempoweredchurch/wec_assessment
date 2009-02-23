@@ -214,26 +214,6 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 		$recommendationClass = 'tx_wecassessment_recommendation_category';
 		return new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['category_id']);
 	}
-	
-	/* @todo 		Where should this live? */
-	function calculate($score) {
-		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
-		if($value == $maxValue) {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $category->getUID());
-		} else {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value, $category->getUID());
-		}
-		
-		if(is_object($recommendation)) {				
-			$recommendation->setScore($value);
-			$recommendation->setMaxScore($highTotal / $weightTotal);
-		}
-		
-		return $recommendation;
-	}
-	
-
-		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation_category.php'])	{

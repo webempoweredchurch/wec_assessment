@@ -213,46 +213,6 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 		$recommendationClass = 'tx_wecassessment_recommendation_question';
 		return new $recommendationClass($row['uid'], $row['pid'], $row['text'], $row['min_value'], $row['max_value'], $row['question_id']);
 	}
-	
-	
-	
-	
-	
-	/* @todo 		Where should this live? */
-	function calculate($question, $answers, $minValue, $maxValue) {
-		foreach((array) $answers as $answer) {
-			$question = $answer->getQuestion();
-			
-			$answerTotal += $answer->getWeightedScore();
-			$weightTotal += $question->getWeight();
-			
-			$lowTotal += $question->getWeight() * $minValue;
-			$highTotal += $question->getWeight() * $maxValue;
-		}
-
-		if ($weightTotal==0) {
-			$value = 0;
-		} else {
-			$value = $answerTotal / $weightTotal;
-		}
-		
-		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
-		if($value == $maxValue) {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $question->getUID());
-		} else {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value, $question->getUID());
-		}
-		
-		if(is_object($recommendation)) {				
-			$recommendation->setScore($value);
-			$recommendation->setMaxScore($highTotal / $weightTotal);
-		}
-		
-		return $recommendation;
-	}
-	
-
-		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_assessment/model/class.tx_wecassessment_recommendation_question.php'])	{
