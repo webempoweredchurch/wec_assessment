@@ -114,10 +114,16 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 		
 		if(is_a($question, "tx_wecassessment_question")) {
 			$weight = $question->getWeight();
-			$weightedValue = $weight * $this->getValue();
+			if ($weight >= 0) {
+				$weightedValue = $weight * $this->getValue();
+			} else {
+				// @todo	How do we get the correct max value in here from the assessment object.
+				$weightedValue = abs(ASSESSMENT_MAX_VALUE * $weight) - abs($weight * $this->getValue());
+			}
 		} else {
 			$weightedValue = 0;
 		}
+
 		return $weightedValue;
 	}
 	
@@ -192,7 +198,15 @@ class tx_wecassessment_answer extends tx_wecassessment_modelbase {
 	}
 	
 	function getScore() {
-		return $this->getValue();
+		$question = $this->getQuestion();
+		if ($question->getWeight() >= 0) {
+			$score = $this->getValue();
+		} else {
+			// @todo	How do we get the correct max value in here from the assessment object?
+			$score = ASSESSMENT_MAX_VALUE - $this->getValue();
+		}
+		
+		return $score;
 	}
 	
 	/**

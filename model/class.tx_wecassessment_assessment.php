@@ -44,7 +44,7 @@ define(SLIDER_DISPLAY, 2);
  * @subpackage tx_wecassessment
  */
 class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontainer {
-	
+
 	var $_minimumValue;
 	var $_maximumValue;
 	var $_answerSet;
@@ -54,15 +54,15 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 	var $_pageNumber;
 	var $_sorting;
 	var $_skipToUnansweredQuestions;
-	
+
 	var $_result;
 	var $_pid;
 	var $_uid;
-	
+
 	var $_ttcontentRow;
-	
+
 	var $_recommendationClass = 'tx_wecassessment_recommendation_assessment';
-	
+
 	/**
 	 * Default constructor.
 	 * @todo 	Initialize conf and flexform if they're not provided.
@@ -72,8 +72,8 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 		if(!is_object($GLOBALS['LANG'])) {
 			require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
-			
-			if(TYPO3_MODE == 'BE') {
+
+			if (TYPO3_MODE == 'BE') {
 				$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 			} else {
 				$GLOBALS['LANG']->init($GLOBALS['TSFE']->config['config']['language']);
@@ -152,7 +152,9 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 				$this->_answerSet = $answerSet;
 			}
 		}
-		
+
+		// @todo	Remove this and pass the values directly to methods that need it.
+		define(ASSESSMENT_MAX_VALUE, $this->_maximumValue);
 	}
 	
 	/**
@@ -544,17 +546,12 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 				$categoryArray[$sorting]['answers'][$answer->getQuestionUID()] = $answer;
 				$categoryArray[$sorting]['totalScore'] += $answer->getWeightedScore();
 				
-				// @todo	This only makes sense when minimumValue = 0.  Not sure what to do otherwise.
-				if ($answer->getWeight() > 0) {
-					$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMaximumValue();
-					$categoryArray[$sorting]['weightedAnswerCount']  += $answer->getWeight();
-					$weightedAnswerCount += $answer->getWeight();
-				} else {
-					$categoryArray[$sorting]['maxScore'] += $answer->getWeight() * $this->getMinimumValue();
-				}
+				$categoryArray[$sorting]['maxScore'] += abs($answer->getWeight()) * $this->getMaximumValue();
+				$categoryArray[$sorting]['weightedAnswerCount']  += abs($answer->getWeight());
+				$weightedAnswerCount += abs($answer->getWeight());
 				
 				$totalAssessmentScore += $answer->getWeightedScore();
-				$maxAssessmentScore += $answer->getWeight() * $this->getMaximumValue();
+				$maxAssessmentScore += abs($answer->getWeight()) * $this->getMaximumValue();
 			}
 		}
 		
@@ -612,7 +609,7 @@ class tx_wecassessment_assessment extends tx_wecassessment_recommendationcontain
 			
 			foreach((array) $children['answers'] as $answer) {
 				$question = $answer->getQuestion();
-				$questionScore = $answer->getScore();
+				$questionScore = $answer->getValue();
 				
 				// Hack to include perfect score
 				if($questionScore == $this->getMaximumValue()) {
