@@ -316,42 +316,6 @@ class tx_wecassessment_recommendation extends tx_wecassessment_modelbase {
 	}
 
 	/**
-	 * Calculate the recommendation to be used.
-	 * @param		array		Array of answer objects.
-	 * @param		integer		The minimum possible value.
-	 * @param		integer		The maximum possible value.
-	 * @return		object		The recommendation object.
-	 */
-	function calculate($answers, $minValue, $maxValue) {
-		foreach((array) $answers as $answer) {
-			$question = $answer->getQuestion();
-			
-			$answerTotal += $answer->getWeightedScore();
-			$weightTotal += $question->getWeight();
-		}
-				
-		if ($weightTotal==0) {
-			$value = 0;
-		} else {
-			$value = $answerTotal / $weightTotal;
-		}
-		
-		// @todo 	ugly hack!  If we have a perfect score, back it down a tiny bit so that we get a recommendation
-		if($value == $maxValue) {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value-0.01, $category->getUID());
-		} else {
-			$recommendation = tx_wecassessment_recommendation::findByValue($value, $category->getUID());
-		}
-		
-		if(is_object($recommendation)) {				
-			$recommendation->setScore($value);
-			$recommendation->setMaxScore($highTotal / $weightTotal);
-		}
-		
-		return $recommendation;
-	}
-	
-	/**
 	 * Creates a new recommendation object from an associative array.
 	 *
 	 * @param		array		Associate array for a recommendation.
