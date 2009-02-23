@@ -73,6 +73,7 @@ class tx_wecassessment_recommendation_question extends tx_wecassessment_recommen
 			'max_value' => $this->getMaxValue(),
 			'score' => round($this->getScore(), 2),
 			'maxScore' => $this->getMaxScore(),
+			'percent_score' => $this->getPercentScore(),
 			'parentTitle' => '',
 			'parentText' => $question->getText(),
 			'type' => 'question'

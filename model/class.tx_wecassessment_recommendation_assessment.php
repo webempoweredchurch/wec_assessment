@@ -79,6 +79,7 @@ class tx_wecassessment_recommendation_assessment extends tx_wecassessment_recomm
 			'max_value' => $this->getMaxValue(),
 			'score' => round($this->getScore(), 2),
 			'maxScore' => $this->getMaxScore(),
+			'percent_score' => $this->getPercentScore(),
 			'parentTitle' => 'Overall Score',
 			'parentText' => '',
 			'type' => 'assessment'

@@ -72,6 +72,7 @@ class tx_wecassessment_recommendation_category extends tx_wecassessment_recommen
 			'max_value' => $this->getMaxValue(),
 			'score' => round($this->getScore(), 2),
 			'maxScore' => $this->getMaxScore(),
+			'percent_score' => $this->getPercentScore(),
 			'parentTitle' => $category->getTitle(),
 			'parentText' => $category->getDescription(),
 			'parentImage' => $category->getImage(),
