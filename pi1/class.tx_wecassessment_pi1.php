@@ -114,16 +114,6 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 			// If the result is complete, show recommendations.  Otherwise, show questions.
 			if($this->result->isComplete()) {
 				$view = 'displayRecommendations';
-				
-					// Hook for completed assessment.
-				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['assessmentIsCompleteHook'])) {
-					$hooks =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['assessmentIsCompleteHook'];
-					$hookParameters = array('assessmentObject' => $this->assessment);
-					foreach ($hooks as $hookFunction)	{
-						t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
-					}
-				}
-			
 			} else {
 				$view = 'displayQuestions';
 			}
@@ -331,6 +321,15 @@ class tx_wecassessment_pi1 extends tslib_pibase {
 		
 		$content = $this->util->getTemplate();
 		$recommendations = &$this->assessment->calculateAllRecommendations();
+		
+			// Hook for processing recommendations after they're calculated.
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['processCalculatedRecommendations'])) {
+			$hooks =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecassessment_pi1']['processCalculatedRecommendations'];
+			$hookParameters = array('recommendations' => &$recommendations);
+			foreach ($hooks as $hookFunction)	{
+				t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+			}
+		}
 		
 		if(is_array($recommendations)) {
 			foreach((array)$recommendations as $recommendation) {
