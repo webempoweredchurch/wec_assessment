@@ -129,7 +129,7 @@ plugin.tx_wecassessment_pi1 {
 		}
 		
 		# Category recommendations: Also show the category image
-		recommendation.category < plugin.tx_wecassessment_pi1.recommendations.recommendation.default
+		recommendation.category =< plugin.tx_wecassessment_pi1.recommendations.recommendation.default
 		recommendation.category {
 			12 = IMAGE
 			12 {
